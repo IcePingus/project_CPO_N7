@@ -1,6 +1,6 @@
-package graphique.view;
+package graphic.view;
 
-import graphique.model.*;
+import graphic.model.*;
 
 import javax.swing.*;
 import javax.swing.border.Border;

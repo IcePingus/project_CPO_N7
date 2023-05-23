@@ -1,4 +1,3 @@
-import graphic.view.CanvaPanel;
 import graphic.view.GraphicProjectPanel;
 
 import javax.swing.*;
