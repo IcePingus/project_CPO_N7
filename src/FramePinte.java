@@ -1,3 +1,6 @@
+import graphique.view.ColorSchemeInternalFrame;
+import graphique.view.ToolInternalFrame;
+
 import javax.swing.*;
 import java.awt.*;
 
