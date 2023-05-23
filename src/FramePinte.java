@@ -13,6 +13,7 @@ public class FramePinte extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setupSelectionPanel();
         this.setExtendedState(MAXIMIZED_BOTH);
+        this.setVisible(true);
     }
 
     private void setupSelectionPanel() {
