@@ -15,8 +15,6 @@ public class CanvaPanel extends JPanel {
 
     public CanvaPanel(int width, int height) {
 
-        System.out.println("test");
-
         this.setLayout(new GridBagLayout());
 
         this.toile = new Pixel[width][height];
