@@ -1,8 +1,7 @@
-import graphique.view.ColorSchemeInternalFrame;
-import graphique.view.ToolInternalFrame;
-
 import javax.swing.*;
 import java.awt.*;
+import graphique.view.ColorSchemeInternalFrame;
+import graphique.view.ToolInternalFrame;
 
 public class FramePinte extends JFrame {
 
@@ -10,6 +9,7 @@ public class FramePinte extends JFrame {
 
     private JButton graphicModeButton;
     private JButton terminalModeButton;
+    private JDesktopPane desktopPane = new JDesktopPane();
 
     public FramePinte() {
         super("Pinte");
@@ -43,7 +43,13 @@ public class FramePinte extends JFrame {
     }
 
     private void onGraphicModeButtonClick() {
-        this.setContentPane(new JPanel());
+        ToolInternalFrame tif = new ToolInternalFrame();
+        ColorSchemeInternalFrame csif = new ColorSchemeInternalFrame();
+        tif.setVisible(true);
+        csif.setVisible(true);
+        desktopPane.add(tif);
+        desktopPane.add(csif);
+        this.setContentPane(desktopPane);
         this.repaint();
     }
 
