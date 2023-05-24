@@ -43,7 +43,7 @@ public class FramePinte extends JFrame {
     }
 
     private void onGraphicModeButtonClick() {
-        this.setContentPane(new GraphicProjectPanel());
+        this.setContentPane(new JPanel());
         this.validate();
         this.repaint();
     }
