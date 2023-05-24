@@ -1,7 +1,8 @@
+import graphic.view.CanvaPanel;
+import graphic.view.GraphicProjectPanel;
+
 import javax.swing.*;
 import java.awt.*;
-import graphique.view.ColorSchemeInternalFrame;
-import graphique.view.ToolInternalFrame;
 
 public class FramePinte extends JFrame {
 
@@ -9,12 +10,12 @@ public class FramePinte extends JFrame {
 
     private JButton graphicModeButton;
     private JButton terminalModeButton;
-    private JDesktopPane desktopPane = new JDesktopPane();
 
     public FramePinte() {
         super("Pinte");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setupSelectionPanel();
+        this.setSize(960, 540);
         this.setExtendedState(MAXIMIZED_BOTH);
         this.setVisible(true);
     }
@@ -43,18 +44,14 @@ public class FramePinte extends JFrame {
     }
 
     private void onGraphicModeButtonClick() {
-        ToolInternalFrame tif = new ToolInternalFrame();
-        ColorSchemeInternalFrame csif = new ColorSchemeInternalFrame();
-        tif.setVisible(true);
-        csif.setVisible(true);
-        desktopPane.add(tif);
-        desktopPane.add(csif);
-        this.setContentPane(desktopPane);
+        this.setContentPane(new GraphicProjectPanel());
+        this.validate();
         this.repaint();
     }
 
     private void onTerminalModeButtonClick() {
         this.setContentPane(new JPanel());
+        this.validate();
         this.repaint();
     }
 }
