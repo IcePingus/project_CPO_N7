@@ -18,7 +18,6 @@ public class ColorSchemeInternalFrame extends JInternalFrame implements ChangeLi
         this.setResizable(false);
         this.setClosable(false);
         this.setSize(430, 150);
-        this.setLocation(getToolkit().getScreenSize().width-430, 0);
         this.setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
         this.setVisible(true);
         this.setFrameIcon(new ImageIcon(getClass().getResource("/assets/images/colorSchemeLogo.png")));

@@ -16,8 +16,10 @@ public class GraphicProjectPanel extends JDesktopPane {
         this.toolInternalFrame = new ToolInternalFrame();
         this.toolInternalFrame.setVisible(true);
         this.add(this.toolInternalFrame);
+        this.setSize(this.getToolkit().getScreenSize());
 
         this.colorSchemeInternalFrame = new ColorSchemeInternalFrame();
+        this.colorSchemeInternalFrame.setLocation(this.getSize().width-430, 0);
         this.colorSchemeInternalFrame.setVisible(true);
         this.add(this.colorSchemeInternalFrame);
 
