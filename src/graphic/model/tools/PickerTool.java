@@ -1,14 +1,15 @@
-package graphique.model;
+package graphic.model.tools;
+
 import javax.swing.*;
 
-public class BucketTool implements ToolCommand {
+public class PickerTool implements ToolCommand {
 
     private String name;
     private Icon image;
 
-    public BucketTool() {
-        this.name = "Bucket";
-        this.image = new ImageIcon(getClass().getResource("/assets/images/bucket.png"));
+    public PickerTool() {
+        this.name = "Picker";
+        this.image = new ImageIcon(getClass().getResource("/assets/images/picker.png"));
     }
 
     @Override
@@ -23,6 +24,6 @@ public class BucketTool implements ToolCommand {
 
     @Override
     public void execute() {
-        System.out.println("Salut bucket");
+        System.out.println("Salut");
     }
 }

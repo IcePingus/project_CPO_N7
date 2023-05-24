@@ -1,13 +1,15 @@
-package graphique.model;
+package graphic.model.tools;
+
 import javax.swing.*;
 
-public class RubberTool implements ToolCommand {
+public class PencilTool implements ToolCommand {
+
     private String name;
     private Icon image;
 
-    public RubberTool() {
-        this.name = "Rubber";
-        this.image = new ImageIcon(getClass().getResource("/assets/images/rubber.png"));
+    public PencilTool() {
+        this.name = "Pencil";
+        this.image = new ImageIcon(getClass().getResource("/assets/images/pencil.png"));
     }
 
     @Override
@@ -22,6 +24,6 @@ public class RubberTool implements ToolCommand {
 
     @Override
     public void execute() {
-        System.out.println("Salut rubber");
+        System.out.println("Salut");
     }
 }

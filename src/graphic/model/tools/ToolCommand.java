@@ -1,4 +1,4 @@
-package graphique.model;
+package graphic.model.tools;
 
 import javax.swing.*;
 import javax.tools.Tool;

@@ -1,6 +1,6 @@
 package graphic.view;
 
-import graphic.model.Pixel;
+import graphic.model.canva.Pixel;
 
 import javax.swing.*;
 import java.awt.*;

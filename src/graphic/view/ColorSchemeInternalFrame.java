@@ -1,4 +1,4 @@
-package graphique.view;
+package graphic.view;
 
 import javax.swing.*;
 import java.awt.*;

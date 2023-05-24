@@ -1,5 +1,3 @@
-import graphique.view.ToolInternalFrame;
-
 import javax.swing.*;
 
 public class Main {

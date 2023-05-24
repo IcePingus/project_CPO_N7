@@ -1,14 +1,13 @@
-package graphique.model;
+package graphic.model.tools;
 import javax.swing.*;
 
-public class PickerTool implements ToolCommand {
-
+public class RubberTool implements ToolCommand {
     private String name;
     private Icon image;
 
-    public PickerTool() {
-        this.name = "Picker";
-        this.image = new ImageIcon(getClass().getResource("/assets/images/picker.png"));
+    public RubberTool() {
+        this.name = "Rubber";
+        this.image = new ImageIcon(getClass().getResource("/assets/images/rubber.png"));
     }
 
     @Override
@@ -23,6 +22,6 @@ public class PickerTool implements ToolCommand {
 
     @Override
     public void execute() {
-        System.out.println("Salut");
+        System.out.println("Salut rubber");
     }
 }

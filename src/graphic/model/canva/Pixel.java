@@ -1,4 +1,4 @@
-package graphic.model;
+package graphic.model.canva;
 
 import javax.swing.*;
 import java.awt.*;
