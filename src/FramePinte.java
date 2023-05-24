@@ -1,3 +1,5 @@
+import graphic.view.CanvaPanel;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -12,6 +14,7 @@ public class FramePinte extends JFrame {
         super("Pinte");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setupSelectionPanel();
+        this.setSize(960, 540);
         this.setExtendedState(MAXIMIZED_BOTH);
         this.setVisible(true);
     }
@@ -40,12 +43,14 @@ public class FramePinte extends JFrame {
     }
 
     private void onGraphicModeButtonClick() {
-        this.setContentPane(new JPanel());
+        this.setContentPane(new CanvaPanel(100, 50));
+        this.validate();
         this.repaint();
     }
 
     private void onTerminalModeButtonClick() {
         this.setContentPane(new JPanel());
+        this.validate();
         this.repaint();
     }
 }
