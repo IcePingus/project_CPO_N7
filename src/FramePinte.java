@@ -1,4 +1,4 @@
-import graphic.view.CanvaPanel;
+import graphic.view.GraphicProjectPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -43,7 +43,7 @@ public class FramePinte extends JFrame {
     }
 
     private void onGraphicModeButtonClick() {
-        this.setContentPane(new CanvaPanel(100, 50));
+        this.setContentPane(new GraphicProjectPanel());
         this.validate();
         this.repaint();
     }
