@@ -6,6 +6,7 @@ import graphic.model.tools.ToolCommand;
 import graphic.model.tools.Toolbox;
 
 import javax.swing.*;
+import javax.tools.Tool;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Observable;
@@ -13,7 +14,7 @@ import java.util.Observer;
 
 public class CanvaPanel extends JPanel implements MouseListener, Observer {
 
-    private ToolCommand activeTool;
+    private Toolbox toolbox;
 
     private Canva toile;
 
@@ -23,7 +24,7 @@ public class CanvaPanel extends JPanel implements MouseListener, Observer {
 
         this.setLayout(new GridBagLayout());
 
-        this.activeTool = toolbox.getActiveTool();
+        this.toolbox = toolbox;
 
         this.toile = new Canva(width, height, this.getWidth(), this.getHeight());
 
@@ -53,7 +54,7 @@ public class CanvaPanel extends JPanel implements MouseListener, Observer {
     @Override
     public void update(Observable o, Object arg) {
         if (o instanceof Toolbox) {
-            this.activeTool = ((Toolbox) o).getActiveTool();
+            this.toolbox = (Toolbox) o;
         }
     }
 
@@ -63,7 +64,7 @@ public class CanvaPanel extends JPanel implements MouseListener, Observer {
     @Override
     public void mousePressed(MouseEvent e) {
         if (e.getSource() instanceof Pixel) {
-            this.activeTool.execute((Pixel) e.getSource());
+            this.toolbox.getActiveTool().execute((Pixel) e.getSource());
         }
     }
 
@@ -73,7 +74,7 @@ public class CanvaPanel extends JPanel implements MouseListener, Observer {
     @Override
     public void mouseEntered(MouseEvent e) {
         if (e.getSource() instanceof Pixel && e.getModifiersEx() == InputEvent.BUTTON1_DOWN_MASK) {
-            this.activeTool.execute((Pixel) e.getSource());
+            this.toolbox.getActiveTool().execute((Pixel) e.getSource());
         }
     }
 
