@@ -1,4 +1,5 @@
 import graphic.view.GraphicProjectPanel;
+import terminalSVG.view.TerminalProjectPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -49,7 +50,7 @@ public class FramePinte extends JFrame {
     }
 
     private void onTerminalModeButtonClick() {
-        this.setContentPane(new JPanel());
+        this.setContentPane(new TerminalProjectPanel());
         this.validate();
         this.repaint();
     }
