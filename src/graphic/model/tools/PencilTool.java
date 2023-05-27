@@ -1,6 +1,9 @@
 package graphic.model.tools;
 
+import graphic.model.canva.Pixel;
+
 import javax.swing.*;
+import java.awt.*;
 
 public class PencilTool implements ToolCommand {
 
@@ -23,7 +26,7 @@ public class PencilTool implements ToolCommand {
     }
 
     @Override
-    public void execute() {
-        System.out.println("Salut");
+    public void execute(Pixel pixel) {
+        pixel.setBackground(Color.BLACK);
     }
 }
