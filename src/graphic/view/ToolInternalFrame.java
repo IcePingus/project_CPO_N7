@@ -12,7 +12,7 @@ public class ToolInternalFrame extends JInternalFrame implements ActionListener 
     private Toolbox toolbox;
     private int activeTool;
 
-    public ToolInternalFrame() {
+    public ToolInternalFrame(Toolbox toolbox) {
         super("Tools");
         this.setMaximizable(false);
         this.setIconifiable(true);
@@ -23,7 +23,7 @@ public class ToolInternalFrame extends JInternalFrame implements ActionListener 
         this.setVisible(true);
         this.setLayout(new GridLayout(2,2));
 
-        this.toolbox = new Toolbox();
+        this.toolbox = toolbox;
         this.toolbox.addTool(new PencilTool());
         this.toolbox.addTool(new RubberTool());
         this.toolbox.addTool(new BucketTool());
@@ -46,6 +46,7 @@ public class ToolInternalFrame extends JInternalFrame implements ActionListener 
                 this.toolbox.getToolsButtons().get(this.activeTool).setBackground(null);
                 this.activeTool = i;
                 this.toolbox.getToolsButtons().get(i).setBackground(Color.red);
+                this.toolbox.setActiveTool(this.activeTool);
             }
         }
     }

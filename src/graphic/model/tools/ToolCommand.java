@@ -1,7 +1,8 @@
 package graphic.model.tools;
 
+import graphic.model.canva.Pixel;
+
 import javax.swing.*;
-import javax.tools.Tool;
 
 public interface ToolCommand {
     String name = null;
@@ -15,6 +16,6 @@ public interface ToolCommand {
         return this.getImage();
     }
 
-    default void execute() {
+    default void execute(Pixel pixel) {
     }
 }

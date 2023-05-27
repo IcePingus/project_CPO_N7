@@ -1,4 +1,7 @@
 package graphic.model.tools;
+
+import graphic.model.canva.Pixel;
+
 import javax.swing.*;
 
 public class RubberTool implements ToolCommand {
@@ -21,7 +24,7 @@ public class RubberTool implements ToolCommand {
     }
 
     @Override
-    public void execute() {
+    public void execute(Pixel pixel) {
         System.out.println("Salut rubber");
     }
 }
