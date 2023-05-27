@@ -2,6 +2,9 @@ package graphic.view;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 
 public class GraphicProjectPanel extends JDesktopPane {
 
@@ -25,6 +28,28 @@ public class GraphicProjectPanel extends JDesktopPane {
 
         this.canvaPanel = new CanvaPanel(128, 128);
         this.add(this.canvaPanel, BorderLayout.CENTER);
-    }
+        this.addComponentListener(new ComponentListener() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                 if (getSize().width < colorSchemeInternalFrame.getX() + 430) {
+                     colorSchemeInternalFrame.setLocation(getSize().width - 430, colorSchemeInternalFrame.getHeight());
+                 }
+            }
 
+            @Override
+            public void componentMoved(ComponentEvent e) {
+
+            }
+
+            @Override
+            public void componentShown(ComponentEvent e) {
+
+            }
+
+            @Override
+            public void componentHidden(ComponentEvent e) {
+
+            }
+        });
+    }
 }
