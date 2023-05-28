@@ -51,6 +51,7 @@ public class FramePinte extends JFrame {
 
     private void onTerminalModeButtonClick() {
         this.setContentPane(new TerminalProjectPanel());
+        this.setMinimumSize(new Dimension(960, 540));
         this.validate();
         this.repaint();
     }
