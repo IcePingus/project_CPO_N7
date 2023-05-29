@@ -1,5 +1,8 @@
 package terminalSVG.view;
 
+import terminalSVG.controller.ControleurTerminalPanel;
+import terminalSVG.model.Terminal;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
@@ -8,14 +11,14 @@ import java.awt.event.ComponentEvent;
 public class TerminalProjectPanel extends JPanel {
     public TerminalProjectPanel() {
 
-        // ----------- I. Définition du panel terminal (Preview) -----------
-        // -> Remplacer ici par les panels du module MVC conçu pour le terminal
-        JPanel vtPanel = new JPanel();
-        JLabel tpLabel = new JLabel("Terminal - Vue");
-        vtPanel.add(tpLabel);
-        JPanel ctPanel = new JPanel();
-        JLabel ctpLabel = new JLabel("Terminal - Contrôleur");
-        ctPanel.add(ctpLabel);
+        // ----------- I. Définition du panel terminal  -----------
+        VueCommand vc = new VueCommand();
+        Terminal t = new Terminal(null);
+        VueTerminalPanel vtPanel = new VueTerminalPanel();
+        ControleurTerminalPanel ctPanel = new ControleurTerminalPanel(t);
+
+        t.addObserver(vc);
+        t.addObserver(vtPanel);
 
         // SplitPane Terminal (Haut: Historique - Bas : Terminal)
         JSplitPane terminalPanel = new JSplitPane(JSplitPane.VERTICAL_SPLIT, vtPanel, ctPanel);
