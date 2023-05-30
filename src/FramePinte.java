@@ -1,4 +1,5 @@
 import graphic.view.GraphicProjectPanel;
+import terminalSVG.view.TerminalProjectPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,6 +16,7 @@ public class FramePinte extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setupSelectionPanel();
         this.setSize(960, 540);
+        this.setMinimumSize(new Dimension(960, 540));
         this.setExtendedState(MAXIMIZED_BOTH);
         this.setVisible(true);
     }
@@ -22,7 +24,6 @@ public class FramePinte extends JFrame {
     private void setupSelectionPanel() {
         this.selectionPanel = new JPanel(new GridBagLayout());
         this.setContentPane(this.selectionPanel);
-
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -49,7 +50,7 @@ public class FramePinte extends JFrame {
     }
 
     private void onTerminalModeButtonClick() {
-        this.setContentPane(new JPanel());
+        this.setContentPane(new TerminalProjectPanel());
         this.validate();
         this.repaint();
     }
