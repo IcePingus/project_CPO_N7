@@ -33,11 +33,6 @@ public class Pixel extends JButton {
             return false;
         }
 
-        @Override
-        public void setRollover(boolean b) {
-            //NOOP
-        }
-
     }
 
 }

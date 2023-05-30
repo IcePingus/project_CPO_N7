@@ -11,8 +11,8 @@ public class Toolbox extends Observable {
     private ToolCommand activeTool;
 
     public Toolbox() {
-        this.toolsButtons = new ArrayList<JButton>();
-        this.toolCommands = new ArrayList<ToolCommand>();
+        this.toolsButtons = new ArrayList<>();
+        this.toolCommands = new ArrayList<>();
         this.addTool(new PencilTool());
         this.activeTool = this.getTool(0);
     }
