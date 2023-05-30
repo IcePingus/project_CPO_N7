@@ -1,9 +1,11 @@
 package graphic.model.tools;
 
-import javax.swing.*;
-import javax.tools.Tool;
+import graphic.model.canva.Pixel;
 
-public interface ToolCommand {
+import javax.swing.*;
+import java.util.Observer;
+
+public interface ToolCommand extends Observer {
     String name = null;
     Icon image = null;
 
@@ -15,6 +17,6 @@ public interface ToolCommand {
         return this.getImage();
     }
 
-    default void execute() {
+    default void execute(Pixel pixel) {
     }
 }

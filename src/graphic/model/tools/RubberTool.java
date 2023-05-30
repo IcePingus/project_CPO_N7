@@ -1,5 +1,9 @@
 package graphic.model.tools;
+
+import graphic.model.canva.Pixel;
+
 import javax.swing.*;
+import java.util.Observable;
 
 public class RubberTool implements ToolCommand {
     private String name;
@@ -21,7 +25,12 @@ public class RubberTool implements ToolCommand {
     }
 
     @Override
-    public void execute() {
+    public void execute(Pixel pixel) {
         System.out.println("Salut rubber");
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+
     }
 }

@@ -1,5 +1,7 @@
 package graphic.view;
 
+import graphic.controller.ColorController;
+
 import javax.swing.*;
 import javax.swing.colorchooser.AbstractColorChooserPanel;
 import javax.swing.event.ChangeEvent;
@@ -9,9 +11,9 @@ import java.awt.*;
 public class ColorSchemeInternalFrame extends JInternalFrame implements ChangeListener {
 
     private JColorChooser colorChooser;
-    private Color activeColor;
+    private ColorController colorController;
 
-    public ColorSchemeInternalFrame() {
+    public ColorSchemeInternalFrame(ColorController colorController) {
         super("Color Scheme");
         this.setMaximizable(false);
         this.setIconifiable(true);
@@ -22,7 +24,7 @@ public class ColorSchemeInternalFrame extends JInternalFrame implements ChangeLi
         this.setVisible(true);
         this.setFrameIcon(new ImageIcon(getClass().getResource("/assets/images/colorSchemeLogo.png")));
 
-        this.activeColor = Color.black;
+        this.colorController = colorController;
         this.colorChooser = new JColorChooser();
         colorChooser.getSelectionModel().addChangeListener(this);
 
@@ -40,6 +42,6 @@ public class ColorSchemeInternalFrame extends JInternalFrame implements ChangeLi
 
     @Override
     public void stateChanged(ChangeEvent e) {
-        this.activeColor = this.colorChooser.getColor();
+        this.colorController.setActiveColor(this.colorChooser.getColor());
     }
 }

@@ -1,6 +1,9 @@
 package graphic.model.tools;
 
+import graphic.model.canva.Pixel;
+
 import javax.swing.*;
+import java.util.Observable;
 
 public class BucketTool implements ToolCommand {
 
@@ -23,7 +26,12 @@ public class BucketTool implements ToolCommand {
     }
 
     @Override
-    public void execute() {
+    public void execute(Pixel pixel) {
         System.out.println("Salut bucket");
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+
     }
 }
