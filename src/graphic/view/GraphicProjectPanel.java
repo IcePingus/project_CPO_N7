@@ -16,7 +16,6 @@ public class GraphicProjectPanel extends JDesktopPane {
     private Toolbox toolbox;
 
     private ColorController colorController;
-
     private ToolInternalFrame toolInternalFrame;
     private ColorSchemeInternalFrame colorSchemeInternalFrame;
 
