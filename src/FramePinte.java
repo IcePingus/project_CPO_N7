@@ -16,6 +16,7 @@ public class FramePinte extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setupSelectionPanel();
         this.setSize(960, 540);
+        this.setMinimumSize(new Dimension(960, 540));
         this.setExtendedState(MAXIMIZED_BOTH);
         this.setVisible(true);
     }
@@ -23,8 +24,6 @@ public class FramePinte extends JFrame {
     private void setupSelectionPanel() {
         this.selectionPanel = new JPanel(new GridBagLayout());
         this.setContentPane(this.selectionPanel);
-        this.setMinimumSize(new Dimension(960, 540));
-
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
