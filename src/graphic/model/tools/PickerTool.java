@@ -3,6 +3,7 @@ package graphic.model.tools;
 import graphic.model.canva.Pixel;
 
 import javax.swing.*;
+import java.util.Observable;
 
 public class PickerTool implements ToolCommand {
 
@@ -27,5 +28,10 @@ public class PickerTool implements ToolCommand {
     @Override
     public void execute(Pixel pixel) {
         System.out.println("Salut");
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+
     }
 }

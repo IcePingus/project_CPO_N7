@@ -13,7 +13,8 @@ public class Toolbox extends Observable {
     public Toolbox() {
         this.toolsButtons = new ArrayList<JButton>();
         this.toolCommands = new ArrayList<ToolCommand>();
-        this.activeTool = new PencilTool();
+        this.addTool(new PencilTool());
+        this.activeTool = this.getTool(0);
     }
 
     public void addTool(ToolCommand tool) {

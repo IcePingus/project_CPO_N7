@@ -1,5 +1,6 @@
 package graphic.view;
 
+import graphic.controller.ColorController;
 import graphic.model.tools.*;
 
 import javax.swing.*;
@@ -12,7 +13,7 @@ public class ToolInternalFrame extends JInternalFrame implements ActionListener 
     private Toolbox toolbox;
     private int activeTool;
 
-    public ToolInternalFrame(Toolbox toolbox) {
+    public ToolInternalFrame(Toolbox toolbox, ColorController colorController) {
         super("Tools");
         this.setMaximizable(false);
         this.setIconifiable(true);
@@ -24,7 +25,6 @@ public class ToolInternalFrame extends JInternalFrame implements ActionListener 
         this.setLayout(new GridLayout(2,2));
 
         this.toolbox = toolbox;
-        this.toolbox.addTool(new PencilTool());
         this.toolbox.addTool(new RubberTool());
         this.toolbox.addTool(new BucketTool());
         this.toolbox.addTool(new PickerTool());
@@ -34,6 +34,7 @@ public class ToolInternalFrame extends JInternalFrame implements ActionListener 
             this.toolbox.getToolsButtons().get(i).setName(this.toolbox.getTools().get(i).getName());
             this.toolbox.getToolsButtons().get(i).setIcon(this.toolbox.getTools().get(i).getImage());
             this.toolbox.getToolsButtons().get(i).addActionListener(this);
+            colorController.addObserver(this.toolbox.getTools().get(i));
         }
         this.activeTool = 0;
         this.toolbox.getToolsButtons().get(0).setBackground(Color.red);
