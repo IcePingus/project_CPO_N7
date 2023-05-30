@@ -10,34 +10,27 @@ import java.awt.event.ComponentListener;
 
 public class GraphicProjectPanel extends JDesktopPane {
 
-    private CanvaPanel canvaPanel;
-
-    private Toolbox toolbox;
-
-    private ColorController colorController;
-    private ToolInternalFrame toolInternalFrame;
-    private ColorSchemeInternalFrame colorSchemeInternalFrame;
-
     public GraphicProjectPanel() {
         this.setLayout(new BorderLayout());
 
-        this.toolbox = new Toolbox();
-        this.colorController = new ColorController();
+        Toolbox toolbox = new Toolbox();
+        ColorController colorController = new ColorController();
 
-        this.toolInternalFrame = new ToolInternalFrame(this.toolbox, this.colorController);
-        this.toolInternalFrame.setVisible(true);
-        this.add(this.toolInternalFrame);
+        ToolInternalFrame toolInternalFrame = new ToolInternalFrame(toolbox);
+        toolInternalFrame.setVisible(true);
+        this.add(toolInternalFrame);
         this.setSize(this.getToolkit().getScreenSize());
 
-        this.colorSchemeInternalFrame = new ColorSchemeInternalFrame(this.colorController);
-        this.colorSchemeInternalFrame.setLocation(this.getSize().width - 430, 0);
-        this.colorSchemeInternalFrame.setVisible(true);
-        this.add(this.colorSchemeInternalFrame);
+        ColorSchemeInternalFrame colorSchemeInternalFrame = new ColorSchemeInternalFrame(colorController);
+        colorSchemeInternalFrame.setLocation(this.getSize().width - 430, 0);
+        colorSchemeInternalFrame.setVisible(true);
+        this.add(colorSchemeInternalFrame);
 
-        this.canvaPanel = new CanvaPanel(128, 128, this.toolbox);
-        this.add(this.canvaPanel, BorderLayout.CENTER);
+        CanvaPanel canvaPanel = new CanvaPanel(toolbox);
+        toolbox.addObserver(canvaPanel);
+        colorController.addObserver(canvaPanel);
+        this.add(canvaPanel, BorderLayout.CENTER);
 
-        this.toolbox.addObserver(this.canvaPanel);
         this.addComponentListener(new ComponentListener() {
             @Override
             public void componentResized(ComponentEvent e) {

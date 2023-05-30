@@ -1,83 +1,88 @@
 package graphic.view;
 
-import graphic.model.canva.Canva;
-import graphic.model.canva.Pixel;
-import graphic.model.tools.ToolCommand;
+import graphic.controller.ColorController;
 import graphic.model.tools.Toolbox;
 
 import javax.swing.*;
-import javax.tools.Tool;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.util.Observable;
 import java.util.Observer;
 
-public class CanvaPanel extends JPanel implements MouseListener, Observer {
+public class CanvaPanel extends JComponent implements Observer {
 
+    private Image image;
+    private Graphics2D g2;
+    private int currentX, currentY, oldX, oldY;
+    private Color activeColor;
     private Toolbox toolbox;
 
-    private Canva toile;
-
-    private GridBagConstraints gbc;
-
-    public CanvaPanel(int width, int height, Toolbox toolbox) {
-
-        this.setLayout(new GridBagLayout());
-
+    public CanvaPanel(Toolbox toolbox) {
+        this.activeColor = Color.BLACK;
         this.toolbox = toolbox;
+        this.setDoubleBuffered(false);
+        this.setMouseMotionListener();
+    }
 
-        this.toile = new Canva(width, height, this.getWidth(), this.getHeight());
+    protected void paintComponent(Graphics g) {
+        if (this.image == null) {
+            this.image = this.createImage(this.getSize().width, this.getSize().height);
+            this.g2 = (Graphics2D) this.image.getGraphics();
 
-        this.gbc = new GridBagConstraints();
+            this.g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        for (int w = 0; w < width; w++) {
-            for (int h = 0; h < height; h++) {
-                this.gbc.gridx = w;
-                this.gbc.gridy = h;
-                this.toile.getPixel(w, h).addMouseListener(this);
-                this.add(this.toile.getPixel(w, h), gbc);
-            }
+            this.clear();
         }
+        g.drawImage(image, 0, 0, null);
+    }
 
-        this.addComponentListener(new ComponentAdapter() {
-            public void componentResized(ComponentEvent componentEvent) {
-                for (int w = 0; w < width; w++) {
-                    for (int h = 0; h < height; h++) {
-                        toile.getPixel(w, h).setSize(width, height, getWidth(), getHeight());
-                    }
+    public void clear() {
+        this.g2.setPaint(Color.white);
+        this.g2.fillRect(0, 0, this.getSize().width, this.getSize().height);
+        this.repaint();
+    }
+
+    public void draw(Color color) {
+        this.g2.setPaint(color);
+        this.repaint();
+    }
+
+    public void setMouseMotionListener() {
+        if (this.getMouseMotionListeners().length != 0) {
+            this.removeMouseMotionListener(this.getMouseMotionListeners()[0]);
+        }
+        this.addMouseMotionListener(new MouseMotionAdapter() {
+
+            public void mouseDragged(MouseEvent e) {
+                currentX = e.getX();
+                currentY = e.getY();
+                /*
+                if (oldX != currentX && oldY != currentY) {
+                    oldX = currentX;
+                    oldY = currentY;
                 }
+                */
+
+                if (g2 != null) {
+                    //tool action
+                    toolbox.getActiveTool().execute(oldX, oldY, currentX, currentY, g2);
+                    oldX = currentX;
+                    oldY = currentY;
+                }
+                draw(activeColor);
             }
         });
-
     }
 
     @Override
     public void update(Observable o, Object arg) {
-        if (o instanceof Toolbox) {
+        if (o instanceof ColorController) {
+            this.activeColor = ((ColorController) o).getActiveColor();
+            this.setMouseMotionListener();
+        } else if (o instanceof Toolbox) {
             this.toolbox = (Toolbox) o;
+            this.setMouseMotionListener();
         }
     }
-
-    @Override
-    public void mouseClicked(MouseEvent e) { }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-        if (e.getSource() instanceof Pixel) {
-            this.toolbox.getActiveTool().execute((Pixel) e.getSource());
-        }
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) { }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-        if (e.getSource() instanceof Pixel && e.getModifiersEx() == InputEvent.BUTTON1_DOWN_MASK) {
-            this.toolbox.getActiveTool().execute((Pixel) e.getSource());
-        }
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) { }
 }

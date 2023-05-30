@@ -1,14 +1,12 @@
 package graphic.model.tools;
 
-import graphic.model.canva.Pixel;
-
 import javax.swing.*;
-import java.util.Observable;
+import java.awt.*;
 
 public class PickerTool implements ToolCommand {
 
-    private String name;
-    private Icon image;
+    private final String name;
+    private final Icon image;
 
     public PickerTool() {
         this.name = "Picker";
@@ -26,12 +24,7 @@ public class PickerTool implements ToolCommand {
     }
 
     @Override
-    public void execute(Pixel pixel) {
+    public void execute(int oldX, int oldY, int currentX, int currentY, Graphics2D graphics2D) {
         System.out.println("Salut");
-    }
-
-    @Override
-    public void update(Observable o, Object arg) {
-
     }
 }
