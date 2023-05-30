@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 
-public class Terminal extends Observable {
+public class History extends Observable {
     private List<Command> commands;
 
-    public Terminal(List<Command> vmessages) {
+    public History(List<Command> vmessages) {
         this.commands = new ArrayList<>();
         if (vmessages != null) this.commands.addAll(vmessages);
     }

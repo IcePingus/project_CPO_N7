@@ -1,7 +1,7 @@
 package terminalSVG.view;
 
-import terminalSVG.controller.ControleurTerminalPanel;
-import terminalSVG.model.Terminal;
+import terminalSVG.controller.ControllerTerminalPanel;
+import terminalSVG.model.History;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,22 +11,33 @@ import java.awt.event.ComponentEvent;
 public class TerminalProjectPanel extends JPanel {
     public TerminalProjectPanel() {
 
-        // ----------- I. Définition du panel terminal  -----------
-        VueCommand vc = new VueCommand();
-        Terminal t = new Terminal(null);
-        VueTerminalPanel vtPanel = new VueTerminalPanel();
-        ControleurTerminalPanel ctPanel = new ControleurTerminalPanel(t);
+        // ----------- I. Définition du panel Terminal -----------
+        // A. Vue Panel Preview Code SVG (preview)
+        // -> Remplacer ici par les panels du module conçu pour le previewSVGCodePanel
+        JPanel vPreviewSVGCodePanel = new JPanel();
+        JLabel previewSVGCodeLabel = new JLabel("Terminal - Preview Code SVG");
+        vPreviewSVGCodePanel.add(previewSVGCodeLabel);
 
-        t.addObserver(vc);
-        t.addObserver(vtPanel);
+        // B. Vue Panel Historique
+        History h = new History(null);
+        ViewHistoryPanel vhPanel = new ViewHistoryPanel();
+        h.addObserver(vhPanel);
 
-        // SplitPane Terminal (Haut: Historique - Bas : Terminal)
-        JSplitPane terminalPanel = new JSplitPane(JSplitPane.VERTICAL_SPLIT, vtPanel, ctPanel);
+        //C. Contrôleur Panel Terminal
+        ControllerTerminalPanel ctPanel = new ControllerTerminalPanel(h);
+
+        //D. Sous-SplitPane History-Preview (Haut: Historique - Bas : PreviewCodeSVG)
+        JSplitPane historyPreviewPanel = new JSplitPane(JSplitPane.VERTICAL_SPLIT,vPreviewSVGCodePanel, vhPanel);
+        // Dimension de base du SplitPane (50% Historique - 50% Preview Code SVG)
+        historyPreviewPanel.setResizeWeight(0.5);
+
+        //E. Global-SplitPane Terminal (Haut: Historique/Preview - Bas : Contrôleur)
+        JSplitPane terminalPanel = new JSplitPane(JSplitPane.VERTICAL_SPLIT, historyPreviewPanel, ctPanel);
         // Dimension de base du SplitPane (95% Historique - 5% Terminal)
         terminalPanel.setResizeWeight(0.95);
 
         // Gestion dynamique des dimensions - Terminal
-        // Proportion du terminal
+        // Proportion du contrôleur
         ctPanel.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
@@ -36,13 +47,13 @@ public class TerminalProjectPanel extends JPanel {
             }
         });
 
-        // Proportion de l'historique
-        vtPanel.addComponentListener(new ComponentAdapter() {
+        // Proportion de l'historique/PreviewCodeSVG
+        historyPreviewPanel.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
                 int minimumWidth = (int) (terminalPanel.getWidth() * 1.0);
                 int minimumHeight = (int) (terminalPanel.getHeight() * 0.85);
-                vtPanel.setMinimumSize(new Dimension(minimumWidth, minimumHeight));
+                historyPreviewPanel.setMinimumSize(new Dimension(minimumWidth, minimumHeight));
             }
         });
 

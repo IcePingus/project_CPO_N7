@@ -1,6 +1,6 @@
 package terminalSVG.controller;
 
-import terminalSVG.model.Terminal;
+import terminalSVG.model.History;
 import terminalSVG.model.Command;
 
 import javax.swing.*;
@@ -9,16 +9,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Date;
 
-public class ControleurTerminalPanel extends JPanel implements ActionListener {
+public class ControllerTerminalPanel extends JPanel implements ActionListener {
 
-    private Terminal terminal;
+    private History history;
     private JTextArea textArea;
     private JButton send;
 
-    public ControleurTerminalPanel(Terminal vchat) {
+    public ControllerTerminalPanel(History vchat) {
         super();
 
-        this.terminal = vchat;
+        this.history = vchat;
         this.textArea = new JTextArea();
         this.send = new JButton("send");
 
@@ -46,13 +46,15 @@ public class ControleurTerminalPanel extends JPanel implements ActionListener {
     }
 
     public void addCommand() {
-        this.terminal.addCommand(new Command(new Date(), this.textArea.getText()));
+        this.history.addCommand(new Command(new Date(), this.textArea.getText()));
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        this.addCommand();
-        this.textArea.setText("");
+        if (!this.textArea.getText().equals("")){
+            this.addCommand();
+            this.textArea.setText("");
+        }
     }
 
 
