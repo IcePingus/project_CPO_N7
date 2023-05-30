@@ -23,6 +23,7 @@ public class FramePinte extends JFrame {
     private void setupSelectionPanel() {
         this.selectionPanel = new JPanel(new GridBagLayout());
         this.setContentPane(this.selectionPanel);
+        this.setMinimumSize(new Dimension(960, 540));
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -51,7 +52,6 @@ public class FramePinte extends JFrame {
 
     private void onTerminalModeButtonClick() {
         this.setContentPane(new TerminalProjectPanel());
-        this.setMinimumSize(new Dimension(960, 540));
         this.validate();
         this.repaint();
     }
