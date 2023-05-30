@@ -3,6 +3,7 @@ package graphic.model.tools;
 import graphic.model.canva.Pixel;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.Observable;
 
 public class RubberTool implements ToolCommand {
@@ -26,7 +27,7 @@ public class RubberTool implements ToolCommand {
 
     @Override
     public void execute(Pixel pixel) {
-        System.out.println("Salut rubber");
+        pixel.setBackground(Color.WHITE);
     }
 
     @Override
