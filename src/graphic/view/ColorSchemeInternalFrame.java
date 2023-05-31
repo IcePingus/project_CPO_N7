@@ -7,9 +7,14 @@ import javax.swing.colorchooser.AbstractColorChooserPanel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class ColorSchemeInternalFrame extends JInternalFrame implements ChangeListener {
+public class ColorSchemeInternalFrame extends JInternalFrame implements ChangeListener, ActionListener {
 
+    private boolean isPrimaryColor;
+    private JButton primaryButton;
+    private JButton secondaryButton;
     private JColorChooser colorChooser;
     private ColorController colorController;
 
@@ -19,10 +24,25 @@ public class ColorSchemeInternalFrame extends JInternalFrame implements ChangeLi
         this.setIconifiable(true);
         this.setResizable(false);
         this.setClosable(false);
-        this.setSize(430, 150);
+        this.setSize(549, 150);
         this.setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
         this.setVisible(true);
         this.setFrameIcon(new ImageIcon(getClass().getResource("/assets/images/colorSchemeLogo.png")));
+
+
+        this.primaryButton = new JButton("1");
+        this.secondaryButton = new JButton("2");
+        this.isPrimaryColor = true;
+        JPanel jp = new JPanel();
+        jp.setLayout( new BorderLayout());
+        jp.add(this.primaryButton, BorderLayout.NORTH);
+        jp.add(this.secondaryButton, BorderLayout.SOUTH);
+        this.primaryButton.addActionListener(this);
+        this.secondaryButton.addActionListener(this);
+        jp.setSize( 50, 50);
+        jp.setVisible(true);
+
+        this.add(jp);
 
         this.colorController = colorController;
         this.colorChooser = new JColorChooser();
@@ -37,11 +57,25 @@ public class ColorSchemeInternalFrame extends JInternalFrame implements ChangeLi
         }
         colorChooser.setPreviewPanel(new JPanel());
         this.add(colorChooser, BorderLayout.CENTER);
-
     }
 
     @Override
     public void stateChanged(ChangeEvent e) {
-        this.colorController.setActiveColor(this.colorChooser.getColor());
+        if (isPrimaryColor) {
+            this.primaryButton.setBackground(this.colorChooser.getColor());
+            this.colorController.setPrimaryColor(this.colorChooser.getColor());
+        } else {
+            this.secondaryButton.setBackground(this.colorChooser.getColor());
+            this.colorController.setSecondaryColor(this.colorChooser.getColor());
+        }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == this.primaryButton) {
+            this.isPrimaryColor = true;
+        } else {
+            this.isPrimaryColor = false;
+        }
     }
 }

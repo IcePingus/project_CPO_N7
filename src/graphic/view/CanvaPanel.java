@@ -65,8 +65,8 @@ public class CanvaPanel extends JComponent implements Observer {
                 */
 
                 if (g2 != null) {
+                    toolbox.getActiveTool().execute(oldX, oldY, currentX, currentY, g2, e.getModifiersEx());
                     //tool action
-                    toolbox.getActiveTool().execute(oldX, oldY, currentX, currentY, g2);
                     oldX = currentX;
                     oldY = currentY;
                 }
