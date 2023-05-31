@@ -25,7 +25,7 @@ public class BucketTool implements ToolCommand {
     }
 
     @Override
-    public void execute(int oldX, int oldY, int currentX, int currentY, Graphics2D graphics2D) {
+    public void execute(int oldX, int oldY, int currentX, int currentY, Graphics2D graphics2D, boolean leftClick) {
         System.out.println("Salut bucket");
     }
 

@@ -5,16 +5,26 @@ import java.util.Observable;
 
 public class ColorController extends Observable {
 
-    private Color activeColor = Color.BLACK;
+    private Color primaryColor = Color.BLACK;
+    private Color secondaryColor = Color.WHITE;
 
-    public void setActiveColor(Color color) {
-        this.activeColor = color;
+    public void setPrimaryColor(Color color) {
+        this.primaryColor = color;
         this.setChanged();
         this.notifyObservers();
     }
 
-    public Color getActiveColor() {
-        return this.activeColor;
+    public void setSecondaryColor(Color color) {
+        this.secondaryColor = color;
+        this.setChanged();
+        this.notifyObservers();
+    }
+
+    public Color getPrimaryColor() {
+        return this.primaryColor;
+    }
+    public Color getSecondaryColor() {
+        return this.secondaryColor;
     }
 
 }

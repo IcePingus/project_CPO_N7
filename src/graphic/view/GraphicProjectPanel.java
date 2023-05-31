@@ -33,8 +33,8 @@ public class GraphicProjectPanel extends JDesktopPane {
         this.addComponentListener(new ComponentListener() {
             @Override
             public void componentResized(ComponentEvent e) {
-                if (getSize().width < colorSchemeInternalFrame.getX() + 430) {
-                    colorSchemeInternalFrame.setLocation(getSize().width - 430, colorSchemeInternalFrame.getHeight());
+                if (getSize().width < colorSchemeInternalFrame.getX() + 550) {
+                    colorSchemeInternalFrame.setLocation(getSize().width - 550, colorSchemeInternalFrame.getHeight());
                 }
             }
 
