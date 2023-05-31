@@ -31,6 +31,7 @@ public class PencilTool implements ToolCommand {
 
     @Override
     public void execute(int oldX, int oldY, int currentX, int currentY, Graphics2D graphics2D) {
+        graphics2D.setPaint(this.activeColor);
         graphics2D.drawLine(oldX, oldY, currentX, currentY);
         graphics2D.setPaint(this.activeColor);
     }

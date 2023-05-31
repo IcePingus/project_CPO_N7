@@ -1,6 +1,5 @@
 package graphic.view;
 
-import graphic.controller.ColorController;
 import graphic.model.tools.Toolbox;
 
 import javax.swing.*;
@@ -16,11 +15,9 @@ public class CanvaPanel extends JComponent implements Observer {
     private Image image;
     private Graphics2D g2;
     private int currentX, currentY, oldX, oldY;
-    private Color activeColor;
     private Toolbox toolbox;
 
     public CanvaPanel(Toolbox toolbox) {
-        this.activeColor = Color.BLACK;
         this.toolbox = toolbox;
         this.setDoubleBuffered(false);
         this.addMouseListener(new MouseAdapter() {
@@ -80,10 +77,7 @@ public class CanvaPanel extends JComponent implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        if (o instanceof ColorController) {
-            this.activeColor = ((ColorController) o).getActiveColor();
-            this.setMouseMotionListener();
-        } else if (o instanceof Toolbox) {
+        if (o instanceof Toolbox) {
             this.toolbox = (Toolbox) o;
             this.setMouseMotionListener();
         }

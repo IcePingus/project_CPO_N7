@@ -28,7 +28,6 @@ public class GraphicProjectPanel extends JDesktopPane {
 
         CanvaPanel canvaPanel = new CanvaPanel(toolbox);
         toolbox.addObserver(canvaPanel);
-        colorController.addObserver(canvaPanel);
         this.add(canvaPanel, BorderLayout.CENTER);
 
         this.addComponentListener(new ComponentListener() {
