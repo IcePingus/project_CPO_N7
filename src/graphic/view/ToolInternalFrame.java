@@ -1,10 +1,7 @@
 package graphic.view;
 
 import graphic.controller.ColorController;
-import graphic.model.tools.BucketTool;
-import graphic.model.tools.PickerTool;
-import graphic.model.tools.RubberTool;
-import graphic.model.tools.Toolbox;
+import graphic.model.tools.*;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -29,7 +26,8 @@ public class ToolInternalFrame extends JInternalFrame implements ActionListener,
         this.setIconifiable(true);
         this.setResizable(false);
         this.setClosable(false);
-        this.setSize(148, 190);
+        //this.setSize(148, 190);
+        this.setSize(148, 250);
         this.setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
         this.setVisible(true);
 
@@ -37,12 +35,13 @@ public class ToolInternalFrame extends JInternalFrame implements ActionListener,
 
         this.toolsPanel = new JPanel();
 
-        this.toolsPanel.setLayout(new GridLayout(2,2));
+        this.toolsPanel.setLayout(new GridLayout(3,2));
 
         this.toolbox = toolbox;
         this.toolbox.addTool(new RubberTool());
         this.toolbox.addTool(new BucketTool());
         this.toolbox.addTool(new PickerTool());
+        this.toolbox.addTool(new HighlighterTool());
 
         for (int i = 0; i < this.toolbox.getTools().size(); i++) {
             this.toolsPanel.add(this.toolbox.getToolsButtons().get(i));
@@ -80,10 +79,10 @@ public class ToolInternalFrame extends JInternalFrame implements ActionListener,
 
                 if (!this.toolbox.getActiveTool().getIsResizable()) {
                     this.sliderPanel.setVisible(false);
-                    this.setSize(148, 180);
+                    this.setSize(148, 240);
                 } else {
                     this.sliderPanel.setVisible(true);
-                    this.setSize(148, 190);
+                    this.setSize(148, 250);
                 }
             }
         }

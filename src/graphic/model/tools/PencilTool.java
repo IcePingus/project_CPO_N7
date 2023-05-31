@@ -48,6 +48,7 @@ public class PencilTool implements ToolCommand {
         }
         if (color != null) {
             graphics2D.setPaint(color);
+            graphics2D.drawLine(oldX, oldY, currentX, currentY);
             for (int i = 0; i < size/2; i++) {
                 for (int j = 0 - size; j < size/2; j++) {
                     graphics2D.drawLine(oldX - j, oldY - size, currentX - j, currentY - size);
