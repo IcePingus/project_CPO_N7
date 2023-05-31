@@ -1,6 +1,10 @@
+import javax.swing.*;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        FramePinte fp = new FramePinte();
+        fp.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        fp.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        fp.setVisible(true);
     }
-
 }
