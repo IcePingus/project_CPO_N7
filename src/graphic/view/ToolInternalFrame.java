@@ -1,7 +1,10 @@
 package graphic.view;
 
 import graphic.controller.ColorController;
-import graphic.model.tools.*;
+import graphic.model.tools.BucketTool;
+import graphic.model.tools.PickerTool;
+import graphic.model.tools.RubberTool;
+import graphic.model.tools.Toolbox;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,7 +13,7 @@ import java.awt.event.ActionListener;
 
 public class ToolInternalFrame extends JInternalFrame implements ActionListener {
 
-    private Toolbox toolbox;
+    private final Toolbox toolbox;
     private int activeTool;
 
     public ToolInternalFrame(Toolbox toolbox, ColorController colorController) {

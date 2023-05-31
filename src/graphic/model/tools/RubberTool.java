@@ -1,14 +1,12 @@
 package graphic.model.tools;
 
-import graphic.model.canva.Pixel;
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.Observable;
 
 public class RubberTool implements ToolCommand {
-    private String name;
-    private Icon image;
+    private final String name;
+    private final Icon image;
 
     public RubberTool() {
         this.name = "Rubber";
@@ -26,12 +24,11 @@ public class RubberTool implements ToolCommand {
     }
 
     @Override
-    public void execute(Pixel pixel) {
-        pixel.setBackground(Color.WHITE);
+    public void execute(int oldX, int oldY, int currentX, int currentY, Graphics2D graphics2D) {
+        graphics2D.drawLine(oldX, oldY, currentX, currentY);
+        graphics2D.setPaint(Color.WHITE);
     }
 
     @Override
-    public void update(Observable o, Object arg) {
-
-    }
+    public void update(Observable o, Object arg) { }
 }

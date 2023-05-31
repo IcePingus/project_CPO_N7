@@ -1,7 +1,6 @@
 package graphic.model.tools;
 
 import graphic.controller.ColorController;
-import graphic.model.canva.Pixel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,8 +8,8 @@ import java.util.Observable;
 
 public class PencilTool implements ToolCommand {
 
-    private String name;
-    private Icon image;
+    private final String name;
+    private final Icon image;
 
     private Color activeColor;
 
@@ -31,8 +30,10 @@ public class PencilTool implements ToolCommand {
     }
 
     @Override
-    public void execute(Pixel pixel) {
-        pixel.setBackground(this.activeColor);
+    public void execute(int oldX, int oldY, int currentX, int currentY, Graphics2D graphics2D) {
+        graphics2D.setPaint(this.activeColor);
+        graphics2D.drawLine(oldX, oldY, currentX, currentY);
+        graphics2D.setPaint(this.activeColor);
     }
 
     @Override
