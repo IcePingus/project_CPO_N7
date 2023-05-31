@@ -65,11 +65,7 @@ public class CanvaPanel extends JComponent implements Observer {
                 */
 
                 if (g2 != null) {
-                    if (SwingUtilities.isLeftMouseButton(e)) {
-                        toolbox.getActiveTool().execute(oldX, oldY, currentX, currentY, g2, true);
-                    } else if (SwingUtilities.isRightMouseButton(e)) {
-                        toolbox.getActiveTool().execute(oldX, oldY, currentX, currentY, g2, false);
-                    }
+                    toolbox.getActiveTool().execute(oldX, oldY, currentX, currentY, g2, e.getModifiersEx());
                     //tool action
                     oldX = currentX;
                     oldY = currentY;

@@ -16,5 +16,5 @@ public interface ToolCommand extends Observer {
         return this.image;
     }
 
-    void execute(int oldX, int oldY, int currentX, int currentY, Graphics2D graphics2D, boolean leftClick);
+    void execute(int oldX, int oldY, int currentX, int currentY, Graphics2D graphics2D, int click);
 }

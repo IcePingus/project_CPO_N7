@@ -4,6 +4,7 @@ import graphic.controller.ColorController;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.InputEvent;
 import java.util.Observable;
 
 public class PencilTool implements ToolCommand {
@@ -32,15 +33,17 @@ public class PencilTool implements ToolCommand {
     }
 
     @Override
-    public void execute(int oldX, int oldY, int currentX, int currentY, Graphics2D graphics2D, boolean leftClick) {
-        if (leftClick) {
-            graphics2D.setPaint(this.primaryColor);
+    public void execute(int oldX, int oldY, int currentX, int currentY, Graphics2D graphics2D, int click) {
+        Color color = null;
+        if (click == InputEvent.BUTTON1_DOWN_MASK) {
+            color = primaryColor;
+        } else if (click == InputEvent.BUTTON3_DOWN_MASK) {
+            color = secondaryColor;
+        }
+        if (color != null) {
+            graphics2D.setPaint(color);
             graphics2D.drawLine(oldX, oldY, currentX, currentY);
-            graphics2D.setPaint(this.primaryColor);
-        } else {
-            graphics2D.setPaint(this.secondaryColor);
-            graphics2D.drawLine(oldX, oldY, currentX, currentY);
-            graphics2D.setPaint(this.secondaryColor);
+            graphics2D.setPaint(color);
         }
     }
 
