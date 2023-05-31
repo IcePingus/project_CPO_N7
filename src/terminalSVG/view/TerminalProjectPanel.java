@@ -57,11 +57,15 @@ public class TerminalProjectPanel extends JPanel {
             }
         });
 
-        // ----------- II. Définition du panel Canva (preview) -----------
-        // -> Remplacer ici par les panels du module conçu pour le canva
-        JPanel canvaPanel = new JPanel();
-        JLabel canvaLabel = new JLabel("Canva - Canva");
-        canvaPanel.add(canvaLabel);
+        // ----------- II. Définition du panel Canva -----------
+        //JPanel canvaPanel = new ViewCanvaPanel(500,500);
+        ViewCanvaPanel canvaPanel = new ViewCanvaPanel();
+        canvaPanel.setCanvasSize(1000,1000);
+
+        canvaPanel.drawCircle(0, 0, 50, 50, Color.red);
+        canvaPanel.drawCircle(60, 0, 50, 50, Color.green);
+        canvaPanel.drawCircle(120, 0, 50, 50, Color.blue);
+        canvaPanel.drawCircle(900, 900, 50, 50, Color.BLACK);
 
         // ----------- III. Définition du panel pinteCLI (contenant global) -----------
         // Panel Split Global (Gauche: Terminal - Droite: Canva)

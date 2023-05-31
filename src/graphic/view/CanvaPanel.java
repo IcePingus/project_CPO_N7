@@ -5,6 +5,7 @@ import graphic.model.tools.Toolbox;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.util.Observable;
@@ -22,6 +23,13 @@ public class CanvaPanel extends JComponent implements Observer {
         this.activeColor = Color.BLACK;
         this.toolbox = toolbox;
         this.setDoubleBuffered(false);
+        this.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent e) {
+                // save coord x,y when mouse is pressed
+                oldX = e.getX();
+                oldY = e.getY();
+            }
+        });
         this.setMouseMotionListener();
     }
 
@@ -40,11 +48,6 @@ public class CanvaPanel extends JComponent implements Observer {
     public void clear() {
         this.g2.setPaint(Color.white);
         this.g2.fillRect(0, 0, this.getSize().width, this.getSize().height);
-        this.repaint();
-    }
-
-    public void draw(Color color) {
-        this.g2.setPaint(color);
         this.repaint();
     }
 
@@ -70,7 +73,7 @@ public class CanvaPanel extends JComponent implements Observer {
                     oldX = currentX;
                     oldY = currentY;
                 }
-                draw(activeColor);
+                repaint();
             }
         });
     }

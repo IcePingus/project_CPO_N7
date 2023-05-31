@@ -2,6 +2,7 @@ package graphic.model.tools;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Observable;
 
 public class PickerTool implements ToolCommand {
 
@@ -27,4 +28,7 @@ public class PickerTool implements ToolCommand {
     public void execute(int oldX, int oldY, int currentX, int currentY, Graphics2D graphics2D) {
         System.out.println("Salut");
     }
+
+    @Override
+    public void update(Observable o, Object arg) { }
 }

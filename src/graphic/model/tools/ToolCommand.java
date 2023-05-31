@@ -2,8 +2,9 @@ package graphic.model.tools;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Observer;
 
-public interface ToolCommand {
+public interface ToolCommand extends Observer {
     String name = null;
     Icon image = null;
 
