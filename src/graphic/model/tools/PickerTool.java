@@ -8,10 +8,12 @@ public class PickerTool implements ToolCommand {
 
     private final String name;
     private final Icon image;
+    private final boolean isResizable;
 
     public PickerTool() {
         this.name = "Picker";
         this.image = new ImageIcon(getClass().getResource("/assets/images/picker.png"));
+        this.isResizable = false;
     }
 
     @Override
@@ -25,8 +27,13 @@ public class PickerTool implements ToolCommand {
     }
 
     @Override
-    public void execute(int oldX, int oldY, int currentX, int currentY, Graphics2D graphics2D, int click) {
-        System.out.println("Salut");
+    public boolean getIsResizable() {
+        return this.isResizable;
+    }
+
+    @Override
+    public void execute(int oldX, int oldY, int currentX, int currentY, Graphics2D graphics2D, int click, int size) {
+        System.out.println("Salut je suis une pipette");
     }
 
     @Override
