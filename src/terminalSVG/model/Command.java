@@ -5,16 +5,16 @@ import java.util.Date;
 
 public class Command {
     private Date date;
-    private String contenu;
+    private String content;
 
-    public Command(Date vdate, String vcontenu) {
+    public Command(Date vdate, String vcontent) {
         this.date = vdate;
-        this.contenu = vcontenu;
+        this.content = vcontent;
     }
 
     @Override
     public String toString() {
         SimpleDateFormat localDateFormat = new SimpleDateFormat("HH:mm:ss");
-        return "[" + localDateFormat.format(this.date) + "] : " + this.contenu;
+        return "[" + localDateFormat.format(this.date) + "] : " + this.content;
     }
 }

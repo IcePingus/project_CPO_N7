@@ -2,6 +2,7 @@ package terminalSVG.view;
 
 import terminalSVG.controller.ControllerTerminalPanel;
 import terminalSVG.model.History;
+import terminalSVG.model.SVGPreview;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,76 +12,81 @@ import java.awt.event.ComponentEvent;
 public class TerminalProjectPanel extends JPanel {
     public TerminalProjectPanel() {
 
-        // ----------- I. Définition du panel Terminal -----------
-        // A. Vue Panel Preview Code SVG (preview)
-        // -> Remplacer ici par les panels du module conçu pour le previewSVGCodePanel
-        JPanel vPreviewSVGCodePanel = new JPanel();
-        JLabel previewSVGCodeLabel = new JLabel("Terminal - Preview Code SVG");
-        vPreviewSVGCodePanel.add(previewSVGCodeLabel);
-
-        // B. Vue Panel Historique
-        History h = new History(null);
+        // ----------- I. Partie Terminal -----------
+        // A. Instance Panels Historique & PreviewCodeSVG (preview)
+        // -> Remplacer ici par le panel du module conçu pour le previewCodeSVG
         ViewHistoryPanel vhPanel = new ViewHistoryPanel();
-        h.addObserver(vhPanel);
+        JPanel vSVGCodePreviewPanel = new JPanel();
+        JLabel previewSVGCodeLabel = new JLabel("Terminal - Preview Code SVG");
+        vSVGCodePreviewPanel.add(previewSVGCodeLabel);
 
-        //C. Contrôleur Panel Terminal
-        ControllerTerminalPanel ctPanel = new ControllerTerminalPanel(h);
+        // B. Instance modèle Historique & Ajout observer
+        History h = new History(null);
+        h.addObserver(vhPanel);  //Observer HistoryPanel -> Historique
 
-        //D. Sous-SplitPane History-Preview (Haut: Historique - Bas : PreviewCodeSVG)
-        JSplitPane historyPreviewPanel = new JSplitPane(JSplitPane.VERTICAL_SPLIT,vPreviewSVGCodePanel, vhPanel);
+        // ----------- II. Partie Canva -----------
+        // A. Instance Panel PreviewCanvaSVG
+        ViewSVGCanvaPreviewPanel vSVGCanvaPreviewPanel = new ViewSVGCanvaPreviewPanel();
+
+        // B. Instance modèle SVGPreview & Ajout observers
+        SVGPreview svgp = new SVGPreview();
+
+        svgp.addObserver(vSVGCanvaPreviewPanel); //Observer SVGCanvaPreview -> SVGPreview
+
+        // ----------- III. Partie Controller -----------
+        // A. Instance Panels Controller -> Historique & SVGPreview
+        ControllerTerminalPanel cTerminalPanel = new ControllerTerminalPanel(h, svgp);
+
+        // ----------- IV. Gestion des panels -----------
+        // A. Sous-SplitPane History-Preview (Haut: Historique - Bas : PreviewCodeSVG)
+        JSplitPane historyCodePreviewPanel = new JSplitPane(JSplitPane.VERTICAL_SPLIT, vSVGCodePreviewPanel, vhPanel);
         // Dimension de base du SplitPane (50% Historique - 50% Preview Code SVG)
-        historyPreviewPanel.setResizeWeight(0.5);
+        historyCodePreviewPanel.setResizeWeight(0.5);
 
-        //E. Global-SplitPane Terminal (Haut: Historique/Preview - Bas : Contrôleur)
-        JSplitPane terminalPanel = new JSplitPane(JSplitPane.VERTICAL_SPLIT, historyPreviewPanel, ctPanel);
+        // B. SplitPane global Terminal (Haut: Historique/Preview - Bas : Contrôleur)
+        JSplitPane terminalPanel = new JSplitPane(JSplitPane.VERTICAL_SPLIT, historyCodePreviewPanel, cTerminalPanel);
         // Dimension de base du SplitPane (95% Historique - 5% Terminal)
         terminalPanel.setResizeWeight(0.95);
 
-        // Gestion dynamique des dimensions - Terminal
-        // Proportion du contrôleur
-        ctPanel.addComponentListener(new ComponentAdapter() {
+        // C. Gestion dynamique des dimensions - Terminal
+        // 1. Proportion du contrôleur
+        cTerminalPanel.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
                 int minimumWidth = (int) (terminalPanel.getWidth() * 1.0);
                 int minimumHeight = (int) (terminalPanel.getHeight() * 0.05);
-                ctPanel.setMinimumSize(new Dimension(minimumWidth, minimumHeight));
+                cTerminalPanel.setMinimumSize(new Dimension(minimumWidth, minimumHeight));
             }
         });
 
-        // Proportion de l'historique/PreviewCodeSVG
-        historyPreviewPanel.addComponentListener(new ComponentAdapter() {
+        // 2. Proportion de l'historique/PreviewCodeSVG
+        historyCodePreviewPanel.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
                 int minimumWidth = (int) (terminalPanel.getWidth() * 1.0);
                 int minimumHeight = (int) (terminalPanel.getHeight() * 0.85);
-                historyPreviewPanel.setMinimumSize(new Dimension(minimumWidth, minimumHeight));
+                historyCodePreviewPanel.setMinimumSize(new Dimension(minimumWidth, minimumHeight));
             }
         });
 
-        // ----------- II. Définition du panel Canva (preview) -----------
-        // -> Remplacer ici par les panels du module conçu pour le canva
-        JPanel canvaPanel = new JPanel();
-        JLabel canvaLabel = new JLabel("Canva - Canva");
-        canvaPanel.add(canvaLabel);
-
-        // ----------- III. Définition du panel pinteCLI (contenant global) -----------
-        // Panel Split Global (Gauche: Terminal - Droite: Canva)
-        JSplitPane pinteCLIMainPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+        // ----------- V. Définition du panel pinteCLI (contenant global) -----------
+        // A. SplitPane Global (Gauche: Terminal - Droite: Canva)
+        JSplitPane pinteCLIMainPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, terminalPanel, vSVGCanvaPreviewPanel);
         // Dimension de base du SplitPane (20% Terminal - 80% Canva)
         pinteCLIMainPanel.setResizeWeight(0.2);
 
-        // Gestion dynamique des dimensions - PinteCLI
-        // Proportion du canva
-        canvaPanel.addComponentListener(new ComponentAdapter() {
+        // B. Gestion dynamique des dimensions - PinteCLI
+        // 1. Proportion du canva
+        vSVGCanvaPreviewPanel.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
                 int minimumWidth = (int) (pinteCLIMainPanel.getWidth() * 0.7);
                 int minimumHeight = (int) (pinteCLIMainPanel.getHeight() * 1.0);
-                canvaPanel.setMinimumSize(new Dimension(minimumWidth, minimumHeight));
+                vSVGCanvaPreviewPanel.setMinimumSize(new Dimension(minimumWidth, minimumHeight));
             }
         });
 
-        // Proportion du Terminal
+        // 2. Proportion du Terminal
         terminalPanel.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
@@ -90,11 +96,7 @@ public class TerminalProjectPanel extends JPanel {
             }
         });
 
-        // ----------- IV. Ajout et affichage ----------
-        pinteCLIMainPanel.add(terminalPanel);
-        pinteCLIMainPanel.add(canvaPanel);
-
-        // Ajout de MainPanel dans la vue
+        // ----------- VI. Ajout MainPanel dans la vue -----------
         this.setLayout(new BorderLayout());
         this.add(pinteCLIMainPanel, BorderLayout.CENTER);
     }
