@@ -40,7 +40,7 @@ public class SVGPreview extends Observable {
         this.updateCanvas("Changement de taille");
     }
 
-    private void updateCanvas(String comment) {
+    public void updateCanvas(String comment) {
         // Mettre à jour le document SVG
         Element root = svgDocument.getDocumentElement();
         this.svgGraphics.getRoot(root);
@@ -50,27 +50,6 @@ public class SVGPreview extends Observable {
 
         this.setChanged();
         this.notifyObservers();
-    }
-
-    // Parser temporaire (fonctionnel)
-    public void command(String cmd) {
-        if (cmd.contains("circle1")) {
-            this.drawCircle(1000, 800, 50, 50, Color.red);
-        }
-        if (cmd.contains("circle2")) {
-            this.drawCircle(60, 0, 50, 50, Color.green);
-        }
-        if (cmd.contains("clear")) {
-            this.clear();
-        }
-    }
-
-    // Element dessinable temporaire (fonctionnel)
-    public void drawCircle(double x, double y, double width, double height, Color color) {
-        Shape circle = new Ellipse2D.Double(x, y, width, height);
-        this.svgGraphics.setPaint(color);
-        this.svgGraphics.fill(circle);
-        this.updateCanvas("Cercle");
     }
 
     public void clear() {
@@ -112,5 +91,9 @@ public class SVGPreview extends Observable {
 
     public SVGDocument getSvgDocument() {
         return this.svgDocument;
+    }
+
+    public SVGGraphics2D getSVGGraphics() {
+        return this.svgGraphics;
     }
 }
