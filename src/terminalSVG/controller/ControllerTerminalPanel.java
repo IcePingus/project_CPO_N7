@@ -2,6 +2,7 @@ package terminalSVG.controller;
 
 import terminalSVG.model.History;
 import terminalSVG.model.Command;
+import terminalSVG.model.Parsing;
 import terminalSVG.model.SVGPreview;
 
 import javax.swing.*;
@@ -16,6 +17,7 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
     private History history;
     private JTextArea textArea;
     private JButton sendButton;
+    private Parsing parser;
     private SVGPreview svgPreview;
 
     public ControllerTerminalPanel(History h, SVGPreview svgp) {
@@ -64,7 +66,8 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
     public void addCommand() {
         if (!this.textArea.getText().isEmpty()) {
             this.history.addCommand(new Command(new Date(), this.textArea.getText()));
-            this.svgPreview.command(this.textArea.getText());
+            this.parser = new Parsing(this.svgPreview);
+            this.parser.parse(this.textArea.getText());
             this.textArea.setText("");
         }
     }
