@@ -25,7 +25,6 @@ public class SVGPreview extends Observable {
         // Créer un document SVG
         this.svgDocument = createSVGDocument();
         this.svgGeneratorContext = SVGGeneratorContext.createDefault(svgDocument);
-        this.svgGeneratorContext.setComment("#Pinte Studio - TerminalSVG#");
         this.svgGraphics = new SVGGraphics2D(svgGeneratorContext, true);
     }
 
@@ -42,11 +41,11 @@ public class SVGPreview extends Observable {
 
     private void updateCanvas(String comment) {
         // Mettre à jour le document SVG
+        this.svgGeneratorContext.setComment(comment);
         Element root = svgDocument.getDocumentElement();
         this.svgGraphics.getRoot(root);
-
-        this.svgGeneratorContext.setComment(comment);
         this.svgGraphics = new SVGGraphics2D(svgGeneratorContext, true);
+
 
         this.setChanged();
         this.notifyObservers();
