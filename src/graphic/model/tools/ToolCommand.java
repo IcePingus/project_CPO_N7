@@ -2,6 +2,7 @@ package graphic.model.tools;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.Observer;
 
 public interface ToolCommand extends Observer {
@@ -16,5 +17,5 @@ public interface ToolCommand extends Observer {
         return this.image;
     }
 
-    void execute(int oldX, int oldY, int currentX, int currentY, Graphics2D graphics2D, int click);
+    void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click);
 }
