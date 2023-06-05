@@ -1,26 +1,20 @@
 package terminalSVG.model.SVGElement;
 
-import org.apache.batik.dom.GenericDOMImplementation;
 import org.apache.batik.svggen.SVGGraphics2D;
-import org.w3c.dom.DOMImplementation;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 import java.awt.*;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.util.List;
 
 public class OvalSVG implements SVGElement {
 
     private Point center;
     private double width;
-
     private double height;
     private boolean isFill;
     private Color FillColor;
     private Color strokeColor;
     private String elementName;
+    private static final Integer CoordsListSize = 4;
     private final String commandName = "oval";
 
     public Point getCenter() {
@@ -83,20 +77,25 @@ public class OvalSVG implements SVGElement {
         return commandName;
     }
 
+    public static Integer getCoordsListSize() {
+        return CoordsListSize;
+    }
+
     public OvalSVG() {
     }
 
-    public OvalSVG(String elementName,double x, double y, double width, double height, boolean isFill, Color fillColor, Color strokeColor) {
-        this.center = new Point(x,y);
-        this.height = height;
-        this.width = width;
+    public OvalSVG(String name, List<Double> coords, boolean isFill, Color fillColor, Color strokeColor) {
+        this.elementName = name;
+        this.center = new Point(coords.get(0),coords.get(1));
+        this.width = coords.get(2);
+        this.height = coords.get(3);
         this.isFill = isFill;
         FillColor = fillColor;
         this.strokeColor = strokeColor;
     }
 
     @Override
-    public String Help() {
+    public String getHelp() {
         return "Ceci est l'aide de CercleSVG.";
     }
 

@@ -12,6 +12,7 @@ public class PolygonSVG {
     private Color colorfill = null ;
     private Color colorstroke;
     private String name;
+	private static final Integer CoordsListSize = 4;
 	private final String commandName = "polygon";
 
     public List<Point> getPoints() {
@@ -34,6 +35,9 @@ public class PolygonSVG {
 	}
 	public String getCommandName() {
 		return this.commandName;
+	}
+	public static Integer getCoordsListSize() {
+		return CoordsListSize;
 	}
 
 	public PolygonSVG() {

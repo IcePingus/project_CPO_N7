@@ -3,6 +3,7 @@ package terminalSVG.model.SVGElement;
 import org.apache.batik.svggen.SVGGraphics2D;
 
 import java.awt.*;
+import java.util.List;
 
 
 public class RectangleSVG implements SVGElement {
@@ -13,6 +14,7 @@ public class RectangleSVG implements SVGElement {
     private Color fillColor;
     private Color strokeColor;
     private String name;
+    private static final Integer CoordsListSize = 4;
     private final String commandName = "rectangle";
 
     public Point getPoint() {
@@ -75,13 +77,17 @@ public class RectangleSVG implements SVGElement {
         this.strokeColor = strokeColor;
     }
 
+    public static Integer getCoordsListSize() {
+        return CoordsListSize;
+    }
+
     public RectangleSVG(){
     }
 
-    public RectangleSVG(String name, double x, double y, double sideLength1, double sideLength2, boolean f, Color cFill, Color cStroke) {
-        point = new Point(x,y);
-        this.sideLength1 = sideLength1;
-        this.sideLength2 = sideLength2;
+    public RectangleSVG(String name, List<Double> coords, boolean f, Color cFill, Color cStroke) {
+        point = new Point(coords.get(0),coords.get(1));
+        this.sideLength1 = coords.get(2);
+        this.sideLength2 = coords.get(3);
         this.isFill = f;
         this.fillColor = cFill;
         this.strokeColor = cStroke;
@@ -108,7 +114,7 @@ public class RectangleSVG implements SVGElement {
     }
 
     @Override
-    public String Help() {
+    public String getHelp() {
         // TODO Auto-generated method stub
         return null;
     }
