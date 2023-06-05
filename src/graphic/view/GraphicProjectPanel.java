@@ -6,12 +6,17 @@ import graphic.model.tools.Toolbox;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
-public class GraphicProjectPanel extends JDesktopPane {
+public class GraphicProjectPanel extends JDesktopPane implements ActionListener {
 
-    public GraphicProjectPanel() {
+    private CanvaPanel canvaPanel;
+    private JMenuItem saveImage;
+
+    public GraphicProjectPanel(JFrame frame) {
         this.setLayout(new BorderLayout());
 
         Toolbox toolbox = new Toolbox();
@@ -29,9 +34,18 @@ public class GraphicProjectPanel extends JDesktopPane {
         colorSchemeInternalFrame.setVisible(true);
         this.add(colorSchemeInternalFrame);
 
-        CanvaPanel canvaPanel = new CanvaPanel(toolbox);
-        toolbox.addObserver(canvaPanel);
-        this.add(canvaPanel, BorderLayout.CENTER);
+        this.canvaPanel = new CanvaPanel(toolbox);
+        toolbox.addObserver(this.canvaPanel);
+        this.add(this.canvaPanel, BorderLayout.CENTER);
+
+        JMenuBar mb = new JMenuBar();
+        JMenu menuFile = new JMenu("File");
+        this.saveImage =new JMenuItem("Save image");
+        menuFile.add(this.saveImage);
+        mb.add(menuFile);
+        frame.setJMenuBar(mb);
+
+        this.saveImage.addActionListener(this);
 
         this.addComponentListener(new ComponentListener() {
             @Override
@@ -43,7 +57,6 @@ public class GraphicProjectPanel extends JDesktopPane {
 
             @Override
             public void componentMoved(ComponentEvent e) {
-
             }
 
             @Override
@@ -56,5 +69,11 @@ public class GraphicProjectPanel extends JDesktopPane {
 
             }
         });
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == this.saveImage)
+        canvaPanel.exportPNG();
     }
 }
