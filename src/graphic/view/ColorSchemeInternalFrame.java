@@ -1,7 +1,7 @@
 package graphic.view;
 
 import graphic.controller.ColorController;
-import graphic.model.tools.ColorModel;
+import graphic.model.color.ColorModel;
 
 import javax.swing.*;
 import javax.swing.colorchooser.AbstractColorChooserPanel;
@@ -34,8 +34,8 @@ public class ColorSchemeInternalFrame extends JInternalFrame implements ChangeLi
         this.setFrameIcon(new ImageIcon(getClass().getResource("/assets/images/colorSchemeLogo.png")));
 
 
-        this.primaryButton = new JButton();
-        this.secondaryButton = new JButton();
+        this.primaryButton = new JButton("1");
+        this.secondaryButton = new JButton("2");
         this.colorController = colorController;
         JPanel jp = new JPanel();
         jp.setLayout(new BorderLayout());

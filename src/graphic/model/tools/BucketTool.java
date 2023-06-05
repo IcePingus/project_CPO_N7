@@ -1,6 +1,6 @@
 package graphic.model.tools;
 
-import graphic.controller.ColorController;
+import graphic.model.color.ColorModel;
 
 import javax.swing.*;
 import java.awt.*;

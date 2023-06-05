@@ -1,7 +1,7 @@
 package graphic.view;
 
 import graphic.controller.ColorController;
-import graphic.model.tools.ColorModel;
+import graphic.model.color.ColorModel;
 import graphic.model.tools.Toolbox;
 
 import javax.swing.*;

@@ -1,9 +1,8 @@
 package graphic.controller;
 
-import graphic.model.tools.ColorModel;
+import graphic.model.color.ColorModel;
 
 import java.awt.*;
-import java.util.Observable;
 
 public class ColorController {
 

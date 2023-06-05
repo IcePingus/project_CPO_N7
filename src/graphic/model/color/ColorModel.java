@@ -1,4 +1,4 @@
-package graphic.model.tools;
+package graphic.model.color;
 
 import java.awt.*;
 import java.util.Observable;
@@ -7,7 +7,6 @@ public class ColorModel extends Observable {
 
     private Color primaryColor = Color.BLACK;
     private Color secondaryColor = Color.WHITE;
-    private boolean isPrimaryColor = true;
 
     public void setPrimaryColor(Color color) {
         this.primaryColor = color;
@@ -21,18 +20,11 @@ public class ColorModel extends Observable {
         this.notifyObservers();
     }
 
-    public void setIsPrimaryColor(boolean isPrimaryColor) {
-        this.isPrimaryColor = isPrimaryColor;
-    }
-
     public Color getPrimaryColor() {
         return this.primaryColor;
     }
     public Color getSecondaryColor() {
         return this.secondaryColor;
-    }
-    public boolean getIsPrimaryColor() {
-        return this.isPrimaryColor;
     }
 
 }

@@ -1,6 +1,7 @@
 package graphic.view;
 
 import graphic.controller.ColorController;
+import graphic.model.color.ColorModel;
 import graphic.model.tools.*;
 
 import javax.swing.*;
@@ -9,7 +10,6 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.EventListener;
 
 public class ToolInternalFrame extends JInternalFrame implements ActionListener, ChangeListener {
 

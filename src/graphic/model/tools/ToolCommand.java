@@ -1,7 +1,5 @@
 package graphic.model.tools;
 
-import graphic.controller.ColorController;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
