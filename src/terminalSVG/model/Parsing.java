@@ -6,6 +6,7 @@ import java.awt.*;
 
 import org.apache.batik.svggen.SVGGraphics2D;
 
+import terminalSVG.model.SVGElement.CarreSVG;
 import terminalSVG.model.SVGElement.CercleSVG;
 import terminalSVG.model.SVGElement.PolygoneSVG;
 
@@ -39,6 +40,10 @@ public class Parsing {
 				if (element.equals("-f") && i + 1 < elements.length) {
 					this.fillColor = elements[i + 1].trim();
 					this.fill = true;
+				}
+				if (element.equals("color") && i + 1 < elements.length) {
+					this.strokeColor = elements[i + 1].trim();
+
 				}
 				//le mettre a false sinon (pb pour plusieurs utilisation de l'objet dans l'autre cas)
 			}
@@ -124,65 +129,73 @@ public class Parsing {
 	}
 
 	public static Color convertStringToColor(String colorName) {
-        Color color;
-        
-        // Conversion des noms de couleur prédéfinis
-        switch (colorName.toLowerCase()) {
-            case "black":
-                color = Color.BLACK;
-                break;
-            case "white":
-                color = Color.WHITE;
-                break;
-            case "red":
-                color = Color.RED;
-                break;
-            case "green":
-                color = Color.GREEN;
-                break;
-            case "blue":
-                color = Color.BLUE;
-                break;
-            // Ajoutez d'autres noms de couleur prédéfinis si nécessaire
-            
-            default:
-                // Si le nom de couleur n'est pas prédéfini, vous pouvez essayer de le convertir à partir de son code hexadécimal
-                try {
-                    color = Color.decode(colorName);
-                } catch (NumberFormatException e) {
-                    // En cas d'erreur de conversion, utilisez une valeur par défaut (par exemple, noir)
-                    color = Color.BLACK;
-                }
-                break;
-        }
-        
-        return color;
-    }
-	
+		Color color;
+
+		// Conversion des noms de couleur prédéfinis
+		switch (colorName.toLowerCase()) {
+			case "black":
+				color = Color.BLACK;
+				break;
+			case "white":
+				color = Color.WHITE;
+				break;
+			case "red":
+				color = Color.RED;
+				break;
+			case "green":
+				color = Color.GREEN;
+				break;
+			case "blue":
+				color = Color.BLUE;
+				break;
+			// Ajoutez d'autres noms de couleur prédéfinis si nécessaire
+
+			default:
+				// Si le nom de couleur n'est pas prédéfini, vous pouvez essayer de le convertir à partir de son code hexadécimal
+				try {
+					color = Color.decode(colorName);
+				} catch (NumberFormatException e) {
+					// En cas d'erreur de conversion, utilisez une valeur par défaut (par exemple, noir)
+					color = Color.BLACK;
+				}
+				break;
+		}
+
+		return color;
+	}
+
 	// <form> <nom> n*<coordonne> <-s> <couleur> <-f> <couleur>
 
-	
+
 	//methode avec switch pour choisir le traitement de la forme souhaité
 	//il serait plus judicieux de lui passer l'objet SVGGraphics2D
-		public void choix(SVGGraphics2D g2d) {
-			switch (getElementAction()) {
+	public void choix(SVGGraphics2D g2d) {
+		switch (getElementAction()) {
 
-			case "circle":	
-				
+			case "circle":
+
 				// Créer et dessiner un cercle avec le SVGGraphics2D
-				CercleSVG cercle = new CercleSVG(getElementName(), coords.get(0), coords.get(1), coords.get(2),
-						isFill(), convertStringToColor(getStrokeColor()), convertStringToColor(getFillColor()));
+				CercleSVG cercle = new CercleSVG(getElementName(),coords.get(0), coords.get(1), coords.get(2),
+						coords.get(3),isFill(), convertStringToColor(getStrokeColor()), convertStringToColor(getFillColor()));
 				//les coordonnées du centre puis la taille du rayon
 				cercle.Dessiner(g2d);
 
 				break;
 			case "polygon":
-				//Pour créé un polygone quelconque
-				PolygoneSVG polygone = new PolygoneSVG(getElementName(),isFill(),convertStringToColor(getStrokeColor()),
-						convertStringToColor(getFillColor()), getCoords());
-				polygone.dessiner(g2d);
+				createPolygon(g2d);
 				break;
-
+			case "triangle":
+				createPolygon(g2d);
+				break;
+			case "square":
+				//a completer
+				CarreSVG carre = new CarreSVG(getElementName(),coords.get(0), coords.get(1), coords.get(2),isFill(),
+						convertStringToColor(getStrokeColor()), convertStringToColor(getFillColor()));
+				carre.Dessiner(g2d);
+				break;
+			case "rectangle":
+				createPolygon(g2d);
+				break;
 			case "clear":
 				this.svgPreview.clear();
 				break;
@@ -193,7 +206,14 @@ public class Parsing {
 			default:
 				//throw new ConfigurationException("Cette stratégie n'existe pas");
 				System.out.println("Default");
-			}
-			this.svgPreview.updateCanvas(this.getElementAction()+ "-" +this.getElementName());
 		}
+		this.svgPreview.updateCanvas(this.getElementAction()+ "-" +this.getElementName());
+	}
+
+	public void createPolygon(SVGGraphics2D g2d) {
+		//Pour créé un polygone quelconque
+		PolygoneSVG polygone = new PolygoneSVG(getElementName(),isFill(),convertStringToColor(getStrokeColor()),
+				convertStringToColor(getFillColor()), getCoords());
+		polygone.dessiner(g2d);
+	}
 }
