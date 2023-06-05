@@ -2,6 +2,7 @@ package graphic.model.tools;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.Observable;
 
 public class RubberTool implements ToolCommand {
@@ -31,7 +32,8 @@ public class RubberTool implements ToolCommand {
     }
 
     @Override
-    public void execute(int oldX, int oldY, int currentX, int currentY, Graphics2D graphics2D, int click, int size) {
+    public void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click, int size) {
+        graphics2D.drawLine(oldX, oldY, currentX, currentY);
         graphics2D.setPaint(Color.WHITE);
         for (int i = 0; i < size/2; i++) {
             for (int j = 0 - size; j < size/2; j++) {

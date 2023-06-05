@@ -7,12 +7,13 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.image.BufferedImage;
 import java.util.Observable;
 import java.util.Observer;
 
 public class CanvaPanel extends JComponent implements Observer {
 
-    private Image image;
+    private BufferedImage bufferedImage;
     private Graphics2D g2;
     private int currentX, currentY, oldX, oldY;
     private Toolbox toolbox;
@@ -25,21 +26,27 @@ public class CanvaPanel extends JComponent implements Observer {
                 // save coord x,y when mouse is pressed
                 oldX = e.getX();
                 oldY = e.getY();
+                currentX = oldX;
+                currentY = oldY;
+                toolbox.getActiveTool().execute(oldX, oldY, currentX, currentY, bufferedImage, g2, e.getModifiersEx(), toolbox.getToolSize());
+
+                repaint();
             }
+
         });
         this.setMouseMotionListener();
     }
 
     protected void paintComponent(Graphics g) {
-        if (this.image == null) {
-            this.image = this.createImage(this.getSize().width, this.getSize().height);
-            this.g2 = (Graphics2D) this.image.getGraphics();
+        if (this.bufferedImage == null) {
+            this.bufferedImage = new BufferedImage(this.getSize().width, this.getSize().height, BufferedImage.TYPE_INT_RGB);
+            this.g2 = (Graphics2D) this.bufferedImage.getGraphics();
 
             this.g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
             this.clear();
         }
-        g.drawImage(image, 0, 0, null);
+        g.drawImage(this.bufferedImage, 0, 0, null);
     }
 
     public void clear() {
@@ -65,7 +72,7 @@ public class CanvaPanel extends JComponent implements Observer {
                 */
 
                 if (g2 != null) {
-                    toolbox.getActiveTool().execute(oldX, oldY, currentX, currentY, g2, e.getModifiersEx(), toolbox.getToolSize());
+                    toolbox.getActiveTool().execute(oldX, oldY, currentX, currentY, bufferedImage, g2, e.getModifiersEx(), toolbox.getToolSize());
                     //tool action
                     oldX = currentX;
                     oldY = currentY;

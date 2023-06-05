@@ -2,6 +2,7 @@ package graphic.model.tools;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.Observable;
 
 public class PickerTool implements ToolCommand {
@@ -27,12 +28,7 @@ public class PickerTool implements ToolCommand {
     }
 
     @Override
-    public boolean getIsResizable() {
-        return this.isResizable;
-    }
-
-    @Override
-    public void execute(int oldX, int oldY, int currentX, int currentY, Graphics2D graphics2D, int click, int size) {
+    public void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click, int size) {
         System.out.println("Salut je suis une pipette");
     }
 
