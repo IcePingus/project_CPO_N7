@@ -48,7 +48,7 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
         JMenuBar mb = new JMenuBar();
         JMenu menuFile = new JMenu("File");
         this.saveImage = new JMenuItem("Save image");
-        this.resize = new JMenuItem("Redimensionner");
+        this.resize = new JMenuItem("Resize");
 
         JMenu menuEffects = new JMenu("Effects");
         this.bwTransform = new JMenuItem("Black and white");
