@@ -4,6 +4,7 @@ import graphic.controller.ColorController;
 import graphic.model.color.ColorModel;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.colorchooser.AbstractColorChooserPanel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -15,12 +16,13 @@ import java.util.Observer;
 
 public class ColorSchemeInternalFrame extends JInternalFrame implements ChangeListener, ActionListener, Observer {
 
+    private boolean isPrimaryColor;
     private JButton primaryButton;
     private JButton secondaryButton;
+    private JLabel lLabel;
+    private JLabel rLabel;
     private JColorChooser colorChooser;
     private ColorController colorController;
-
-    private boolean isPrimaryColor = true;
 
     public ColorSchemeInternalFrame(ColorController colorController) {
         super("Color Scheme");
@@ -33,33 +35,48 @@ public class ColorSchemeInternalFrame extends JInternalFrame implements ChangeLi
         this.setVisible(true);
         this.setFrameIcon(new ImageIcon(getClass().getResource("/assets/images/colorSchemeLogo.png")));
 
-
-        this.primaryButton = new JButton("1");
-        this.secondaryButton = new JButton("2");
-        this.colorController = colorController;
-        JPanel jp = new JPanel();
-        jp.setLayout(new BorderLayout());
-        jp.add(this.primaryButton, BorderLayout.NORTH);
-        jp.add(this.secondaryButton, BorderLayout.SOUTH);
+        this.primaryButton = new JButton();
         this.primaryButton.addActionListener(this);
+        this.primaryButton.setBackground(Color.BLACK);
+        this.primaryButton.setBorder(BorderFactory.createBevelBorder(0 ,Color.GRAY, Color.GRAY));
+
+        this.secondaryButton = new JButton();
         this.secondaryButton.addActionListener(this);
-        jp.setSize(50, 50);
-        jp.setVisible(true);
+        this.secondaryButton.setBackground(Color.WHITE);
 
-        this.add(jp);
+        this.isPrimaryColor = true;
+        this.lLabel = new JLabel(" L ");
+        this.lLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        this.lLabel.setFont(new Font(Font.SANS_SERIF,  Font.BOLD, 24));
+        this.rLabel = new JLabel(" R ");
+        this.rLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        this.rLabel.setFont(new Font(Font.SANS_SERIF,  Font.BOLD, 24));
 
+        JPanel jp = new JPanel();
+        GridLayout gl = new GridLayout(2, 2);
+        gl.setHgap(10);
+        jp.setLayout(gl);
+        jp.setBorder(new EmptyBorder(10, 10, 10, 0));
+        jp.add(this.primaryButton);
+        jp.add(this.secondaryButton);
+        jp.add(this.lLabel);
+        jp.add(this.rLabel);
+
+        this.add(jp, BorderLayout.WEST);
+
+        this.colorController = colorController;
         this.colorChooser = new JColorChooser();
-        colorChooser.getSelectionModel().addChangeListener(this);
+        this.colorChooser.getSelectionModel().addChangeListener(this);
 
-        AbstractColorChooserPanel[] oldPanels = colorChooser.getChooserPanels();
+        AbstractColorChooserPanel[] oldPanels = this.colorChooser.getChooserPanels();
         for (int i = 0; i < oldPanels.length; i++) {
             String clsName = oldPanels[i].getClass().getName();
             if (clsName.equals("javax.swing.colorchooser.ColorChooserPanel")) {
-                colorChooser.removeChooserPanel(oldPanels[i]);
+                this.colorChooser.removeChooserPanel(oldPanels[i]);
             }
         }
-        colorChooser.setPreviewPanel(new JPanel());
-        this.add(colorChooser, BorderLayout.CENTER);
+        this.colorChooser.setPreviewPanel(new JPanel());
+        this.add(this.colorChooser, BorderLayout.CENTER);
     }
 
     @Override
@@ -77,8 +94,12 @@ public class ColorSchemeInternalFrame extends JInternalFrame implements ChangeLi
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == this.primaryButton) {
             this.isPrimaryColor = true;
+            this.primaryButton.setBorder(BorderFactory.createBevelBorder(0 ,Color.DARK_GRAY, Color.GRAY));
+            this.secondaryButton.setBorder(null);
         } else {
             this.isPrimaryColor = false;
+            this.primaryButton.setBorder(null);
+            this.secondaryButton.setBorder(BorderFactory.createBevelBorder(0 ,Color.DARK_GRAY, Color.GRAY));
         }
     }
 
