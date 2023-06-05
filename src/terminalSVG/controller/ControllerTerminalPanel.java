@@ -25,6 +25,7 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
 
         this.history = h;
         this.svgPreview = svgp;
+        this.parser = new Parsing(this.svgPreview);
 
         this.sendButton = new JButton("Entrer");
         this.sendButton.addActionListener(this);
@@ -66,7 +67,6 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
     public void addCommand() {
         if (!this.textArea.getText().isEmpty()) {
             this.history.addCommand(new Command(new Date(), this.textArea.getText()));
-            this.parser = new Parsing(this.svgPreview);
             this.parser.parse(this.textArea.getText());
             this.textArea.setText("");
         }
