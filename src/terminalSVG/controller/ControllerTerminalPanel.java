@@ -2,60 +2,75 @@ package terminalSVG.controller;
 
 import terminalSVG.model.History;
 import terminalSVG.model.Command;
+import terminalSVG.model.SVGPreview;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.Date;
 
 public class ControllerTerminalPanel extends JPanel implements ActionListener {
-
     private History history;
     private JTextArea textArea;
-    private JButton send;
+    private JButton sendButton;
+    private SVGPreview svgPreview;
 
-    public ControllerTerminalPanel(History vchat) {
+    public ControllerTerminalPanel(History h, SVGPreview svgp) {
         super();
 
-        this.history = vchat;
+        this.history = h;
+        this.svgPreview = svgp;
+
+        this.sendButton = new JButton("Entrer");
+        this.sendButton.addActionListener(this);
+
         this.textArea = new JTextArea();
-        this.send = new JButton("send");
+        this.textArea.setLineWrap(true); // Empêche le retour à la ligne automatique
+        this.textArea.setWrapStyleWord(true); // Coupe les mots longs pour s'adapter à la largeur
 
-        this.send.addActionListener(this);
+        // Ajout de la détection de la touche "Entrée"
+        this.textArea.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    addCommand();
+                }
+            }
+        });
 
-        textArea.setLineWrap(true); // Empêche le retour à la ligne automatique
-        textArea.setWrapStyleWord(true); // Coupe les mots longs pour s'adapter à la largeur
+        // Création d'un ScrollPane pour la zone de saisie
+        JScrollPane formattedTextArea = new JScrollPane(this.textArea);
 
-        JScrollPane formattedTextArea = new JScrollPane(textArea);
-
-        // Création des conteneurs
+        // Création du conteneur global
         JPanel container = new JPanel(new BorderLayout());
 
         // Ajout de la zone de texte à gauche du panneau inférieur
         container.add(formattedTextArea, BorderLayout.CENTER);
 
         // Ajout du bouton à droite du panneau inférieur
-        container.add(send, BorderLayout.EAST);
+        container.add(this.sendButton, BorderLayout.EAST);
 
-        // Utilisation du gestionnaire de disposition GridLayout
         this.setLayout(new GridLayout());
-
-        // Ajout du conteneur principal au panneau
         this.add(container);
     }
 
+    /**
+     * Ajoute la commande à l'historique et efface le contenu de la zone de texte.
+     * Envoie la commande en traitement pour le SVGPreview.
+     */
     public void addCommand() {
-        this.history.addCommand(new Command(new Date(), this.textArea.getText()));
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (!this.textArea.getText().equals("")){
-            this.addCommand();
+        if (!this.textArea.getText().isEmpty()) {
+            this.history.addCommand(new Command(new Date(), this.textArea.getText()));
+            this.svgPreview.command(this.textArea.getText());
             this.textArea.setText("");
         }
     }
 
-
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        addCommand();
+    }
 }
