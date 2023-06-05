@@ -10,6 +10,7 @@ import java.awt.color.ColorSpace;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorConvertOp;
 import java.io.File;
@@ -30,8 +31,8 @@ public class CanvaPanel extends JComponent implements Observer {
         this.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
                 // save coord x,y when mouse is pressed
-                oldX = e.getX();
-                oldY = e.getY();
+                oldX = e.getX() - ((getSize().width - bufferedImage.getWidth()) / 2);
+                oldY = e.getY() - ((getSize().height - bufferedImage.getHeight()) / 2);
                 currentX = oldX;
                 currentY = oldY;
                 toolbox.getActiveTool().execute(oldX, oldY, currentX, currentY, bufferedImage, g2, e.getModifiersEx(), toolbox.getToolSize());
@@ -45,14 +46,14 @@ public class CanvaPanel extends JComponent implements Observer {
 
     protected void paintComponent(Graphics g) {
         if (this.bufferedImage == null) {
-            this.bufferedImage = new BufferedImage(this.getSize().width, this.getSize().height, BufferedImage.TYPE_INT_RGB);
+            this.bufferedImage = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_RGB);
             this.g2 = (Graphics2D) this.bufferedImage.getGraphics();
 
             this.g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
             this.clear();
         }
-        g.drawImage(this.bufferedImage, 0, 0, null);
+        g.drawImage(this.bufferedImage, ((this.getWidth() - this.bufferedImage.getWidth()) / 2), ((this.getHeight() - this.bufferedImage.getHeight()) / 2), null);
     }
 
     protected void exportPNG() {
@@ -68,12 +69,21 @@ public class CanvaPanel extends JComponent implements Observer {
 
     protected void blackAndWhiteTransform() {
         ColorConvertOp op = new ColorConvertOp(ColorSpace.getInstance(ColorSpace.CS_GRAY), null);
-        op.filter(bufferedImage, bufferedImage);
+        op.filter(this.bufferedImage, this.bufferedImage);
+        this.repaint();
+    }
+
+    public void resizeCanva(int width, int height) {
+        BufferedImage resizedImage = new BufferedImage(width, height, this.bufferedImage.getType());
+        this.g2 = resizedImage.createGraphics();
+        this.g2.drawImage(this.bufferedImage, 0, 0, width, height, null);
+        this.bufferedImage = resizedImage;
+        this.revalidate();
         this.repaint();
     }
 
     public void clear() {
-        this.g2.setPaint(Color.white);
+        this.g2.setPaint(Color.WHITE);
         this.g2.fillRect(0, 0, this.getSize().width, this.getSize().height);
         this.repaint();
     }
@@ -85,8 +95,8 @@ public class CanvaPanel extends JComponent implements Observer {
         this.addMouseMotionListener(new MouseMotionAdapter() {
 
             public void mouseDragged(MouseEvent e) {
-                currentX = e.getX();
-                currentY = e.getY();
+                currentX = e.getX() - ((getSize().width - bufferedImage.getWidth()) / 2);
+                currentY = e.getY() - ((getSize().height - bufferedImage.getHeight()) / 2);
 
                 if (g2 != null) {
                     toolbox.getActiveTool().execute(oldX, oldY, currentX, currentY, bufferedImage, g2, e.getModifiersEx(), toolbox.getToolSize());
