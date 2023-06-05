@@ -6,40 +6,40 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PolygoneSVG {
-
+public class PolygonSVG {
     private List<Point> points;
     private boolean fill;
     private Color colorfill = null ;
     private Color colorstroke;
     private String name;
-    
+	private final String commandName = "polygon";
 
     public List<Point> getPoints() {
 		return points;
 	}
-
 	public void setPoints(List<Point> points) {
 		this.points = points;
 	}
-
 	public Color getColorfill() {
 		return colorfill;
 	}
-
 	public void setColorfill(Color colorfill) {
 		this.colorfill = colorfill;
 	}
-
 	public Color getColorstroke() {
 		return colorstroke;
 	}
-
 	public void setColorstroke(Color colorstroke) {
 		this.colorstroke = colorstroke;
 	}
+	public String getCommandName() {
+		return this.commandName;
+	}
 
-	public PolygoneSVG(String name, boolean fill, Color cstroke, Color cfill, List<Double> coordinates) {
+	public PolygonSVG() {
+	}
+
+	public PolygonSVG(String name, boolean fill, Color cstroke, Color cfill, List<Double> coordinates) {
 	    if (coordinates.size() % 2 != 0) {
 	        throw new IllegalArgumentException("Le nombre de coordonnées doit être pair.");
 	    }
@@ -58,7 +58,7 @@ public class PolygoneSVG {
 	}
 
 
-    public void dessiner(SVGGraphics2D g2d) {
+    public void draw(SVGGraphics2D g2d) {
     	
     	g2d.setColor(getColorstroke());
 

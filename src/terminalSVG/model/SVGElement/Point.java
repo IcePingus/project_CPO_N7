@@ -11,7 +11,6 @@ import java.awt.Color;
 public class Point {
 	private double x;		// abscisse
 	private double y;		// ordonnée
-	private Color couleur;	// couleur du point
 
 	/** Construire un point à partir de son abscisse et de son ordonnée.
 	 * @param vx abscisse
@@ -20,7 +19,6 @@ public class Point {
 	public Point(double vx, double vy) {
 		this.x = vx;
 		this.y = vy;
-		this.couleur = Color.green;
 	}
 
 	/** Obtenir l'abscisse du point.
@@ -77,21 +75,4 @@ public class Point {
 		this.x += dx;
 		this.y += dy;
 	}
-
-//  Gestion de la couleur
-
-	/** Obtenir la couleur du point.
-	 * @return la couleur du point
-	 */
-	public Color getCouleur() {
-		return this.couleur;
-	}
-
-	/** Changer la couleur du point.
-	  * @param nouvelleCouleur nouvelle couleur
-	  */
-	public void setCouleur(Color nouvelleCouleur) {
-		this.couleur = nouvelleCouleur;
-	}
-
 }
