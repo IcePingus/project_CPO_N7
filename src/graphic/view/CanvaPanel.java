@@ -1,13 +1,17 @@
 package graphic.view;
 
+import com.nitido.utils.toaster.Toaster;
 import graphic.model.tools.Toolbox;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -47,6 +51,18 @@ public class CanvaPanel extends JComponent implements Observer {
             this.clear();
         }
         g.drawImage(this.bufferedImage, 0, 0, null);
+    }
+
+    protected void exportPNG() {
+        Toaster toasterManager = new Toaster();
+        try {
+            toasterManager.showToaster("Votre image a été enregistré");
+            ImageIO.write(this.bufferedImage, "png", new File("image.png"));
+        }
+        catch(IOException e) {
+            toasterManager.showToaster("Problème lors de l'exportation de l'image");
+            e.printStackTrace();
+        }
     }
 
     public void clear() {

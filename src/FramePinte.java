@@ -48,7 +48,7 @@ public class FramePinte extends JFrame {
 
     private void onGraphicModeButtonClick() {
         if (this.graphicProjectPanel == null) {
-            this.graphicProjectPanel = new GraphicProjectPanel();
+            this.graphicProjectPanel = new GraphicProjectPanel(this);
         }
         this.setContentPane(this.graphicProjectPanel);
         this.validate();
