@@ -1,6 +1,7 @@
 package graphic.view;
 
 import graphic.controller.ColorController;
+import graphic.model.tools.ColorModel;
 import graphic.model.tools.Toolbox;
 
 import javax.swing.*;
@@ -14,14 +15,16 @@ public class GraphicProjectPanel extends JDesktopPane {
         this.setLayout(new BorderLayout());
 
         Toolbox toolbox = new Toolbox();
-        ColorController colorController = new ColorController();
+        ColorModel colorModel = new ColorModel();
+        ColorController colorController = new ColorController(colorModel);
 
-        ToolInternalFrame toolInternalFrame = new ToolInternalFrame(toolbox, colorController);
+        ToolInternalFrame toolInternalFrame = new ToolInternalFrame(toolbox, colorController, colorModel);
         toolInternalFrame.setVisible(true);
         this.add(toolInternalFrame);
         this.setSize(this.getToolkit().getScreenSize());
 
         ColorSchemeInternalFrame colorSchemeInternalFrame = new ColorSchemeInternalFrame(colorController);
+        colorModel.addObserver(colorSchemeInternalFrame);
         colorSchemeInternalFrame.setLocation(this.getSize().width - 430, 0);
         colorSchemeInternalFrame.setVisible(true);
         this.add(colorSchemeInternalFrame);

@@ -64,16 +64,9 @@ public class CanvaPanel extends JComponent implements Observer {
             public void mouseDragged(MouseEvent e) {
                 currentX = e.getX();
                 currentY = e.getY();
-                /*
-                if (oldX != currentX && oldY != currentY) {
-                    oldX = currentX;
-                    oldY = currentY;
-                }
-                */
 
                 if (g2 != null) {
                     toolbox.getActiveTool().execute(oldX, oldY, currentX, currentY, bufferedImage, g2, e.getModifiersEx(), toolbox.getToolSize());
-                    //tool action
                     oldX = currentX;
                     oldY = currentY;
                 }

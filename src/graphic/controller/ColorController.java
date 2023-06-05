@@ -1,30 +1,32 @@
 package graphic.controller;
 
+import graphic.model.tools.ColorModel;
+
 import java.awt.*;
 import java.util.Observable;
 
-public class ColorController extends Observable {
+public class ColorController {
 
-    private Color primaryColor = Color.BLACK;
-    private Color secondaryColor = Color.WHITE;
+    private final ColorModel model;
+
+    public ColorController(ColorModel model) {
+        this.model = model;
+    }
 
     public void setPrimaryColor(Color color) {
-        this.primaryColor = color;
-        this.setChanged();
-        this.notifyObservers();
+        this.model.setPrimaryColor(color);
     }
 
     public void setSecondaryColor(Color color) {
-        this.secondaryColor = color;
-        this.setChanged();
-        this.notifyObservers();
+        this.model.setSecondaryColor(color);
     }
 
     public Color getPrimaryColor() {
-        return this.primaryColor;
+        return this.model.getPrimaryColor();
     }
+
     public Color getSecondaryColor() {
-        return this.secondaryColor;
+        return this.model.getSecondaryColor();
     }
 
 }

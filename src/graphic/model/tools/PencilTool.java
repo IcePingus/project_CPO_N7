@@ -91,9 +91,9 @@ public class PencilTool implements ToolCommand {
 
     @Override
     public void update(Observable o, Object arg) {
-        if (o instanceof ColorController) {
-            this.primaryColor = ((ColorController) o).getPrimaryColor();
-            this.secondaryColor = ((ColorController) o).getSecondaryColor();
+        if (o instanceof ColorModel) {
+            this.primaryColor = ((ColorModel) o).getPrimaryColor();
+            this.secondaryColor = ((ColorModel) o).getSecondaryColor();
         }
     }
 }
