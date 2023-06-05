@@ -15,6 +15,7 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
 
     private CanvaPanel canvaPanel;
     private JMenuItem saveImage;
+    private JMenuItem bwTransform;
 
     public GraphicProjectPanel(JFrame frame) {
         this.setLayout(new BorderLayout());
@@ -41,11 +42,18 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
         JMenuBar mb = new JMenuBar();
         JMenu menuFile = new JMenu("File");
         this.saveImage = new JMenuItem("Save image");
+
+        JMenu menuEffects = new JMenu("Effects");
+        this.bwTransform = new JMenuItem("Black and white");
+
         menuFile.add(this.saveImage);
         mb.add(menuFile);
+        mb.add(menuEffects);
+        menuEffects.add(this.bwTransform);
         frame.setJMenuBar(mb);
 
         this.saveImage.addActionListener(this);
+        this.bwTransform.addActionListener(this);
 
         this.addComponentListener(new ComponentListener() {
             @Override
@@ -75,6 +83,8 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == this.saveImage) {
             canvaPanel.exportPNG();
+        } else if (e.getSource() == this.bwTransform) {
+            canvaPanel.blackAndWhiteTransform();
         }
     }
 }
