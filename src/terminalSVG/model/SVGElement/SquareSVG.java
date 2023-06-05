@@ -3,6 +3,7 @@ package terminalSVG.model.SVGElement;
 import org.apache.batik.svggen.SVGGraphics2D;
 
 import java.awt.*;
+import java.util.List;
 
 public class SquareSVG implements SVGElement {
     private Point point;
@@ -11,6 +12,7 @@ public class SquareSVG implements SVGElement {
     private Color fillColor;
     private Color strokeColor;
     private String name;
+	private static final Integer CoordsListSize = 3;
 	private final String commandName = "square";
 
     public Point getPoint() {
@@ -52,13 +54,16 @@ public class SquareSVG implements SVGElement {
 	public String getCommandName() {
 		return this.commandName;
 	}
+	public static Integer getCoordsListSize() {
+		return CoordsListSize;
+	}
 
 	public SquareSVG(){
 	}
 
-	public SquareSVG(String n, double x, double y, double sideLength, boolean f, Color cStroke, Color cFill) {
-        point = new Point(x,y);
-        this.sideLength = sideLength;
+	public SquareSVG(String n, List<Double> coords, boolean f, Color cStroke, Color cFill) {
+        point = new Point(coords.get(0),coords.get(1));
+        this.sideLength = coords.get(2);
 		this.isFill = f;
 		this.fillColor = cFill;
 		this.strokeColor = cStroke;
@@ -84,7 +89,7 @@ public class SquareSVG implements SVGElement {
     }
 
 	@Override
-	public String Help() {
+	public String getHelp() {
 		// TODO Auto-generated method stub
 		return null;
 	}

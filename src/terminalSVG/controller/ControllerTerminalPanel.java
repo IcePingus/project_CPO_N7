@@ -89,25 +89,25 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
         try {
             switch (elementAction) {
                 case "circle":
-                    if (coords != null && coords.size() == 3) {
+                    if (coords != null && coords.size() == CircleSVG.getCoordsListSize()) {
                         // Créer et dessiner un cercle avec le SVGGraphics2D
-                        CircleSVG cercle = new CircleSVG(elementName, coords.get(0), coords.get(1), coords.get(2), isFill, strokeColor, fillColor);
+                        CircleSVG cercle = new CircleSVG(elementName, coords, isFill, strokeColor, fillColor);
                         cercle.draw(g2d);
                     } else {
                         throw new IllegalArgumentException(">> Nombre d'arguments incorrect pour : " + elementAction);
                     }
                     break;
                 case "square":
-                    if (coords != null && coords.size() == 3) {
+                    if (coords != null && coords.size() == SquareSVG.getCoordsListSize()) {
                         // Créer et dessiner un cercle avec le SVGGraphics2D
-                        SquareSVG carre = new SquareSVG(elementName, coords.get(0), coords.get(1), coords.get(2), isFill, strokeColor, fillColor);
+                        SquareSVG carre = new SquareSVG(elementName, coords, isFill, strokeColor, fillColor);
                         carre.draw(g2d);
                     } else {
                         throw new IllegalArgumentException(">> Nombre d'arguments incorrect pour : " + elementAction);
                     }
                     break;
                 case "polygon":
-                    if (coords != null && coords.size() >= 4) {
+                    if (coords != null && coords.size() >= PolygonSVG.getCoordsListSize()) {
                         // Créer et dessiner un polygone avec le SVGGraphics2D
                         PolygonSVG polygone = new PolygonSVG(elementName, isFill, strokeColor, fillColor, coords);
                         polygone.draw(g2d);
@@ -115,18 +115,18 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
                         throw new IllegalArgumentException("Nombre d'arguments incorrect pour : " + elementAction);
                     }
                 case "rectangle":
-                    if (coords != null && coords.size() == 4) {
+                    if (coords != null && coords.size() == RectangleSVG.getCoordsListSize()) {
                         // Créer et dessiner un polygone avec le SVGGraphics2D
-                        RectangleSVG rectangle = new RectangleSVG(elementName,coords.get(0), coords.get(1), coords.get(2),coords.get(3),isFill,fillColor,strokeColor);
+                        RectangleSVG rectangle = new RectangleSVG(elementName,coords,isFill,fillColor,strokeColor);
                         rectangle.draw(g2d);
                     } else {
                         throw new IllegalArgumentException("Nombre d'arguments incorrect pour : " + elementAction);
                     }
                     break;
                 case "oval":
-                    if (coords != null && coords.size() == 4) {
+                    if (coords != null && coords.size() == OvalSVG.getCoordsListSize()) {
                         // Créer et dessiner un polygone avec le SVGGraphics2D
-                        OvalSVG oval = new OvalSVG(elementName,coords.get(0), coords.get(1), coords.get(2),coords.get(3),isFill,fillColor,strokeColor);
+                        OvalSVG oval = new OvalSVG(elementName,coords,isFill,fillColor,strokeColor);
                         oval.draw(g2d);
                     } else {
                         throw new IllegalArgumentException("Nombre d'arguments incorrect pour : " + elementAction);
