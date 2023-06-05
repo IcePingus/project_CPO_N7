@@ -17,7 +17,7 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
     private JMenuItem saveImage;
     private JMenuItem bwTransform;
     private JMenuItem resize;
-
+    private JMenuItem clear;
     ResizeDialog resizeDialog;
 
     public GraphicProjectPanel(JFrame frame) {
@@ -48,7 +48,10 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
         JMenuBar mb = new JMenuBar();
         JMenu menuFile = new JMenu("File");
         this.saveImage = new JMenuItem("Save image");
+
+        JMenu menuImage = new JMenu("Image");
         this.resize = new JMenuItem("Resize");
+        this.clear = new JMenuItem("Clear image");
 
         JMenu menuEffects = new JMenu("Effects");
         this.bwTransform = new JMenuItem("Black and white");
@@ -56,10 +59,13 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
         this.saveImage.addActionListener(this);
         this.bwTransform.addActionListener(this);
         this.resize.addActionListener(this);
+        this.clear.addActionListener(this);
 
         menuFile.add(this.saveImage);
-        menuFile.add(this.resize);
+        menuImage.add(this.resize);
+        menuImage.add(this.clear);
         mb.add(menuFile);
+        mb.add(menuImage);
         mb.add(menuEffects);
         menuEffects.add(this.bwTransform);
         frame.setJMenuBar(mb);
@@ -90,13 +96,18 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == this.resize) {
-            this.resizeDialog.setLocation(this.getSize().width/3, this.getSize().height/3);
+        if (e.getSource() == this.resize) {
+            this.resizeDialog.setLocation(this.getSize().width / 3, this.getSize().height / 3);
             this.resizeDialog.setVisible(true);
         } else if (e.getSource() == this.saveImage) {
             canvaPanel.exportPNG();
         } else if (e.getSource() == this.bwTransform) {
             canvaPanel.blackAndWhiteTransform();
+        } else if (e.getSource() == this.clear) {
+            int resultOptionPane = JOptionPane.showConfirmDialog(this, "Do you really want to clear the canva ?", "Clear image", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            if (resultOptionPane == JOptionPane.YES_OPTION) {
+                this.canvaPanel.clear();
+            }
         }
     }
 }
