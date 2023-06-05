@@ -61,7 +61,7 @@ public class CanvaPanel extends JComponent implements Observer {
         }
         catch(IOException e) {
             toasterManager.showToaster("Problème lors de l'exportation de l'image");
-            System.out.println(e);
+            e.printStackTrace();
         }
     }
 

@@ -40,7 +40,7 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
 
         JMenuBar mb = new JMenuBar();
         JMenu menuFile = new JMenu("File");
-        this.saveImage =new JMenuItem("Save image");
+        this.saveImage = new JMenuItem("Save image");
         menuFile.add(this.saveImage);
         mb.add(menuFile);
         frame.setJMenuBar(mb);
@@ -73,7 +73,8 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == this.saveImage)
-        canvaPanel.exportPNG();
+        if (e.getSource() == this.saveImage) {
+            canvaPanel.exportPNG();
+        }
     }
 }
