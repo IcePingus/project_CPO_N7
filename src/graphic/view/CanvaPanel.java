@@ -48,8 +48,6 @@ public class CanvaPanel extends JComponent implements Observer {
             this.bufferedImage = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_RGB);
             this.g2 = (Graphics2D) this.bufferedImage.getGraphics();
 
-            this.g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
             this.clear();
         }
         g.drawImage(this.bufferedImage, ((this.getWidth() - this.bufferedImage.getWidth()) / 2), ((this.getHeight() - this.bufferedImage.getHeight()) / 2), null);
