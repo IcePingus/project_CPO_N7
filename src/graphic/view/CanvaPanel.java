@@ -31,8 +31,8 @@ public class CanvaPanel extends JComponent implements Observer {
         this.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
                 // save coord x,y when mouse is pressed
-                oldX = e.getX() - ((getSize().width - bufferedImage.getWidth()) / 2);
-                oldY = e.getY() - ((getSize().height - bufferedImage.getHeight()) / 2);
+                oldX = e.getX() - ((getWidth() - bufferedImage.getWidth()) / 2);
+                oldY = e.getY() - ((getHeight() - bufferedImage.getHeight()) / 2);
                 currentX = oldX;
                 currentY = oldY;
                 toolbox.getActiveTool().execute(oldX, oldY, currentX, currentY, bufferedImage, g2, e.getModifiersEx(), toolbox.getToolSize());
@@ -84,7 +84,7 @@ public class CanvaPanel extends JComponent implements Observer {
 
     public void clear() {
         this.g2.setPaint(Color.WHITE);
-        this.g2.fillRect(0, 0, this.getSize().width, this.getSize().height);
+        this.g2.fillRect(0, 0, this.getWidth(), this.getHeight());
         this.repaint();
     }
 
@@ -95,8 +95,8 @@ public class CanvaPanel extends JComponent implements Observer {
         this.addMouseMotionListener(new MouseMotionAdapter() {
 
             public void mouseDragged(MouseEvent e) {
-                currentX = e.getX() - ((getSize().width - bufferedImage.getWidth()) / 2);
-                currentY = e.getY() - ((getSize().height - bufferedImage.getHeight()) / 2);
+                currentX = e.getX() - ((getWidth() - bufferedImage.getWidth()) / 2);
+                currentY = e.getY() - ((getHeight() - bufferedImage.getHeight()) / 2);
 
                 if (g2 != null) {
                     toolbox.getActiveTool().execute(oldX, oldY, currentX, currentY, bufferedImage, g2, e.getModifiersEx(), toolbox.getToolSize());
