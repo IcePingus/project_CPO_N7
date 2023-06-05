@@ -6,10 +6,12 @@ import graphic.model.tools.Toolbox;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.color.ColorSpace;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorConvertOp;
 import java.io.File;
 import java.io.IOException;
 import java.util.Observable;
@@ -58,11 +60,16 @@ public class CanvaPanel extends JComponent implements Observer {
         try {
             toasterManager.showToaster("Votre image a été enregistré");
             ImageIO.write(this.bufferedImage, "png", new File("image.png"));
-        }
-        catch(IOException e) {
+        } catch (IOException e) {
             toasterManager.showToaster("Problème lors de l'exportation de l'image");
             e.printStackTrace();
         }
+    }
+
+    protected void blackAndWhiteTransform() {
+        ColorConvertOp op = new ColorConvertOp(ColorSpace.getInstance(ColorSpace.CS_GRAY), null);
+        op.filter(bufferedImage, bufferedImage);
+        this.repaint();
     }
 
     public void clear() {
