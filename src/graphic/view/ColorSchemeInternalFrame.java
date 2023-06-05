@@ -1,6 +1,7 @@
 package graphic.view;
 
 import graphic.controller.ColorController;
+import graphic.model.color.ColorModel;
 
 import javax.swing.*;
 import javax.swing.colorchooser.AbstractColorChooserPanel;
@@ -9,14 +10,17 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Observable;
+import java.util.Observer;
 
-public class ColorSchemeInternalFrame extends JInternalFrame implements ChangeListener, ActionListener {
+public class ColorSchemeInternalFrame extends JInternalFrame implements ChangeListener, ActionListener, Observer {
 
-    private boolean isPrimaryColor;
     private JButton primaryButton;
     private JButton secondaryButton;
     private JColorChooser colorChooser;
     private ColorController colorController;
+
+    private boolean isPrimaryColor = true;
 
     public ColorSchemeInternalFrame(ColorController colorController) {
         super("Color Scheme");
@@ -32,19 +36,18 @@ public class ColorSchemeInternalFrame extends JInternalFrame implements ChangeLi
 
         this.primaryButton = new JButton("1");
         this.secondaryButton = new JButton("2");
-        this.isPrimaryColor = true;
+        this.colorController = colorController;
         JPanel jp = new JPanel();
-        jp.setLayout( new BorderLayout());
+        jp.setLayout(new BorderLayout());
         jp.add(this.primaryButton, BorderLayout.NORTH);
         jp.add(this.secondaryButton, BorderLayout.SOUTH);
         this.primaryButton.addActionListener(this);
         this.secondaryButton.addActionListener(this);
-        jp.setSize( 50, 50);
+        jp.setSize(50, 50);
         jp.setVisible(true);
 
         this.add(jp);
 
-        this.colorController = colorController;
         this.colorChooser = new JColorChooser();
         colorChooser.getSelectionModel().addChangeListener(this);
 
@@ -61,7 +64,7 @@ public class ColorSchemeInternalFrame extends JInternalFrame implements ChangeLi
 
     @Override
     public void stateChanged(ChangeEvent e) {
-        if (isPrimaryColor) {
+        if (this.isPrimaryColor) {
             this.primaryButton.setBackground(this.colorChooser.getColor());
             this.colorController.setPrimaryColor(this.colorChooser.getColor());
         } else {
@@ -76,6 +79,14 @@ public class ColorSchemeInternalFrame extends JInternalFrame implements ChangeLi
             this.isPrimaryColor = true;
         } else {
             this.isPrimaryColor = false;
+        }
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        if (o instanceof ColorModel) {
+            this.primaryButton.setBackground(this.colorController.getPrimaryColor());
+            this.secondaryButton.setBackground(this.colorController.getSecondaryColor());
         }
     }
 }

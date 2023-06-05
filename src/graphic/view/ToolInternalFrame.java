@@ -1,6 +1,7 @@
 package graphic.view;
 
 import graphic.controller.ColorController;
+import graphic.model.color.ColorModel;
 import graphic.model.tools.*;
 
 import javax.swing.*;
@@ -9,7 +10,6 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.EventListener;
 
 public class ToolInternalFrame extends JInternalFrame implements ActionListener, ChangeListener {
 
@@ -20,7 +20,7 @@ public class ToolInternalFrame extends JInternalFrame implements ActionListener,
     private JPanel sliderPanel;
     private JLabel sizeLabel;
 
-    public ToolInternalFrame(Toolbox toolbox, ColorController colorController) {
+    public ToolInternalFrame(Toolbox toolbox, ColorController colorController, ColorModel colorModel) {
         super("Tools");
         this.setMaximizable(false);
         this.setIconifiable(true);
@@ -40,7 +40,7 @@ public class ToolInternalFrame extends JInternalFrame implements ActionListener,
         this.toolbox = toolbox;
         this.toolbox.addTool(new RubberTool());
         this.toolbox.addTool(new BucketTool());
-        this.toolbox.addTool(new PickerTool());
+        this.toolbox.addTool(new PickerTool(colorController));
         this.toolbox.addTool(new HighlighterTool());
 
         for (int i = 0; i < this.toolbox.getTools().size(); i++) {
@@ -48,7 +48,7 @@ public class ToolInternalFrame extends JInternalFrame implements ActionListener,
             this.toolbox.getToolsButtons().get(i).setName(this.toolbox.getTools().get(i).getName());
             this.toolbox.getToolsButtons().get(i).setIcon(this.toolbox.getTools().get(i).getImage());
             this.toolbox.getToolsButtons().get(i).addActionListener(this);
-            colorController.addObserver(this.toolbox.getTools().get(i));
+            colorModel.addObserver(this.toolbox.getTools().get(i));
         }
         this.activeTool = 0;
         this.toolbox.getToolsButtons().get(0).setBackground(Color.red);
