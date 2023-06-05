@@ -10,6 +10,8 @@ import java.awt.color.ColorSpace;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorConvertOp;
 import java.io.File;
@@ -79,6 +81,24 @@ public class CanvaPanel extends JComponent implements Observer {
         this.bufferedImage = resizedImage;
         this.revalidate();
         this.repaint();
+    }
+
+    public void flipImageHorizontal() {
+        AffineTransform affineTransform = AffineTransform.getScaleInstance(-1, 1);
+        affineTransform.translate(-this.bufferedImage.getWidth(), 0);
+        AffineTransformOp op = new AffineTransformOp(affineTransform, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+        this.bufferedImage = op.filter(this.bufferedImage, null);
+        this.repaint();
+        this.g2 = (Graphics2D) this.bufferedImage.getGraphics();
+    }
+
+    public void flipImageVertical() {
+        AffineTransform affineTransform = AffineTransform.getScaleInstance(1, -1);
+        affineTransform.translate(0, -this.bufferedImage.getHeight());
+        AffineTransformOp op = new AffineTransformOp(affineTransform, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+        this.bufferedImage = op.filter(this.bufferedImage, null);
+        this.repaint();
+        this.g2 = (Graphics2D) this.bufferedImage.getGraphics();
     }
 
     public void clear() {
