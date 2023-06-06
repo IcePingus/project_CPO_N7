@@ -61,7 +61,7 @@ public class Toolbox extends Observable {
         this.isSquareShape = isSquareShape;
     }
 
-    public boolean isSquareShape() {
+    public boolean getIsSquareShape() {
         return this.isSquareShape;
     }
 }

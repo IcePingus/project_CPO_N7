@@ -42,11 +42,12 @@ public class RubberTool implements ToolCommand {
             graphics2D.fillOval(oldX - size / 2, oldY - size / 2, size, size);
         }
 
-        int dx = Math.abs(currentX - oldX);
-        int dy = Math.abs(currentY - oldY);
-        int sx = oldX < currentX ? 1 : -1;
-        int sy = oldY < currentY ? 1 : -1;
-        int err = dx - dy;
+        int distanceX = Math.abs(currentX - oldX);
+        int distanceY = Math.abs(currentY - oldY);
+        int directionX = oldX < currentX ? 1 : -1;
+        int directionY = oldY < currentY ? 1 : -1;
+        int erreur = distanceX - distanceY;
+        int erreur2;
 
         while (oldX != currentX || oldY != currentY) {
 
@@ -56,15 +57,14 @@ public class RubberTool implements ToolCommand {
                 graphics2D.fillOval(oldX - size / 2, oldY - size / 2, size, size);
             }
 
-
-            int e2 = 2 * err;
-            if (e2 > -dy) {
-                err -= dy;
-                oldX += sx;
+            erreur2 = 2 * erreur;
+            if (erreur2 > -distanceY) {
+                erreur -= distanceY;
+                oldX += directionX;
             }
-            if (e2 < dx) {
-                err += dx;
-                oldY += sy;
+            if (erreur2 < distanceX) {
+                erreur += distanceX;
+                oldY += directionY;
             }
         }
     }
