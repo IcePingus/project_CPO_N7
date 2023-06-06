@@ -17,9 +17,9 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
     private JMenuItem saveImage;
     private JMenuItem bwTransform;
     private JMenuItem resize;
+    private JMenuItem clear;
     private JMenuItem flipHorizontalImage;
     private JMenuItem flipVerticalImage;
-
     ResizeDialog resizeDialog;
 
     public GraphicProjectPanel(JFrame frame) {
@@ -53,6 +53,7 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
 
         JMenu menuImage = new JMenu("Image");
         this.resize = new JMenuItem("Resize");
+        this.clear = new JMenuItem("Clear image");
         this.flipHorizontalImage = new JMenuItem("Flip horizontal");
         this.flipVerticalImage = new JMenuItem("Flip vertical");
 
@@ -64,9 +65,11 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
         this.flipVerticalImage.addActionListener(this);
         this.bwTransform.addActionListener(this);
         this.resize.addActionListener(this);
+        this.clear.addActionListener(this);
 
         menuFile.add(this.saveImage);
         menuImage.add(this.resize);
+        menuImage.add(this.clear);
         menuImage.add(this.flipHorizontalImage);
         menuImage.add(this.flipVerticalImage);
         mb.add(menuFile);
@@ -108,6 +111,11 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
             canvaPanel.exportPNG();
         } else if (e.getSource() == this.bwTransform) {
             canvaPanel.blackAndWhiteTransform();
+        } else if (e.getSource() == this.clear) {
+            int resultOptionPane = JOptionPane.showConfirmDialog(this, "Do you really want to clear the canva ?", "Clear image", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            if (resultOptionPane == JOptionPane.YES_OPTION) {
+                this.canvaPanel.clear();
+            }
         } else if (e.getSource() == this.flipHorizontalImage) {
             this.canvaPanel.flipImageHorizontal();
         } else if (e.getSource() == this.flipVerticalImage) {

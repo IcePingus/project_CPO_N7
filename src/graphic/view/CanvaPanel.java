@@ -59,7 +59,7 @@ public class CanvaPanel extends JComponent implements Observer {
         Toaster toasterManager = new Toaster();
         try {
             toasterManager.showToaster("Image exported !");
-            ImageIO.write(this.bufferedImage, "png", new File("image.png"));
+            ImageIO.write(this.bufferedImage, "png", new File("export/image.png"));
         } catch (IOException e) {
             toasterManager.showToaster("There was an error while attempting to save the image.");
             e.printStackTrace();
