@@ -26,7 +26,7 @@ public class Canva extends JComponent  {
                 oldY = e.getY() - ((getHeight() - bufferedImage.getHeight()) / 2);
                 currentX = oldX;
                 currentY = oldY;
-                toolbox.getActiveTool().execute(oldX, oldY, currentX, currentY, bufferedImage, g2, e.getModifiersEx(), toolbox.getToolSize());
+                toolbox.getActiveTool().execute(oldX, oldY, currentX, currentY, bufferedImage, g2, e.getModifiersEx(), toolbox.getToolSize(), toolbox.isSquareShape());
 
                 repaint();
             }
@@ -80,7 +80,7 @@ public class Canva extends JComponent  {
                 currentY = e.getY() - ((getHeight() - bufferedImage.getHeight()) / 2);
 
                 if (g2 != null) {
-                    toolbox.getActiveTool().execute(oldX, oldY, currentX, currentY, bufferedImage, g2, e.getModifiersEx(), toolbox.getToolSize());
+                    toolbox.getActiveTool().execute(oldX, oldY, currentX, currentY, bufferedImage, g2, e.getModifiersEx(), toolbox.getToolSize(), toolbox.isSquareShape());
                     oldX = currentX;
                     oldY = currentY;
                 }

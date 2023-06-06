@@ -10,6 +10,7 @@ public class Toolbox extends Observable {
     private List<ToolCommand> toolCommands;
     private ToolCommand activeTool;
     private int toolSize;
+    private boolean isSquareShape;
 
     public Toolbox() {
         this.toolsButtons = new ArrayList<>();
@@ -17,6 +18,7 @@ public class Toolbox extends Observable {
         this.addTool(new PencilTool());
         this.activeTool = this.getTool(0);
         this.toolSize = 5;
+        this.isSquareShape = true;
     }
 
     public void addTool(ToolCommand tool) {
@@ -53,5 +55,13 @@ public class Toolbox extends Observable {
 
     public int getToolSize() {
         return this.toolSize;
+    }
+
+    public void setIsSquareShape(boolean isSquareShape) {
+        this.isSquareShape = isSquareShape;
+    }
+
+    public boolean isSquareShape() {
+        return this.isSquareShape;
     }
 }

@@ -32,47 +32,44 @@ public class RubberTool implements ToolCommand {
     }
 
     @Override
-    public void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click, int size) {
-        graphics2D.drawLine(oldX, oldY, currentX, currentY);
+    public void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click, int size, boolean square) {
         graphics2D.setPaint(Color.WHITE);
-        for (int i = 0; i < size/2; i++) {
-            for (int j = 0 - size; j < size/2; j++) {
-                graphics2D.drawLine(oldX - j, oldY - size, currentX - j, currentY - size);
-                graphics2D.drawLine(oldX - j, oldY - size, currentX - j, currentY + size);
-                graphics2D.drawLine(oldX - j, oldY - size, currentX + j, currentY - size);
-                graphics2D.drawLine(oldX - j, oldY - size, currentX + j, currentY + size);
-                graphics2D.drawLine(oldX - j, oldY + size, currentX - j, currentY - size);
-                graphics2D.drawLine(oldX - j, oldY + size, currentX - j, currentY + size);
-                graphics2D.drawLine(oldX - j, oldY - size, currentX + j, currentY + size);
-                graphics2D.drawLine(oldX - j, oldY + size, currentX + j, currentY + size);
-                graphics2D.drawLine(oldX + j, oldY - size, currentX - j, currentY - size);
-                graphics2D.drawLine(oldX + j, oldY - size, currentX - j, currentY + size);
-                graphics2D.drawLine(oldX + j, oldY - size, currentX + j, currentY - size);
-                graphics2D.drawLine(oldX + j, oldY - size, currentX + j, currentY + size);
-                graphics2D.drawLine(oldX + j, oldY + size, currentX - j, currentY - size);
-                graphics2D.drawLine(oldX + j, oldY + size, currentX - j, currentY + size);
-                graphics2D.drawLine(oldX + j, oldY + size, currentX + j, currentY - size);
-                graphics2D.drawLine(oldX + j, oldY + size, currentX + j, currentY + size);
+        graphics2D.drawLine(oldX, oldY, currentX, currentY);
 
-                graphics2D.drawLine(oldX - size, oldY - j, currentX - size, currentY + j);
-                graphics2D.drawLine(oldX - size, oldY - j, currentX + size, currentY - j);
-                graphics2D.drawLine(oldX - size, oldY - j, currentX + size, currentY + j);
-                graphics2D.drawLine(oldX - size, oldY + j, currentX - size, currentY - j);
-                graphics2D.drawLine(oldX - size, oldY + j, currentX - size, currentY + j);
-                graphics2D.drawLine(oldX - size, oldY - j, currentX + size, currentY + j);
-                graphics2D.drawLine(oldX - size, oldY + j, currentX + size, currentY + j);
-                graphics2D.drawLine(oldX + size, oldY - j, currentX - size, currentY - j);
-                graphics2D.drawLine(oldX + size, oldY - j, currentX - size, currentY + j);
-                graphics2D.drawLine(oldX + size, oldY - j, currentX + size, currentY - j);
-                graphics2D.drawLine(oldX + size, oldY - j, currentX + size, currentY + j);
-                graphics2D.drawLine(oldX + size, oldY + j, currentX - size, currentY - j);
-                graphics2D.drawLine(oldX + size, oldY + j, currentX - size, currentY + j);
-                graphics2D.drawLine(oldX + size, oldY + j, currentX + size, currentY - j);
-                graphics2D.drawLine(oldX + size, oldY + j, currentX + size, currentY + j);
+        if (square) {
+            graphics2D.fillRect(oldX - size / 2, oldY - size / 2, size, size);
+        } else {
+            graphics2D.fillOval(oldX - size / 2, oldY - size / 2, size, size);
+        }
+
+        int dx = Math.abs(currentX - oldX);
+        int dy = Math.abs(currentY - oldY);
+        int sx = oldX < currentX ? 1 : -1;
+        int sy = oldY < currentY ? 1 : -1;
+        int err = dx - dy;
+
+        while (oldX != currentX || oldY != currentY) {
+
+            if (square) {
+                graphics2D.fillRect(oldX - size / 2, oldY - size / 2, size, size);
+            } else {
+                graphics2D.fillOval(oldX - size / 2, oldY - size / 2, size, size);
+            }
+
+
+            int e2 = 2 * err;
+            if (e2 > -dy) {
+                err -= dy;
+                oldX += sx;
+            }
+            if (e2 < dx) {
+                err += dx;
+                oldY += sy;
             }
         }
     }
 
     @Override
-    public void update(Observable o, Object arg) { }
+    public void update(Observable o, Object arg) {
+    }
 }
