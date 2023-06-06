@@ -18,6 +18,8 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
     private JMenuItem bwTransform;
     private JMenuItem resize;
     private JMenuItem clear;
+    private JMenuItem flipHorizontalImage;
+    private JMenuItem flipVerticalImage;
     ResizeDialog resizeDialog;
 
     public GraphicProjectPanel(JFrame frame) {
@@ -52,11 +54,15 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
         JMenu menuImage = new JMenu("Image");
         this.resize = new JMenuItem("Resize");
         this.clear = new JMenuItem("Clear image");
+        this.flipHorizontalImage = new JMenuItem("Flip horizontal");
+        this.flipVerticalImage = new JMenuItem("Flip vertical");
 
         JMenu menuEffects = new JMenu("Effects");
         this.bwTransform = new JMenuItem("Black and white");
 
         this.saveImage.addActionListener(this);
+        this.flipHorizontalImage.addActionListener(this);
+        this.flipVerticalImage.addActionListener(this);
         this.bwTransform.addActionListener(this);
         this.resize.addActionListener(this);
         this.clear.addActionListener(this);
@@ -64,6 +70,8 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
         menuFile.add(this.saveImage);
         menuImage.add(this.resize);
         menuImage.add(this.clear);
+        menuImage.add(this.flipHorizontalImage);
+        menuImage.add(this.flipVerticalImage);
         mb.add(menuFile);
         mb.add(menuImage);
         mb.add(menuEffects);
@@ -108,6 +116,10 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
             if (resultOptionPane == JOptionPane.YES_OPTION) {
                 this.canvaPanel.clear();
             }
+        } else if (e.getSource() == this.flipHorizontalImage) {
+            this.canvaPanel.flipImageHorizontal();
+        } else if (e.getSource() == this.flipVerticalImage) {
+            this.canvaPanel.flipImageVertical();
         }
     }
 }
