@@ -90,6 +90,7 @@ public class CanvaController implements Observer {
         this.canva.setG2(resizedImage.createGraphics());
         this.canva.getG2().drawImage(this.canva.getBufferedImage(), 0, 0, width, height, null);
         this.canva.setBufferedImage(resizedImage);
+        this.canva.repaint();
     }
 
     public void importImage(JFrame frame) {

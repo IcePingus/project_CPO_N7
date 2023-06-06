@@ -76,12 +76,7 @@ public class Canva extends JComponent  {
 
     public BufferedImage nextBufferedImage() {
         BufferedImage newImage = copyBufferedImage(this.imageStates.get(this.currentIndex));
-        this.currentIndex++;
-        this.imageStates.add(this.currentIndex, newImage);
-        if (this.imageStates.size() > this.currentIndex + 1) {
-            this.imageStates.subList(this.currentIndex + 1, this.imageStates.size()).clear();
-        }
-        this.g2 = (Graphics2D) newImage.getGraphics();
+        this.setBufferedImage(newImage);
         return newImage;
     }
 
@@ -91,7 +86,6 @@ public class Canva extends JComponent  {
             this.g2 = (Graphics2D) this.imageStates.get(this.currentIndex).getGraphics();
             this.repaint();
         }
-        System.out.println("Index : " + this.currentIndex + " sur " + (this.imageStates.size() - 1));
     }
 
     private void redo() {
@@ -100,7 +94,6 @@ public class Canva extends JComponent  {
             this.g2 = (Graphics2D) this.imageStates.get(this.currentIndex).getGraphics();
             this.repaint();
         }
-        System.out.println("Index : " + this.currentIndex + " sur " + (this.imageStates.size() - 1));
     }
 
     public BufferedImage getBufferedImage() {
@@ -112,9 +105,12 @@ public class Canva extends JComponent  {
     }
 
     public void setBufferedImage(BufferedImage bufferedImage) {
+        this.currentIndex++;
         this.imageStates.add(this.currentIndex, bufferedImage);
-        this.repaint();
-        this.g2 = (Graphics2D) this.imageStates.get(currentIndex).getGraphics();
+        if (this.imageStates.size() > this.currentIndex + 1) {
+            this.imageStates.subList(this.currentIndex + 1, this.imageStates.size()).clear();
+        }
+        this.g2 = (Graphics2D) bufferedImage.getGraphics();
     }
 
     public void setG2(Graphics2D g2) {
