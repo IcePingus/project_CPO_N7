@@ -47,17 +47,19 @@ public class CanvaController implements Observer {
     }
 
     public void flipImageHorizontal() {
+        BufferedImage newImage = this.canva.nextBufferedImage();
         AffineTransform affineTransform = AffineTransform.getScaleInstance(-1, 1);
-        affineTransform.translate(-this.canva.getBufferedImage().getWidth(), 0);
+        affineTransform.translate(-newImage.getWidth(), 0);
         AffineTransformOp op = new AffineTransformOp(affineTransform, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
-        this.canva.setBufferedImage(op.filter(this.canva.getBufferedImage(), null));
+        this.canva.setBufferedImage(op.filter(newImage, null));
     }
 
     public void flipImageVertical() {
+        BufferedImage newImage = this.canva.nextBufferedImage();
         AffineTransform affineTransform = AffineTransform.getScaleInstance(1, -1);
-        affineTransform.translate(0, -this.canva.getBufferedImage().getHeight());
+        affineTransform.translate(0, -newImage.getHeight());
         AffineTransformOp op = new AffineTransformOp(affineTransform, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
-        this.canva.setBufferedImage(op.filter(this.canva.getBufferedImage(), null));
+        this.canva.setBufferedImage(op.filter(newImage, null));
     }
 
     public void quit(JFrame frame) {
@@ -77,8 +79,9 @@ public class CanvaController implements Observer {
     }
 
     public void blackAndWhiteTransform() {
+        BufferedImage newImage = this.canva.nextBufferedImage();
         ColorConvertOp op = new ColorConvertOp(ColorSpace.getInstance(ColorSpace.CS_GRAY), null);
-        op.filter(this.canva.getBufferedImage(), this.canva.getBufferedImage());
+        op.filter(newImage, newImage);
         this.canva.repaint();
     }
 
@@ -87,6 +90,7 @@ public class CanvaController implements Observer {
         this.canva.setG2(resizedImage.createGraphics());
         this.canva.getG2().drawImage(this.canva.getBufferedImage(), 0, 0, width, height, null);
         this.canva.setBufferedImage(resizedImage);
+        this.canva.repaint();
     }
 
     public void importImage(JFrame frame) {
@@ -120,6 +124,7 @@ public class CanvaController implements Observer {
     }
 
     public void clear() {
+        this.canva.nextBufferedImage();
         this.canva.getG2().setPaint(Color.WHITE);
         this.canva.getG2().fillRect(0, 0, this.canva.getWidth(), this.canva.getHeight());
         this.canva.repaint();
