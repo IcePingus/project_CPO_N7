@@ -22,7 +22,6 @@ public class ViewSVGCanvaPreviewPanel extends JPanel implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         svgCanva.setSVGDocument(((SVGPreview) o).getSvgDocument());
-        System.out.println(((SVGPreview) o).getSVGCode());
     }
 
 }

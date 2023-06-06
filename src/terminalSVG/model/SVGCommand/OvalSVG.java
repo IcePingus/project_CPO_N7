@@ -1,6 +1,6 @@
 package terminalSVG.model.SVGCommand;
 
-import org.apache.batik.svggen.SVGGraphics2D;
+import terminalSVG.model.SVGPreview;
 
 import java.awt.*;
 import java.util.List;
@@ -62,17 +62,17 @@ public class OvalSVG extends DrawShapeAction {
     }
 
     @Override
-    public void execute(SVGGraphics2D graphics2D) {
+    public void execute(SVGPreview svgPreview) {
         // Dessiner le cercle avec le SVGGraphics2D
-        graphics2D.setColor(getStrokeColor());
+        svgPreview.getSVGGraphics().setColor(getStrokeColor());
 
         // Dessiner le contour du cercle
-        graphics2D.drawOval((int)center.getX(), (int)center.getY(), (int)width, (int)height);
+        svgPreview.getSVGGraphics().drawOval((int)center.getX(), (int)center.getY(), (int)width, (int)height);
 
         if (isFill) {
             // Remplir le cercle
-            graphics2D.setColor(getFillColor());
-            graphics2D.fillOval((int)center.getX(), (int)center.getY(), (int)width, (int)height);
+            svgPreview.getSVGGraphics().setColor(getFillColor());
+            svgPreview.getSVGGraphics().fillOval((int)center.getX(), (int)center.getY(), (int)width, (int)height);
         }
     }
 }

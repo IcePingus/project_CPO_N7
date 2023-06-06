@@ -1,6 +1,6 @@
 package terminalSVG.model.SVGCommand;
 
-import org.apache.batik.svggen.SVGGraphics2D;
+import terminalSVG.model.SVGPreview;
 
 import java.awt.*;
 import java.util.List;
@@ -53,20 +53,20 @@ public class SquareSVG extends DrawShapeAction {
 	}
 
 
-    public void execute(SVGGraphics2D graphics2D) {
-        graphics2D.setColor(strokeColor);
+    public void execute(SVGPreview svgPreview) {
+		svgPreview.getSVGGraphics().setColor(strokeColor);
 
         int x = (int) Math.round(point.getX());
         int y = (int) Math.round(point.getY());
         int length = (int) Math.round(sideLength);
 
         // Dessiner le contour du carré
-        graphics2D.drawRect(x, y, length, length);
+        svgPreview.getSVGGraphics().drawRect(x, y, length, length);
 
         if (isFill) {
             // Remplir le carré
-            graphics2D.setColor(fillColor);
-            graphics2D.fillRect(x, y, length, length);
+            svgPreview.getSVGGraphics().setColor(fillColor);
+            svgPreview.getSVGGraphics().fillRect(x, y, length, length);
         }
     }
 }

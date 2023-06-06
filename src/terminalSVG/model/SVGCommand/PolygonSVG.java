@@ -1,6 +1,6 @@
 package terminalSVG.model.SVGCommand;
 
-import org.apache.batik.svggen.SVGGraphics2D;
+import terminalSVG.model.SVGPreview;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -49,9 +49,9 @@ public class PolygonSVG extends DrawShapeAction {
 		return this.description;
 	}
 
-    public void execute(SVGGraphics2D g2d) {
-    	
-    	g2d.setColor(getStrokeColor());
+    public void execute(SVGPreview svgPreview) {
+
+		svgPreview.getSVGGraphics().setColor(getStrokeColor());
 
         // Créer les tableaux de coordonnées x et y
         int[] xArray = new int[points.size()];
@@ -67,13 +67,13 @@ public class PolygonSVG extends DrawShapeAction {
         Polygon polygon = new Polygon(xArray, yArray, points.size());
 
         // Dessiner le polygone avec le SVGGraphics2D
-        g2d.setColor(getStrokeColor());
-        g2d.draw(polygon);
+        svgPreview.getSVGGraphics().setColor(getStrokeColor());
+        svgPreview.getSVGGraphics().draw(polygon);
 
         if (isFill) {
             // Remplir le polygone avec une couleur spécifique
-        	g2d.setColor(getFillColor());
-            g2d.fill(polygon);
+        	svgPreview.getSVGGraphics().setColor(getFillColor());
+            svgPreview.getSVGGraphics().fill(polygon);
         }
     }
 }

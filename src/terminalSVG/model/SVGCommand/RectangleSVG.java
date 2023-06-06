@@ -1,6 +1,6 @@
 package terminalSVG.model.SVGCommand;
 
-import org.apache.batik.svggen.SVGGraphics2D;
+import terminalSVG.model.SVGPreview;
 
 import java.awt.*;
 import java.util.List;
@@ -63,8 +63,8 @@ public class RectangleSVG extends DrawShapeAction {
     }
 
     @Override
-    public void execute(SVGGraphics2D graphics2D) {
-        graphics2D.setColor(getStrokeColor());
+    public void execute(SVGPreview svgPreview) {
+        svgPreview.getSVGGraphics().setColor(getStrokeColor());
 
         int x = (int) Math.round(point.getX());
         int y = (int) Math.round(point.getY());
@@ -72,12 +72,12 @@ public class RectangleSVG extends DrawShapeAction {
         int s2 = (int) Math.round(sideLength2);
 
         // Dessiner le contour du carré
-        graphics2D.drawRect(x, y, s1, s2);
+        svgPreview.getSVGGraphics().drawRect(x, y, s1, s2);
 
         if (isFill) {
             // Remplir le carré
-            graphics2D.setColor(fillColor);
-            graphics2D.fillRect(x, y, s1, s2);
+            svgPreview.getSVGGraphics().setColor(fillColor);
+            svgPreview.getSVGGraphics().fillRect(x, y, s1, s2);
         }
     }
 }
