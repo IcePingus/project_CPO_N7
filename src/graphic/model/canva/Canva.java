@@ -4,29 +4,39 @@ import graphic.model.tools.Toolbox;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
+import java.awt.image.WritableRaster;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Canva extends JComponent  {
 
-    private BufferedImage bufferedImage;
+    private List<BufferedImage> imageStates;
+    private int currentIndex;
     private Graphics2D g2;
     private int currentX, currentY, oldX, oldY;
     private Toolbox toolbox;
 
     public Canva(Toolbox toolbox) {
         this.toolbox = toolbox;
+        this.imageStates = new ArrayList<>();
+        this.currentIndex = 0;
         this.setDoubleBuffered(false);
+        this.requestFocusInWindow();
+        this.enableKeyboardInputs();
         this.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
                 // save coord x,y when mouse is pressed
-                oldX = e.getX() - ((getWidth() - bufferedImage.getWidth()) / 2);
-                oldY = e.getY() - ((getHeight() - bufferedImage.getHeight()) / 2);
+                oldX = e.getX() - ((getWidth() - imageStates.get(currentIndex).getWidth()) / 2);
+                oldY = e.getY() - ((getHeight() - imageStates.get(currentIndex).getHeight()) / 2);
                 currentX = oldX;
                 currentY = oldY;
-                toolbox.getActiveTool().execute(oldX, oldY, currentX, currentY, bufferedImage, g2, e.getModifiersEx(), toolbox.getToolSize(), toolbox.getIsSquareShape());
+
+                BufferedImage newImage = nextBufferedImage();
+
+                toolbox.getActiveTool().execute(oldX, oldY, currentX, currentY, newImage, g2, e.getModifiersEx(), toolbox.getToolSize(), toolbox.getIsSquareShape());
 
                 repaint();
             }
@@ -35,18 +45,76 @@ public class Canva extends JComponent  {
         this.setMouseMotionListener();
     }
 
+    private void enableKeyboardInputs() {
+        InputMap inputMap = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap actionMap = getActionMap();
+
+        KeyStroke undoKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_Z, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
+        inputMap.put(undoKeyStroke, "undo");
+        actionMap.put("undo", new AbstractAction() {
+            public void actionPerformed(ActionEvent actionEvent) {
+                undo();
+            }
+        });
+
+        KeyStroke redoKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_Y, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
+        inputMap.put(redoKeyStroke, "redo");
+        actionMap.put("redo", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                redo();
+            }
+        });
+    }
+
+    private BufferedImage copyBufferedImage(BufferedImage source) {
+        ColorModel cm = source.getColorModel();
+        boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
+        WritableRaster raster = source.copyData(null);
+        return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
+    }
+
+    public BufferedImage nextBufferedImage() {
+        BufferedImage newImage = copyBufferedImage(this.imageStates.get(this.currentIndex));
+        this.currentIndex++;
+        this.imageStates.add(this.currentIndex, newImage);
+        if (this.imageStates.size() > this.currentIndex + 1) {
+            this.imageStates.subList(this.currentIndex + 1, this.imageStates.size()).clear();
+        }
+        this.g2 = (Graphics2D) newImage.getGraphics();
+        return newImage;
+    }
+
+    private void undo() {
+        if (this.imageStates.size() > 1 && this.currentIndex > 0) {
+            this.currentIndex--;
+            this.g2 = (Graphics2D) this.imageStates.get(this.currentIndex).getGraphics();
+            this.repaint();
+        }
+        System.out.println("Index : " + this.currentIndex + " sur " + (this.imageStates.size() - 1));
+    }
+
+    private void redo() {
+        if (this.currentIndex < this.imageStates.size() - 1) {
+            this.currentIndex++;
+            this.g2 = (Graphics2D) this.imageStates.get(this.currentIndex).getGraphics();
+            this.repaint();
+        }
+        System.out.println("Index : " + this.currentIndex + " sur " + (this.imageStates.size() - 1));
+    }
+
     public BufferedImage getBufferedImage() {
-        return this.bufferedImage;
+        return this.imageStates.get(currentIndex);
     }
 
     public Graphics2D getG2() {
-        return g2;
+        return this.g2;
     }
 
     public void setBufferedImage(BufferedImage bufferedImage) {
-        this.bufferedImage = bufferedImage;
+        this.imageStates.add(this.currentIndex, bufferedImage);
         this.repaint();
-        this.g2 = (Graphics2D) this.bufferedImage.getGraphics();
+        this.g2 = (Graphics2D) this.imageStates.get(currentIndex).getGraphics();
     }
 
     public void setG2(Graphics2D g2) {
@@ -58,16 +126,15 @@ public class Canva extends JComponent  {
     }
 
     protected void paintComponent(Graphics g) {
-        if (this.bufferedImage == null) {
-            this.bufferedImage = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_RGB);
-            this.g2 = (Graphics2D) this.bufferedImage.getGraphics();
+        if (this.imageStates.size() == 0 || this.imageStates.get(this.currentIndex) == null) {
+            this.imageStates.add(this.currentIndex, new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_RGB));
+            this.g2 =(Graphics2D) this.imageStates.get(this.currentIndex).getGraphics();
 
             this.g2.setPaint(Color.WHITE);
             this.g2.fillRect(0, 0, this.getWidth(), this.getHeight());
             this.repaint();
         }
-        g.drawImage(this.bufferedImage, ((this.getWidth() - this.bufferedImage.getWidth()) / 2), ((this.getHeight() - this.bufferedImage.getHeight()) / 2), null);
-    }
+        g.drawImage(this.imageStates.get(this.currentIndex), ((this.getWidth() - this.imageStates.get(this.currentIndex).getWidth()) / 2), ((this.getHeight() - this.imageStates.get(this.currentIndex).getHeight()) / 2), null);    }
 
     public void setMouseMotionListener() {
         if (this.getMouseMotionListeners().length != 0) {
@@ -76,11 +143,11 @@ public class Canva extends JComponent  {
         this.addMouseMotionListener(new MouseMotionAdapter() {
 
             public void mouseDragged(MouseEvent e) {
-                currentX = e.getX() - ((getWidth() - bufferedImage.getWidth()) / 2);
-                currentY = e.getY() - ((getHeight() - bufferedImage.getHeight()) / 2);
+                currentX = e.getX() - ((getWidth() - imageStates.get(currentIndex).getWidth()) / 2);
+                currentY = e.getY() - ((getHeight() - imageStates.get(currentIndex).getHeight()) / 2);
 
                 if (g2 != null) {
-                    toolbox.getActiveTool().execute(oldX, oldY, currentX, currentY, bufferedImage, g2, e.getModifiersEx(), toolbox.getToolSize(), toolbox.getIsSquareShape());
+                    toolbox.getActiveTool().execute(oldX, oldY, currentX, currentY, imageStates.get(currentIndex), g2, e.getModifiersEx(), toolbox.getToolSize(), toolbox.getIsSquareShape());
                     oldX = currentX;
                     oldY = currentY;
                 }
