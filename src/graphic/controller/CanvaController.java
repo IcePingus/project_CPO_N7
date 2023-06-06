@@ -3,6 +3,7 @@ package graphic.controller;
 import com.nitido.utils.toaster.Toaster;
 import graphic.model.tools.Toolbox;
 import graphic.model.canva.Canva;
+import graphic.view.SelectionPanel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -57,6 +58,21 @@ public class CanvaController implements Observer {
         affineTransform.translate(0, -this.canva.getBufferedImage().getHeight());
         AffineTransformOp op = new AffineTransformOp(affineTransform, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
         this.canva.setBufferedImage(op.filter(this.canva.getBufferedImage(), null));
+    }
+
+    public void quit(JFrame frame) {
+        String[] options = new String[] {"Yes and save the image", "Yes without saving", "No"};
+        int resultOptionPane = JOptionPane.showOptionDialog(null, "Do you really want to quit ?", "Exit",
+                JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
+                null, options, options[0]);
+        if (resultOptionPane == 0) {
+            this.exportPNG();
+        }
+        if (resultOptionPane == 0 || resultOptionPane == 1) {
+            frame.setContentPane(new SelectionPanel(frame));
+            frame.validate();
+            frame.repaint();
+        }
     }
 
     public void blackAndWhiteTransform() {

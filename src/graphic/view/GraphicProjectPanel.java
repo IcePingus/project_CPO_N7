@@ -18,6 +18,7 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
     private Canva canva;
     private CanvaController canvaController;
     private JMenuItem saveImage;
+    private JMenuItem quit;
     private JMenuItem importImage;
     private JMenuItem bwTransform;
     private JMenuItem resize;
@@ -59,6 +60,7 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
         JMenu menuFile = new JMenu("File");
         this.saveImage = new JMenuItem("Save image");
         this.importImage = new JMenuItem("Import image");
+        this.quit = new JMenuItem("Exit");
 
         JMenu menuImage = new JMenu("Image");
         this.resize = new JMenuItem("Resize");
@@ -71,6 +73,7 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
 
         this.saveImage.addActionListener(this);
         this.importImage.addActionListener(this);
+        this.quit.addActionListener(this);
         this.resize.addActionListener(this);
         this.flipHorizontalImage.addActionListener(this);
         this.flipVerticalImage.addActionListener(this);
@@ -79,6 +82,7 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
 
         menuFile.add(this.saveImage);
         menuFile.add(this.importImage);
+        menuFile.add(this.quit);
         menuImage.add(this.resize);
         menuImage.add(this.flipHorizontalImage);
         menuImage.add(this.flipVerticalImage);
@@ -120,6 +124,8 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
             this.canvaController.exportPNG();
         } else if (e.getSource() == this.importImage) {
             this.canvaController.importImage(this.frame);
+        } else if (e.getSource() == this.quit) {
+            this.canvaController.quit(this.frame);
         } else if (e.getSource() == this.resize) {
             this.resizeDialog.setLocation(this.getSize().width / 3, this.getSize().height / 3);
             this.resizeDialog.setVisible(true);
