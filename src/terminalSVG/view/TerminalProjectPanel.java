@@ -1,16 +1,34 @@
 package terminalSVG.view;
 
+import graphic.view.SelectionPanel;
 import terminalSVG.controller.ControllerTerminalPanel;
 import terminalSVG.model.History;
 import terminalSVG.model.SVGPreview;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
-public class TerminalProjectPanel extends JPanel {
-    public TerminalProjectPanel() {
+public class TerminalProjectPanel extends JPanel implements ActionListener {
+    private JFrame frame;
+    private JMenuItem quit;
+    public TerminalProjectPanel(JFrame frame) {
+
+        this.frame = frame;
+
+        JMenuBar mb = new JMenuBar();
+        JMenu menuFile = new JMenu("File");
+        this.quit = new JMenuItem("Exit");
+
+        this.quit.addActionListener(this);
+
+        menuFile.add(this.quit);
+        mb.add(menuFile);
+
+        frame.setJMenuBar(mb);
 
         // ----------- I. Partie Terminal -----------
         // A. Instance Panels Historique & PreviewCodeSVG (preview)
@@ -99,5 +117,25 @@ public class TerminalProjectPanel extends JPanel {
         // ----------- VI. Ajout MainPanel dans la vue -----------
         this.setLayout(new BorderLayout());
         this.add(pinteCLIMainPanel, BorderLayout.CENTER);
+    }
+
+    public void exit(JFrame frame) {
+        String[] options = new String[] {"Yes", "No"};
+        int resultOptionPane = JOptionPane.showOptionDialog(null, "Do you really want to quit?", "Exit",
+                JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
+                null, options, options[0]);
+        if (resultOptionPane == JOptionPane.YES_OPTION) {
+            frame.setContentPane(new SelectionPanel(frame));
+            frame.setJMenuBar(null);
+            frame.validate();
+            frame.repaint();
+        }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == this.quit) {
+            this.exit(this.frame);
+        }
     }
 }
