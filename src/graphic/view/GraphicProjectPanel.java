@@ -1,6 +1,8 @@
 package graphic.view;
 
+import graphic.controller.CanvaController;
 import graphic.controller.ColorController;
+import graphic.model.canva.Canva;
 import graphic.model.color.ColorModel;
 import graphic.model.tools.Toolbox;
 
@@ -13,7 +15,8 @@ import java.awt.event.ComponentListener;
 
 public class GraphicProjectPanel extends JDesktopPane implements ActionListener {
 
-    private CanvaPanel canvaPanel;
+    private Canva canva;
+    private CanvaController canvaController;
     private JMenuItem saveImage;
     private JMenuItem importImage;
     private JMenuItem bwTransform;
@@ -44,12 +47,13 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
         colorSchemeInternalFrame.setVisible(true);
         this.add(colorSchemeInternalFrame);
 
-        this.canvaPanel = new CanvaPanel(toolbox);
+        this.canva = new Canva(toolbox);
+        this.canvaController = new CanvaController(this.canva);
 
-        this.resizeDialog = new ResizeDialog(this.canvaPanel);
+        this.resizeDialog = new ResizeDialog(this.canvaController);
 
-        toolbox.addObserver(this.canvaPanel);
-        this.add(this.canvaPanel, BorderLayout.CENTER);
+        toolbox.addObserver(this.canvaController);
+        this.add(this.canva, BorderLayout.CENTER);
 
         JMenuBar mb = new JMenuBar();
         JMenu menuFile = new JMenu("File");
@@ -113,23 +117,23 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == this.saveImage) {
-            this.canvaPanel.exportPNG();
+            this.canvaController.exportPNG();
         } else if (e.getSource() == this.importImage) {
-            this.canvaPanel.importImage(this.frame);
+            this.canvaController.importImage(this.frame);
         } else if (e.getSource() == this.resize) {
             this.resizeDialog.setLocation(this.getSize().width / 3, this.getSize().height / 3);
             this.resizeDialog.setVisible(true);
         } else if (e.getSource() == this.flipHorizontalImage) {
-            this.canvaPanel.flipImageHorizontal();
+            this.canvaController.flipImageHorizontal();
         } else if (e.getSource() == this.flipVerticalImage) {
-            this.canvaPanel.flipImageVertical();
+            this.canvaController.flipImageVertical();
         } else if (e.getSource() == this.clear) {
             int resultOptionPane = JOptionPane.showConfirmDialog(this, "Do you really want to clear the canva ?", "Clear image", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (resultOptionPane == JOptionPane.YES_OPTION) {
-                this.canvaPanel.clear();
+                this.canvaController.clear();
             }
         }  else if (e.getSource() == this.bwTransform) {
-            this.canvaPanel.blackAndWhiteTransform();
+            this.canvaController.blackAndWhiteTransform();
         }
     }
 }
