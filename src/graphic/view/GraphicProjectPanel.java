@@ -15,15 +15,19 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
 
     private CanvaPanel canvaPanel;
     private JMenuItem saveImage;
+    private JMenuItem importImage;
     private JMenuItem bwTransform;
     private JMenuItem resize;
     private JMenuItem clear;
     private JMenuItem flipHorizontalImage;
     private JMenuItem flipVerticalImage;
+    private JFrame frame;
+
     ResizeDialog resizeDialog;
 
     public GraphicProjectPanel(JFrame frame) {
         this.setLayout(new BorderLayout());
+        this.frame = frame;
 
         Toolbox toolbox = new Toolbox();
         ColorModel colorModel = new ColorModel();
@@ -50,32 +54,36 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
         JMenuBar mb = new JMenuBar();
         JMenu menuFile = new JMenu("File");
         this.saveImage = new JMenuItem("Save image");
+        this.importImage = new JMenuItem("Import image");
 
         JMenu menuImage = new JMenu("Image");
         this.resize = new JMenuItem("Resize");
-        this.clear = new JMenuItem("Clear image");
         this.flipHorizontalImage = new JMenuItem("Flip horizontal");
         this.flipVerticalImage = new JMenuItem("Flip vertical");
+        this.clear = new JMenuItem("Clear image");
 
         JMenu menuEffects = new JMenu("Effects");
         this.bwTransform = new JMenuItem("Black and white");
 
         this.saveImage.addActionListener(this);
+        this.importImage.addActionListener(this);
+        this.resize.addActionListener(this);
         this.flipHorizontalImage.addActionListener(this);
         this.flipVerticalImage.addActionListener(this);
-        this.bwTransform.addActionListener(this);
-        this.resize.addActionListener(this);
         this.clear.addActionListener(this);
+        this.bwTransform.addActionListener(this);
 
         menuFile.add(this.saveImage);
+        menuFile.add(this.importImage);
         menuImage.add(this.resize);
-        menuImage.add(this.clear);
         menuImage.add(this.flipHorizontalImage);
         menuImage.add(this.flipVerticalImage);
+        menuImage.add(this.clear);
+        menuEffects.add(this.bwTransform);
+
         mb.add(menuFile);
         mb.add(menuImage);
         mb.add(menuEffects);
-        menuEffects.add(this.bwTransform);
         frame.setJMenuBar(mb);
 
         this.setBackground(Color.LIGHT_GRAY);
@@ -104,22 +112,24 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == this.resize) {
+        if (e.getSource() == this.saveImage) {
+            this.canvaPanel.exportPNG();
+        } else if (e.getSource() == this.importImage) {
+            this.canvaPanel.importImage(this.frame);
+        } else if (e.getSource() == this.resize) {
             this.resizeDialog.setLocation(this.getSize().width / 3, this.getSize().height / 3);
             this.resizeDialog.setVisible(true);
-        } else if (e.getSource() == this.saveImage) {
-            canvaPanel.exportPNG();
-        } else if (e.getSource() == this.bwTransform) {
-            canvaPanel.blackAndWhiteTransform();
+        } else if (e.getSource() == this.flipHorizontalImage) {
+            this.canvaPanel.flipImageHorizontal();
+        } else if (e.getSource() == this.flipVerticalImage) {
+            this.canvaPanel.flipImageVertical();
         } else if (e.getSource() == this.clear) {
             int resultOptionPane = JOptionPane.showConfirmDialog(this, "Do you really want to clear the canva ?", "Clear image", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (resultOptionPane == JOptionPane.YES_OPTION) {
                 this.canvaPanel.clear();
             }
-        } else if (e.getSource() == this.flipHorizontalImage) {
-            this.canvaPanel.flipImageHorizontal();
-        } else if (e.getSource() == this.flipVerticalImage) {
-            this.canvaPanel.flipImageVertical();
+        }  else if (e.getSource() == this.bwTransform) {
+            this.canvaPanel.blackAndWhiteTransform();
         }
     }
 }

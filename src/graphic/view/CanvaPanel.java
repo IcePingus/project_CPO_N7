@@ -5,6 +5,7 @@ import graphic.model.tools.Toolbox;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
 import java.awt.*;
 import java.awt.color.ColorSpace;
 import java.awt.event.MouseAdapter;
@@ -97,6 +98,38 @@ public class CanvaPanel extends JComponent implements Observer {
         this.bufferedImage = op.filter(this.bufferedImage, null);
         this.repaint();
         this.g2 = (Graphics2D) this.bufferedImage.getGraphics();
+    }
+
+    public void importImage(JFrame frame) {
+        String filename = File.separator+"tmp";
+        JFileChooser fileChooser = new JFileChooser(new File(filename));
+
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        fileChooser.setDialogTitle("Image");
+        fileChooser.setFileFilter(new FileFilter() {
+            @Override
+            public boolean accept(File file) {
+                if (file.getName().endsWith(".png") || file.getName().endsWith(".jpg") || file.isDirectory()) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+            @Override
+            public String getDescription() {
+                return null;
+            }
+        });
+
+        fileChooser.showOpenDialog(frame);
+        try {
+            this.bufferedImage = ImageIO.read(fileChooser.getSelectedFile());
+            repaint();
+            this.g2 = (Graphics2D) this.bufferedImage.getGraphics();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void clear() {
