@@ -109,7 +109,7 @@ public class CanvaPanel extends JComponent implements Observer {
         fileChooser.setFileFilter(new FileFilter() {
             @Override
             public boolean accept(File file) {
-                if (file.getName().endsWith(".png") ||file.getName().endsWith(".jpg") || file.isDirectory()) {
+                if (file.getName().endsWith(".png") || file.getName().endsWith(".jpg") || file.isDirectory()) {
                     return true;
                 } else {
                     return false;
