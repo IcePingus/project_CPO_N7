@@ -1,4 +1,4 @@
-package terminalSVG.model.SVGElement;
+package terminalSVG.model.SVGCommand;
 
 import java.awt.Color;
 

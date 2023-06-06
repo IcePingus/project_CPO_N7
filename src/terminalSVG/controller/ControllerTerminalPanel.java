@@ -1,7 +1,7 @@
 package terminalSVG.controller;
 
 import terminalSVG.model.*;
-import terminalSVG.model.SVGElement.*;
+import terminalSVG.model.SVGCommand.*;
 
 import org.apache.batik.svggen.SVGGraphics2D;
 
@@ -11,6 +11,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -29,7 +31,7 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
         super();
         this.history = h;
         this.svgPreview = svgp;
-        this.simpleCommands = collectMethodContents("terminalSVG.model.SVGElement");
+        this.simpleCommands = collectMethodContents("terminalSVG.model.SVGCommand");
 
         this.sendButton = new JButton("Entrer");
         this.sendButton.addActionListener(this);
@@ -87,60 +89,30 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
         }
 
         try {
-            switch (elementAction) {
-                case "circle":
-                    if (coords != null && coords.size() == CircleSVG.getCoordsListSize()) {
-                        // Créer et dessiner un cercle avec le SVGGraphics2D
-                        CircleSVG cercle = new CircleSVG(elementName, coords, isFill, strokeColor, fillColor);
-                        cercle.draw(g2d);
-                    } else {
-                        throw new IllegalArgumentException(">> Nombre d'arguments incorrect pour : " + elementAction);
-                    }
-                    break;
-                case "square":
-                    if (coords != null && coords.size() == SquareSVG.getCoordsListSize()) {
-                        // Créer et dessiner un cercle avec le SVGGraphics2D
-                        SquareSVG carre = new SquareSVG(elementName, coords, isFill, strokeColor, fillColor);
-                        carre.draw(g2d);
-                    } else {
-                        throw new IllegalArgumentException(">> Nombre d'arguments incorrect pour : " + elementAction);
-                    }
-                    break;
-                case "polygon":
-                    if (coords != null && coords.size() >= PolygonSVG.getCoordsListSize()) {
-                        // Créer et dessiner un polygone avec le SVGGraphics2D
-                        PolygonSVG polygone = new PolygonSVG(elementName, isFill, strokeColor, fillColor, coords);
-                        polygone.draw(g2d);
-                    } else {
-                        throw new IllegalArgumentException("Nombre d'arguments incorrect pour : " + elementAction);
-                    }
-                case "rectangle":
-                    if (coords != null && coords.size() == RectangleSVG.getCoordsListSize()) {
-                        // Créer et dessiner un polygone avec le SVGGraphics2D
-                        RectangleSVG rectangle = new RectangleSVG(elementName,coords,isFill,fillColor,strokeColor);
-                        rectangle.draw(g2d);
-                    } else {
-                        throw new IllegalArgumentException("Nombre d'arguments incorrect pour : " + elementAction);
-                    }
-                    break;
-                case "oval":
-                    if (coords != null && coords.size() == OvalSVG.getCoordsListSize()) {
-                        // Créer et dessiner un polygone avec le SVGGraphics2D
-                        OvalSVG oval = new OvalSVG(elementName,coords,isFill,fillColor,strokeColor);
-                        oval.draw(g2d);
-                    } else {
-                        throw new IllegalArgumentException("Nombre d'arguments incorrect pour : " + elementAction);
-                    }
-                    break;
-                case "clear":
-                    this.svgPreview.clear();
-                    break;
-                default:
-                    System.out.println("Default");
-            }
+            String action = elementAction;
+            action += "SVG";
+            action = Character.toUpperCase(action.charAt(0)) + action.substring(1);
+
+            Class<?> actionClass = Class.forName("terminalSVG.model.SVGCommand." + action);
+            Constructor<?> constructor = actionClass.getDeclaredConstructor(String.class, List.class, boolean.class, Color.class, Color.class);
+
+            constructor.setAccessible(true);
+            DrawShapeAction shape = (DrawShapeAction) constructor.newInstance(elementName, coords, isFill, strokeColor, fillColor);
+            shape.execute(this.svgPreview.getSVGGraphics());
+
             this.svgPreview.updateCanvas(elementAction + "-" + elementName);
         } catch (IllegalArgumentException e) {
             this.history.addCommand(new Command(new Date(), e.getMessage()));
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        } catch (InvocationTargetException e) {
+            this.history.addCommand(new Command(new Date(), ">> Nombre d'arguments incorrect"));
+        } catch (InstantiationException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -159,50 +131,50 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
         return map.containsKey(key) ? (Color) map.get(key) : defaultValue;
     }
 
-        public static List<String> collectMethodContents(String packageName) {
-            List<String> methodContents = new ArrayList<>();
-            List<Class<?>> classes = getClassesInPackage(packageName);
+    public static List<String> collectMethodContents(String packageName) {
+        List<String> methodContents = new ArrayList<>();
+        List<Class<?>> classes = getClassesInPackage(packageName);
 
-            for (Class<?> clazz : classes) {
-                Method[] methods = clazz.getDeclaredMethods();
-                for (Method method : methods) {
-                    if (method.getName().equals("getCommandName") && Modifier.isPublic(method.getModifiers())) {
-                        try {
-                            Object instance = clazz.getDeclaredConstructor().newInstance();
-                            String methodContent = (String) method.invoke(instance);
-                            methodContents.add(methodContent);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+        for (Class<?> clazz : classes) {
+            Method[] methods = clazz.getDeclaredMethods();
+            for (Method method : methods) {
+                if (method.getName().equals("getCommandName") && Modifier.isPublic(method.getModifiers())) {
+                    try {
+                        Object instance = clazz.getDeclaredConstructor().newInstance();
+                        String methodContent = (String) method.invoke(instance);
+                        methodContents.add(methodContent);
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
-
-            return methodContents;
         }
 
-        private static List<Class<?>> getClassesInPackage(String packageName) {
-            List<Class<?>> classes = new ArrayList<>();
-            String packagePath = packageName.replace('.', '/');
-            ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-            try {
-                java.net.URL packageURL = classLoader.getResource(packagePath);
-                java.io.File packageDir = new java.io.File(packageURL.toURI());
-                if (packageDir.exists()) {
-                    String[] files = packageDir.list();
-                    for (String file : files) {
-                        if (file.endsWith(".class")) {
-                            String className = packageName + '.' + file.substring(0, file.length() - 6);
-                            Class<?> clazz = Class.forName(className);
-                            classes.add(clazz);
-                        }
+        return methodContents;
+    }
+
+    private static List<Class<?>> getClassesInPackage(String packageName) {
+        List<Class<?>> classes = new ArrayList<>();
+        String packagePath = packageName.replace('.', '/');
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        try {
+            java.net.URL packageURL = classLoader.getResource(packagePath);
+            java.io.File packageDir = new java.io.File(packageURL.toURI());
+            if (packageDir.exists()) {
+                String[] files = packageDir.list();
+                for (String file : files) {
+                    if (file.endsWith(".class")) {
+                        String className = packageName + '.' + file.substring(0, file.length() - 6);
+                        Class<?> clazz = Class.forName(className);
+                        classes.add(clazz);
                     }
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
             }
-            return classes;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return classes;
+    }
 
 
     /**
