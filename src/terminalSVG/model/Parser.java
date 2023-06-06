@@ -48,13 +48,13 @@ public class Parser {
                     case "clear":
                         break;
                     case "color":
-                        if (elements.length != 2) {
+                        if (elements.length <= 2) {
                             throw new IllegalArgumentException("La commande doit spécifier une couleur.");
                         }
                         instruction.put("fillColor", convertStringToColor(elements[1].trim()));
                         break;
                     case "size":
-                        if (elements.length != 3) {
+                        if (elements.length <= 3) {
                             throw new IllegalArgumentException("La commande doit spécifier une taille.");
                         }
                         instruction.put("newSizeWidth", elements[1].trim());

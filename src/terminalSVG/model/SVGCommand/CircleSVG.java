@@ -9,7 +9,6 @@ public class CircleSVG extends DrawShapeAction {
     private Point center;
     private double radius;
     private final Integer COORDS_LIST_SIZE = 3;
-
     private static final String COMMAND_NAME = "circle";
     private final String description = ("\n" + "Utilisation Cercle : "
             + "\n\t" + "circle <nom> <coordonnéesX> <coordonnéesY> <rayon>"
