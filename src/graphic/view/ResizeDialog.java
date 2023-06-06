@@ -1,5 +1,7 @@
 package graphic.view;
 
+import graphic.controller.CanvaController;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -20,9 +22,9 @@ public class ResizeDialog extends JDialog implements ActionListener {
 
     private JButton confirmButton;
 
-    private CanvaPanel canvaPanel;
+    private CanvaController canvaController;
 
-    public ResizeDialog(CanvaPanel canvaPanel) {
+    public ResizeDialog(CanvaController canvaController) {
         super();
         this.setResizable(false);
         this.setSize(500, 200);
@@ -43,8 +45,8 @@ public class ResizeDialog extends JDialog implements ActionListener {
         this.errorMessage.setForeground(Color.RED);
         this.errorMessage.setVisible(false);
 
-        this.widthInput = new JTextField(String.valueOf(canvaPanel.getWidth()));
-        this.heightInput = new JTextField(String.valueOf(canvaPanel.getHeight()));
+        this.widthInput = new JTextField(String.valueOf(canvaController.getCanvaWidth()));
+        this.heightInput = new JTextField(String.valueOf(canvaController.getCanvaHeight()));
 
         this.confirmButton = new JButton("Confirm");
         this.confirmButton.addActionListener(this);
@@ -63,7 +65,7 @@ public class ResizeDialog extends JDialog implements ActionListener {
 
         this.setContentPane(this.contentPane);
 
-        this.canvaPanel = canvaPanel;
+        this.canvaController = canvaController;
     }
 
     @Override
@@ -72,7 +74,7 @@ public class ResizeDialog extends JDialog implements ActionListener {
             try {
                 int width = Integer.parseInt(this.widthInput.getText());
                 int height = Integer.parseInt(this.heightInput.getText());
-                this.canvaPanel.resizeCanva(width, height);
+                this.canvaController.resizeCanva(width, height);
                 this.errorMessage.setVisible(false);
                 this.setVisible(false);
             } catch (Exception exception) {

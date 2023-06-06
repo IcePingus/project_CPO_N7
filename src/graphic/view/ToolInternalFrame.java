@@ -16,6 +16,9 @@ public class ToolInternalFrame extends JInternalFrame implements ActionListener,
     private final Toolbox toolbox;
     private int activeTool;
     private JSlider sliderSize;
+    private JRadioButton squareShapeButton;
+    private JRadioButton circleShapeButton;
+    private ButtonGroup shapeButtonGroup;
     private JPanel toolsPanel;
     private JPanel sliderPanel;
     private JLabel sizeLabel;
@@ -56,13 +59,27 @@ public class ToolInternalFrame extends JInternalFrame implements ActionListener,
         this.add(this.toolsPanel, BorderLayout.CENTER);
 
         this.sliderPanel = new JPanel();
-        this.sliderPanel.setLayout(new BorderLayout());
-        this.sliderPanel.setSize(148, 30);
+        this.sliderPanel.setLayout(new GridLayout(2, 2));
+
         this.sizeLabel = new JLabel(" 5");
-        this.sliderPanel.add(sizeLabel, BorderLayout.WEST);
-        this.sliderSize = new JSlider(1, 15, 5);
+
+        this.sliderSize = new JSlider(1, 1000, 5);
         this.sliderSize.addChangeListener(this);
-        this.sliderPanel.add(sliderSize, BorderLayout.CENTER);
+
+        this.squareShapeButton = new JRadioButton("Square");
+        this.squareShapeButton.setSelected(true);
+        this.squareShapeButton.addActionListener(this);
+        this.circleShapeButton = new JRadioButton("Circle");
+        this.circleShapeButton.addActionListener(this);
+
+        this.shapeButtonGroup = new ButtonGroup();
+        this.shapeButtonGroup.add(this.squareShapeButton);
+        this.shapeButtonGroup.add(this.circleShapeButton);
+
+        this.sliderPanel.add(sizeLabel);
+        this.sliderPanel.add(sliderSize);
+        this.sliderPanel.add(this.squareShapeButton);
+        this.sliderPanel.add(this.circleShapeButton);
 
         this.add(this.sliderPanel, BorderLayout.SOUTH);
 
@@ -70,19 +87,23 @@ public class ToolInternalFrame extends JInternalFrame implements ActionListener,
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        for (int i = 0; i < this.toolbox.getTools().size(); i++) {
-            if (e.getSource() == this.toolbox.getToolsButtons().get(i) && this.activeTool != i) {
-                this.toolbox.getToolsButtons().get(this.activeTool).setBackground(null);
-                this.activeTool = i;
-                this.toolbox.getToolsButtons().get(i).setBackground(Color.red);
-                this.toolbox.setActiveTool(this.activeTool);
+        if (e.getSource() == this.squareShapeButton || e.getSource() == this.circleShapeButton) {
+            this.toolbox.setIsSquareShape(this.squareShapeButton.isSelected());
+        } else {
+            for (int i = 0; i < this.toolbox.getTools().size(); i++) {
+                if (e.getSource() == this.toolbox.getToolsButtons().get(i) && this.activeTool != i) {
+                    this.toolbox.getToolsButtons().get(this.activeTool).setBackground(null);
+                    this.activeTool = i;
+                    this.toolbox.getToolsButtons().get(i).setBackground(Color.red);
+                    this.toolbox.setActiveTool(this.activeTool);
 
-                if (!this.toolbox.getActiveTool().getIsResizable()) {
-                    this.sliderPanel.setVisible(false);
-                    this.setSize(148, 240);
-                } else {
-                    this.sliderPanel.setVisible(true);
-                    this.setSize(148, 250);
+                    if (!this.toolbox.getActiveTool().getIsResizable()) {
+                        this.sliderPanel.setVisible(false);
+                        this.setSize(148, 240);
+                    } else {
+                        this.sliderPanel.setVisible(true);
+                        this.setSize(148, 250);
+                    }
                 }
             }
         }
