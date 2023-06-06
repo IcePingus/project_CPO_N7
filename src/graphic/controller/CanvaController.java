@@ -81,7 +81,7 @@ public class CanvaController implements Observer {
     public void blackAndWhiteTransform() {
         BufferedImage newImage = this.canva.nextBufferedImage();
         ColorConvertOp op = new ColorConvertOp(ColorSpace.getInstance(ColorSpace.CS_GRAY), null);
-        op.filter(this.canva.getBufferedImage(), newImage);
+        op.filter(newImage, newImage);
         this.canva.repaint();
     }
 
