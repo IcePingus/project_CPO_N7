@@ -70,6 +70,7 @@ public class CanvaController implements Observer {
         }
         if (resultOptionPane == 0 || resultOptionPane == 1) {
             frame.setContentPane(new SelectionPanel(frame));
+            frame.setJMenuBar(null);
             frame.validate();
             frame.repaint();
         }
