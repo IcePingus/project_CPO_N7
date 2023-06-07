@@ -8,21 +8,24 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.colorchooser.AbstractColorChooserPanel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Observable;
 import java.util.Observer;
 
-public class ColorSchemeInternalFrame extends JInternalFrame implements ChangeListener, ActionListener, Observer {
+public class ColorSchemeInternalFrame extends JInternalFrame implements ChangeListener, ActionListener, DocumentListener, Observer {
 
-    private boolean isPrimaryColor;
     private JButton primaryButton;
     private JButton secondaryButton;
     private JLabel lLabel;
     private JLabel rLabel;
     private JColorChooser colorChooser;
     private ColorController colorController;
+    private Runnable runnableInsert;
+    private JTextField hexColor;
 
     public ColorSchemeInternalFrame(ColorController colorController) {
         super("Color Scheme");
@@ -38,19 +41,18 @@ public class ColorSchemeInternalFrame extends JInternalFrame implements ChangeLi
         this.primaryButton = new JButton();
         this.primaryButton.addActionListener(this);
         this.primaryButton.setBackground(Color.BLACK);
-        this.primaryButton.setBorder(BorderFactory.createBevelBorder(0 ,Color.GRAY, Color.GRAY));
+        this.primaryButton.setBorder(BorderFactory.createBevelBorder(0, Color.GRAY, Color.GRAY));
 
         this.secondaryButton = new JButton();
         this.secondaryButton.addActionListener(this);
         this.secondaryButton.setBackground(Color.WHITE);
 
-        this.isPrimaryColor = true;
         this.lLabel = new JLabel(" L ");
         this.lLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        this.lLabel.setFont(new Font(Font.SANS_SERIF,  Font.BOLD, 24));
+        this.lLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 24));
         this.rLabel = new JLabel(" R ");
         this.rLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        this.rLabel.setFont(new Font(Font.SANS_SERIF,  Font.BOLD, 24));
+        this.rLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 24));
 
         JPanel jp = new JPanel();
         GridLayout gl = new GridLayout(2, 2);
@@ -62,14 +64,33 @@ public class ColorSchemeInternalFrame extends JInternalFrame implements ChangeLi
         jp.add(this.lLabel);
         jp.add(this.rLabel);
 
-        this.add(jp, BorderLayout.WEST);
+        JPanel jp2 = new JPanel();
+        jp2.setLayout(new BorderLayout());
+        this.add(jp2, BorderLayout.WEST);
+        jp2.add(jp, BorderLayout.NORTH);
+
+        this.hexColor = new JTextField(6);
+        this.hexColor.setText("000000");
+
+        JPanel jp3 = new JPanel();
+        jp3.setLayout(new BorderLayout());
+        JLabel hashtag = new JLabel("#");
+        jp3.add(hashtag, BorderLayout.WEST);
+        jp3.add(this.hexColor, BorderLayout.CENTER);
+
+        jp2.add(jp3, BorderLayout.SOUTH);
+
+        this.hexColor.getDocument().addDocumentListener(this);
+
 
         this.colorController = colorController;
         this.colorChooser = new JColorChooser();
         this.colorChooser.getSelectionModel().addChangeListener(this);
 
         AbstractColorChooserPanel[] oldPanels = this.colorChooser.getChooserPanels();
-        for (int i = 0; i < oldPanels.length; i++) {
+        for (
+                int i = 0;
+                i < oldPanels.length; i++) {
             String clsName = oldPanels[i].getClass().getName();
             if (clsName.equals("javax.swing.colorchooser.ColorChooserPanel")) {
                 this.colorChooser.removeChooserPanel(oldPanels[i]);
@@ -77,11 +98,12 @@ public class ColorSchemeInternalFrame extends JInternalFrame implements ChangeLi
         }
         this.colorChooser.setPreviewPanel(new JPanel());
         this.add(this.colorChooser, BorderLayout.CENTER);
+
     }
 
     @Override
     public void stateChanged(ChangeEvent e) {
-        if (this.isPrimaryColor) {
+        if (this.colorController.getIsPrimaryColor()) {
             this.primaryButton.setBackground(this.colorChooser.getColor());
             this.colorController.setPrimaryColor(this.colorChooser.getColor());
         } else {
@@ -92,22 +114,76 @@ public class ColorSchemeInternalFrame extends JInternalFrame implements ChangeLi
 
     @Override
     public void actionPerformed(ActionEvent e) {
+
+        String hexColorString = null;
         if (e.getSource() == this.primaryButton) {
-            this.isPrimaryColor = true;
-            this.primaryButton.setBorder(BorderFactory.createBevelBorder(0 ,Color.DARK_GRAY, Color.GRAY));
+            hexColorString = "" + Integer.toHexString(this.colorController.getPrimaryColor().getRGB()).substring(2);
+            this.colorController.setIsPrimaryColor(true);
+            this.primaryButton.setBorder(BorderFactory.createBevelBorder(0, Color.DARK_GRAY, Color.GRAY));
             this.secondaryButton.setBorder(null);
         } else {
-            this.isPrimaryColor = false;
+            hexColorString = "" + Integer.toHexString(this.colorController.getSecondaryColor().getRGB()).substring(2);
+            this.colorController.setIsPrimaryColor(false);
             this.primaryButton.setBorder(null);
-            this.secondaryButton.setBorder(BorderFactory.createBevelBorder(0 ,Color.DARK_GRAY, Color.GRAY));
+            this.secondaryButton.setBorder(BorderFactory.createBevelBorder(0, Color.DARK_GRAY, Color.GRAY));
         }
+        this.hexColor.getDocument().removeDocumentListener(this);
+        this.hexColor.setText(hexColorString);
+        this.hexColor.getDocument().addDocumentListener(this);
     }
 
     @Override
     public void update(Observable o, Object arg) {
         if (o instanceof ColorModel) {
-            this.primaryButton.setBackground(this.colorController.getPrimaryColor());
-            this.secondaryButton.setBackground(this.colorController.getSecondaryColor());
+            String hexColorString = null;
+            if (this.colorController.getIsPrimaryColor()) {
+                this.primaryButton.setBackground(this.colorController.getPrimaryColor());
+                hexColorString = "" + Integer.toHexString(this.colorController.getPrimaryColor().getRGB()).substring(2);
+            } else {
+                this.secondaryButton.setBackground(this.colorController.getSecondaryColor());
+                hexColorString = "" + Integer.toHexString(this.colorController.getSecondaryColor().getRGB()).substring(2);
+            }
+            this.hexColor.getDocument().removeDocumentListener(this);
+            this.hexColor.setText(hexColorString);
+            this.hexColor.getDocument().addDocumentListener(this);
         }
+    }
+
+    @Override
+    public void insertUpdate(DocumentEvent e) {
+        insert();
+    }
+
+    @Override
+    public void removeUpdate(DocumentEvent e) {
+    }
+
+    @Override
+    public void changedUpdate(DocumentEvent e) {
+    }
+
+    private void insert() {
+        if (runnableInsert == null) {
+            runnableInsert = new Runnable() {
+                @Override
+                public void run() {
+                    if (!hexColor.getText().matches("^[0-9a-fA-F]+$") || hexColor.getText().length() > 6) {
+                        hexColor.setText(hexColor.getText().substring(0, hexColor.getText().length() - 1));
+                    }
+
+                    if (hexColor.getText().length() == 6) {
+                        Color color = new Color(
+                                Integer.valueOf(hexColor.getText().substring(0, 2), 16),
+                                Integer.valueOf(hexColor.getText().substring(2, 4), 16),
+                                Integer.valueOf(hexColor.getText().substring(4, 6), 16));
+                        if (colorController.getIsPrimaryColor()) {
+                            colorController.setPrimaryColor(color);
+                        } else
+                            colorController.setSecondaryColor(color);
+                    }
+                }
+            };
+        }
+        SwingUtilities.invokeLater(runnableInsert);
     }
 }
