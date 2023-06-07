@@ -37,7 +37,9 @@ public class PickerTool implements ToolCommand {
         Color color = new Color(bufferedImage.getRGB(currentX, currentY));
         if(click == InputEvent.BUTTON1_DOWN_MASK) {
             this.colorController.setPrimaryColor(color);
+            this.colorController.setIsPrimaryColor(true);
         } else if(click == InputEvent.BUTTON3_DOWN_MASK) {
+            this.colorController.setIsPrimaryColor(false);
             this.colorController.setSecondaryColor(color);
         }
     }

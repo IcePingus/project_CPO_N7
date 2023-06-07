@@ -28,4 +28,11 @@ public class ColorController {
         return this.model.getSecondaryColor();
     }
 
+    public boolean getIsPrimaryColor() {
+        return this.model.getIsPrimaryColor();
+    }
+    public boolean setIsPrimaryColor(boolean isPrimaryColor) {
+        return this.model.setIsPrimaryColor(isPrimaryColor);
+    }
+
 }
