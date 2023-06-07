@@ -47,7 +47,7 @@ public class SelectionPanel extends JPanel {
 
     private void onTerminalModeButtonClick() {
         if (this.terminalProjectPanel == null) {
-            this.terminalProjectPanel = new TerminalProjectPanel();
+            this.terminalProjectPanel = new TerminalProjectPanel(this.frame);
         }
         this.frame.setContentPane(this.terminalProjectPanel);
         this.frame.validate();
