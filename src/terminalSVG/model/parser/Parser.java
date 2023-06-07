@@ -7,21 +7,18 @@ import java.util.*;
 
 
 public class Parser {
-    private static final Map<String, CommandParser> commandParsers = new HashMap<>();
+    private static Map<String, CommandParser> commandParsers = new HashMap<>();
 
-    static {
-        //commandParsers.put("clear", new GeneralCommandParser());
-        //commandParsers.put("color", new GeneralCommandParser());
-        //commandParsers.put("size", new GeneralCommandParser());
-        commandParsers.put("rectangle", new ElementCommandParser());
-        commandParsers.put("circle", new ElementCommandParser());
-        commandParsers.put("oval", new ElementCommandParser());
-        commandParsers.put("square", new ElementCommandParser());
-        commandParsers.put("polygon", new ElementCommandParser());
 
-    }
+    public static Map<String, Object> parse(String input, List<String> setterList,List<String> modifierList) throws IllegalArgumentException {
+        for(String commands : setterList) {
+            Parser.commandParsers.put(commands, new ElementCommandParser());
+        }
+        for(String commands : modifierList) {
+            Parser.commandParsers.put(commands, new GeneralCommandParser());
+        }
 
-    public static Map<String, Object> parse(String input) throws IllegalArgumentException {
+        //System.out.print(commandParsers);
         if (input == null || input.isEmpty()) {
             throw new IllegalArgumentException("[Erreur] La commande est vide.");
         }
@@ -36,7 +33,6 @@ public class Parser {
             throw new IllegalArgumentException("[Erreur] La commande n'est pas prise en charge : " + command);
         }
     }
-
     static class ElementCommandParser implements CommandParser {
         @Override
         public Map<String, Object> parseCommand(String[] elements) throws IllegalArgumentException {
@@ -74,7 +70,6 @@ public class Parser {
 
             instruction.put("coords", coordinates);
             instruction.put("elementActionType","setter");
-            System.out.println(instruction);
             return instruction;
         }
     }
@@ -84,7 +79,6 @@ public class Parser {
         public Map<String, Object> parseCommand(String[] elements) throws IllegalArgumentException {
             Map<String, Object> instruction = new Hashtable<>();
             String command = elements[0].trim();
-
             instruction.put("elementAction", command);
 
             // Rechercher la classe de commande correspondante
@@ -97,7 +91,6 @@ public class Parser {
                 throw new IllegalArgumentException("[Erreur] La commande n'est pas prise en charge : " + command);
             }
             instruction.put("elementActionType","modifier");
-            System.out.println(instruction);
             return instruction;
         }
     }

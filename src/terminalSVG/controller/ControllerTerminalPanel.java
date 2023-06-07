@@ -3,7 +3,6 @@ package terminalSVG.controller;
 import terminalSVG.model.*;
 import terminalSVG.model.SVGCommand.*;
 
-import org.apache.batik.svggen.SVGGraphics2D;
 import terminalSVG.model.parser.Parser;
 
 import javax.swing.*;
@@ -14,6 +13,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -22,10 +22,22 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
     private JTextArea textArea;
     private JButton sendButton;
     private SVGPreview svgPreview;
+    private List<String> setterList;
+    private List<String> modifierList;
     public ControllerTerminalPanel(History h, SVGPreview svgp) {
         super();
         this.history = h;
         this.svgPreview = svgp;
+
+        this.setterList = new ArrayList<>();
+        this.setterList.add("rectangle");
+        this.setterList.add("circle");
+        this.setterList.add("oval");
+        this.setterList.add("square");
+        this.setterList.add("polygon");
+
+        this.modifierList = new ArrayList<>();
+        this.modifierList.add("clear");
 
         this.sendButton = new JButton("Entrer");
         this.sendButton.addActionListener(this);
@@ -84,21 +96,25 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
         String action = elementAction;
         action += "SVG";
         action = Character.toUpperCase(action.charAt(0)) + action.substring(1);
-        System.out.println(action);
+        SVGCommand shape = null;
         Class<?> actionClass = Class.forName("terminalSVG.model.SVGCommand." + action);
-            switch(elementActionType) {
-                case("setter"):
-                    Constructor<?> constructor = actionClass.getDeclaredConstructor(String.class, List.class, boolean.class, Color.class, Color.class);
-                    constructor.setAccessible(true);
-                    DrawShapeAction shape = (DrawShapeAction) constructor.newInstance(elementName, coords, isFill, strokeColor, fillColor);
-                    shape.execute(this.svgPreview);
-                break;
-                case("modifier"):
-                    //TODO
-                break;
-                default:
+            if (elementActionType.equals("setter")) {
+                Constructor<?> constructor = actionClass.getDeclaredConstructor(String.class, List.class, boolean.class, Color.class, Color.class);
+                constructor.setAccessible(true);
+                shape = (DrawShapeAction) constructor.newInstance(elementName, coords, isFill, strokeColor, fillColor);
+            } else if (elementActionType.equals("modifier")) {
+                Constructor<?> constructor2 = actionClass.getDeclaredConstructor(Map.class);
+                constructor2.setAccessible(true);
+                shape = (SVGCommand) constructor2.newInstance(instruction);
             }
-            this.svgPreview.updateCanvas(elementAction + "-" + elementName);
+            else{
+                // Cas par défaut si aucune correspondance
+                shape = null;
+            }
+            if (shape != null) {
+                shape.execute(this.svgPreview);
+                this.svgPreview.updateCanvas(elementAction + "-" + elementName);
+            }
         } catch (NoSuchMethodException e) {
             throw new RuntimeException(e);
         } catch (InvocationTargetException e) {
@@ -137,7 +153,7 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
 
             try {
                 // Appel de la méthode parse de la classe Parsing
-                addElement(Parser.parse(commandText));
+                addElement(Parser.parse(commandText,this.setterList,this.modifierList));
             } catch (IllegalArgumentException e) {
                 // Gérer l'exception IllegalArgumentException
                 this.history.addCommand(new Command(e.getMessage()));
