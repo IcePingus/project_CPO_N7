@@ -4,7 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Command {
-    private Date date;
     private String content;
 
     public Command(String vcontent) {
