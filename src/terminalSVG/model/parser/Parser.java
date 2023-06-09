@@ -5,10 +5,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 
-
 public class Parser {
     private static Map<String, CommandParser> commandParsers = new HashMap<>();
-
 
     public static Map<String, Object> parse(String input, List<String> setterList, List<String> modifierList) throws IllegalArgumentException {
         for (String commands : setterList) {

@@ -9,13 +9,10 @@ import java.util.List;
 public class PolygonSVG extends DrawShapeAction {
     private List<Point> points;
 	private final Integer COORDS_LIST_SIZE = 4;
-
 	private static final String COMMAND_NAME = "polygon";
 	private final String description = ("\n" + "Utilisation Polygon : "
 	);
 
-	public PolygonSVG() {
-	}
 	public PolygonSVG(String name, List<Double> coords, boolean isFill, Color strokeColor, Color fillColor) {
 		super(name, isFill, strokeColor, fillColor);
 		assert coords.size() >= COORDS_LIST_SIZE;
@@ -30,26 +27,6 @@ public class PolygonSVG extends DrawShapeAction {
 		}
 	}
 
-	public List<Point> getPoints() {
-		return points;
-	}
-
-	public void setPoints(List<Point> points) {
-		this.points = points;
-	}
-
-	public static String getCommandName() {
-		return COMMAND_NAME;
-	}
-	public Integer getCoordsListSize() {
-		return COORDS_LIST_SIZE;
-	}
-
-	public String getHelp() {
-		return this.description;
-	}
-
-	@Override
 	public void draw(SVGPreview svgPreview) {
 		svgPreview.getSVGGraphics().setColor(getStrokeColor());
 
@@ -72,8 +49,28 @@ public class PolygonSVG extends DrawShapeAction {
 
 		if (isFill) {
 			// Remplir le polygone avec une couleur spécifique
-			svgPreview.getSVGGraphics().setColor(getFillColor());
+			svgPreview.getSVGGraphics().setColor(this.fillColor);
 			svgPreview.getSVGGraphics().fill(polygon);
 		}
+	}
+
+	public String getHelp() {
+		return this.description;
+	}
+
+	public List<Point> getPoints() {
+		return points;
+	}
+
+	public void setPoints(List<Point> points) {
+		this.points = points;
+	}
+
+	public static String getCommandName() {
+		return COMMAND_NAME;
+	}
+
+	public Integer getCoordsListSize() {
+		return COORDS_LIST_SIZE;
 	}
 }

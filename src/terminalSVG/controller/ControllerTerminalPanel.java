@@ -22,23 +22,23 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
     private JTextArea textArea;
     private JButton sendButton;
     private SVGPreview svgPreview;
-    private List<String> setterList;
-    private List<String> modifierList;
+    private final List<String> setterCommandList;
+    private final List<String> modifierCommandList;
     public ControllerTerminalPanel(History h, SVGPreview svgp) {
         super();
         this.history = h;
         this.svgPreview = svgp;
 
-        this.setterList = new ArrayList<>();
-        this.setterList.add("rectangle");
-        this.setterList.add("circle");
-        this.setterList.add("oval");
-        this.setterList.add("square");
-        this.setterList.add("polygon");
+        this.setterCommandList = new ArrayList<>();
+        this.setterCommandList.add("rectangle");
+        this.setterCommandList.add("circle");
+        this.setterCommandList.add("oval");
+        this.setterCommandList.add("square");
+        this.setterCommandList.add("polygon");
 
-        this.modifierList = new ArrayList<>();
-        this.modifierList.add("clear");
-        this.modifierList.add("erase");
+        this.modifierCommandList = new ArrayList<>();
+        this.modifierCommandList.add("clear");
+        this.modifierCommandList.add("erase");
 
         this.sendButton = new JButton("Entrer");
         this.sendButton.addActionListener(this);
@@ -61,7 +61,7 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    addCommand();
+                    prepareCommand();
                 }
             }
         });
@@ -82,7 +82,35 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
         this.add(container);
     }
 
-    public void addElement(Map<String, Object> instruction) throws ClassNotFoundException {
+    /**
+     * Ajoute la commande à l'historique et efface le contenu de la zone de texte.
+     * Envoie la commande en traitement dans le parser adéquat en fonction de l'entrée donnée.
+     * Récupère une map correspondante à la commande parsée et l'envoie en traitement.
+     */
+    public void prepareCommand() {
+        String commandText = this.textArea.getText().trim(); // Retirer les espaces avant et après le texte
+
+        if (!commandText.isEmpty()) {
+            this.history.addCommand(new Command(commandText));
+            try {
+                // Appel de la méthode parse de la classe Parsing
+                executeCommand(Parser.parse(commandText,this.setterCommandList,this.modifierCommandList));
+            } catch (IllegalArgumentException e) {
+                // Gérer l'exception IllegalArgumentException
+                this.history.addCommand(new Command("Erreur : " + e.getMessage()));
+            } catch (Exception e) {
+                // Gérer toutes les autres exceptions
+                this.history.addCommand(new Command("Erreur imprévue s'est produite : " + e.getMessage()));
+            }
+        }
+        this.textArea.setText("");
+    }
+
+    /**
+     * Récupère la map parsée et s'occupe du traitement et de l'exécution de la commande sur la SVGPreview.
+     * Construit et instancie l'objet associé à la commande de façon dynamique (introspection).
+     */
+    public void executeCommand(Map<String, Object> instruction) throws ClassNotFoundException {
         String elementActionType = getString(instruction, "elementActionType");
         String elementAction = getString(instruction, "elementAction");
         String elementName = getString(instruction, "elementName");
@@ -137,34 +165,8 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
     private Color getColor(Map<String, Object> map, String key, Color defaultValue) {
         return map.containsKey(key) ? (Color) map.get(key) : defaultValue;
     }
-
-    /**
-     * Ajoute la commande à l'historique et efface le contenu de la zone de texte.
-     * Envoie la commande en traitement pour le SVGPreview.
-     */
-    public void addCommand() {
-        String commandText = this.textArea.getText().trim(); // Retirer les espaces avant et après le texte
-
-        if (!commandText.isEmpty()) {
-            this.history.addCommand(new Command(commandText));
-
-            try {
-                // Appel de la méthode parse de la classe Parsing
-                addElement(Parser.parse(commandText,this.setterList,this.modifierList));
-            } catch (IllegalArgumentException e) {
-                // Gérer l'exception IllegalArgumentException
-                this.history.addCommand(new Command("Erreur : " + e.getMessage()));
-            } catch (Exception e) {
-                // Gérer toutes les autres exceptions
-                this.history.addCommand(new Command("Erreur imprévue s'est produite : " + e.getMessage()));
-                e.printStackTrace();
-            }
-        }
-        this.textArea.setText("");
-    }
-
     @Override
     public void actionPerformed(ActionEvent e) {
-        addCommand();
+        prepareCommand();
     }
 }

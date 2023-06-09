@@ -11,9 +11,6 @@ public abstract class DrawShapeAction implements SVGCommand {
     protected Color strokeColor;
     protected Color fillColor;
 
-    public DrawShapeAction() {
-    }
-
     public DrawShapeAction(String name, boolean isFill, Color strokeColor, Color fillColor) {
         this.name = name;
         this.isFill = isFill;
@@ -28,7 +25,6 @@ public abstract class DrawShapeAction implements SVGCommand {
     }
     @Override
     public abstract String getHelp();
-
     @Override
     public void execute(SVGPreview svgPreview, String elementName) {
         svgPreview.addElement(elementName,this);
