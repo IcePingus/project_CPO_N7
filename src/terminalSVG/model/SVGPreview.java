@@ -7,7 +7,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.svg.SVGDocument;
 import terminalSVG.model.SVGCommand.DrawShapeAction;
-import terminalSVG.model.SVGCommand.SVGCommand;
 
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
@@ -23,14 +22,14 @@ public class SVGPreview extends Observable {
     private SVGGraphics2D svgGraphics; // Contexte graphique pour dessiner des éléments SVG
     private SVGGeneratorContext svgGeneratorContext; // Contexte de génération SVG
     private SVGDocument svgDocument; // Document SVG
-    private Map<String, DrawShapeAction> elementsList;
+    private Map<String, DrawShapeAction> shapeList;
 
     public SVGPreview() {
         // Créer un document SVG
         this.svgDocument = createSVGDocument();
         this.svgGeneratorContext = SVGGeneratorContext.createDefault(svgDocument);
         this.svgGraphics = new SVGGraphics2D(svgGeneratorContext, true);
-        this.elementsList = new Hashtable<>();
+        this.shapeList = new Hashtable<>();
     }
 
     private SVGDocument createSVGDocument() {
@@ -39,60 +38,59 @@ public class SVGPreview extends Observable {
         return (SVGDocument) domImpl.createDocument(svgNS, "svg", null);
     }
 
-    public void setCanvasSize(int width, int height) {
-        svgGraphics.setSVGCanvasSize(new Dimension(width, height));
-        this.updateCanvas("Changement de taille");
-    }
-
     public void addElement(String eltName,DrawShapeAction elt) {
-        this.elementsList.put(eltName,elt);
-        update();
+        this.shapeList.put(eltName,elt);
+        buildShapes();
     }
 
     public void delElement(String eltName) throws IllegalArgumentException {
-        if(!this.elementsList.containsKey(eltName)){
+        if(!this.shapeList.containsKey(eltName)){
             throw new IllegalArgumentException("Aucun élement SVG ne correspond à votre requête");
         }
-        this.elementsList.remove(eltName);
-        update();
+        this.shapeList.remove(eltName);
+        buildShapes();
     }
 
-    public void update(){
-        clearCanva();
-        System.out.println(this.elementsList.toString());
-        for (Map.Entry<String, DrawShapeAction> entry : elementsList.entrySet()) {
-            System.out.println(entry);
+    public void buildShapes(){
+        clearSVGDocument();
+        for (Map.Entry<String, DrawShapeAction> entry : shapeList.entrySet()) {
             entry.getValue().draw(this);
-            updateCanvas(  entry.getValue() + "-" + entry.getKey());
+            updateSVGDocument(entry.getValue().getClass().getSimpleName() + " : " + entry.getValue().getName());
         }
-        updateCanvas("END");
-        System.out.println(getSVGCode());
+        updateSVGDocument("END");
     }
 
-    public void updateCanvas(String comment) {
+    public void clearShapeList() throws IllegalArgumentException {
+        if(this.shapeList.isEmpty()) {
+            throw new IllegalArgumentException("Le canva est vide");
+        }
+        this.shapeList.clear();
+        buildShapes();
+    }
+
+
+    public void updateSVGDocument(String comment) {
         // Mettre à jour le document SVG
         this.svgGeneratorContext.setComment(comment);
         Element root = svgDocument.getDocumentElement();
         this.svgGraphics.getRoot(root);
         this.svgGraphics = new SVGGraphics2D(svgGeneratorContext, true);
 
-
         this.setChanged();
         this.notifyObservers();
     }
 
-    public void clearList() {
-        this.elementsList.clear();
-        update();
-    }
-
-    public void clearCanva() {
+    public void clearSVGDocument() {
         Node root = svgDocument.getDocumentElement();
         while (root.hasChildNodes()) {
             root.removeChild(root.getFirstChild());
         }
     }
 
+    public void setCanvasSize(int width, int height) {
+        svgGraphics.setSVGCanvasSize(new Dimension(width, height));
+        this.updateSVGDocument("Changement de taille");
+    }
 
     public String getSVGCode() {
         try {
@@ -126,8 +124,5 @@ public class SVGPreview extends Observable {
 
     public SVGGraphics2D getSVGGraphics() {
         return this.svgGraphics;
-    }
-
-    public void setDefaultColor(Color color) {
     }
 }

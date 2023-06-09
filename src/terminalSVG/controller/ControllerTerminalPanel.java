@@ -97,7 +97,7 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
                 executeCommand(Parser.parse(commandText,this.setterCommandList,this.modifierCommandList));
             } catch (IllegalArgumentException e) {
                 // Gérer l'exception IllegalArgumentException
-                this.history.addCommand(new Command("Erreur : " + e.getMessage()));
+                this.history.addCommand(new Command("[Erreur] : " + e.getMessage()));
             } catch (Exception e) {
                 // Gérer toutes les autres exceptions
                 this.history.addCommand(new Command("Erreur imprévue s'est produite : " + e.getMessage()));
@@ -137,13 +137,13 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
                 svgCommand = (SVGCommand) CommandConstructor.newInstance(instruction);
             }
             if (svgCommand == null) {
-                throw new IllegalArgumentException("Commande marche po");
+                throw new IllegalArgumentException("ERROR");
             }
             svgCommand.execute(this.svgPreview,elementName);
         } catch (NoSuchMethodException e) {
             throw new RuntimeException(e);
         } catch (InvocationTargetException e) {
-            this.history.addCommand(new Command("[Erreur] Nombre d'arguments incorrect"));
+            this.history.addCommand(new Command("[Erreur] : Nombre d'arguments incorrect"));
         } catch (InstantiationException e) {
             throw new RuntimeException(e);
         } catch (IllegalAccessException e) {

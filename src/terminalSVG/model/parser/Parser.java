@@ -18,7 +18,7 @@ public class Parser {
 
         //System.out.print(commandParsers);
         if (input == null || input.isEmpty()) {
-            throw new IllegalArgumentException("[Erreur] La commande est vide.");
+            throw new IllegalArgumentException("La commande est vide.");
         }
 
         String[] elements = input.split(" ");
@@ -28,7 +28,7 @@ public class Parser {
             CommandParser commandParser = commandParsers.get(command);
             return commandParser.parseCommand(elements);
         } else {
-            throw new IllegalArgumentException("[Erreur] La commande n'est pas prise en charge : " + command);
+            throw new IllegalArgumentException("La commande n'est pas prise en charge : " + command);
         }
     }
 
@@ -39,7 +39,7 @@ public class Parser {
             Map<String, Object> instruction = new Hashtable<>();
 
             if (elements.length < 2) {
-                    throw new IllegalArgumentException("[Erreur] La commande doit spécifier un nom pour l'élément.");
+                    throw new IllegalArgumentException("La commande doit spécifier un nom pour l'élément.");
                 }
 
                 instruction.put("elementAction", elements[0]);
@@ -58,13 +58,13 @@ public class Parser {
                     try {
                         coordinates.add(Double.parseDouble(element));
                     } catch (NumberFormatException e) {
-                        throw new IllegalArgumentException("[Erreur] La commande contient un argument invalide : " + element);
+                        throw new IllegalArgumentException("La commande contient un argument invalide : " + element);
                     }
                 }
             }
 
             if (coordinates.isEmpty()) {
-                throw new IllegalArgumentException("[Erreur] Les coordonnées sont manquantes pour la commande : " + elements[0].trim());
+                throw new IllegalArgumentException("Les coordonnées sont manquantes pour la commande : " + elements[0].trim());
             }
 
             instruction.put("coords", coordinates);
@@ -99,7 +99,7 @@ public class Parser {
                     }
                 }
             } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException e) {
-                throw new IllegalArgumentException("[Erreur] : " + command);
+                throw new IllegalArgumentException(command);
             }
 
             return instruction;

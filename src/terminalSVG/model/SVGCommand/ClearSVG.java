@@ -19,7 +19,7 @@ public class ClearSVG implements SVGCommand {
 
     @Override
     public void execute(SVGPreview svgPreview, String elementName) {
-        svgPreview.clearList();
+        svgPreview.clearShapeList();
     }
     public static void parseCommand(Map<String, Object> instruction, String[] elements) throws IllegalArgumentException {
        if(!(elements.length == 1)){
