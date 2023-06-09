@@ -106,57 +106,56 @@ public class Parser {
         }
     }
 
-        public static Color convertStringToColor(String colorName) {
-            Color color;
-
-            switch (colorName.toLowerCase()) {
-                case "black":
-                    color = Color.BLACK;
-                    break;
-                case "white":
-                    color = Color.WHITE;
-                    break;
-                case "red":
-                    color = Color.RED;
-                    break;
-                case "green":
-                    color = Color.GREEN;
-                    break;
-                case "blue":
-                    color = Color.BLUE;
-                    break;
-                case "yellow":
-                    color = Color.YELLOW;
-                    break;
-                case "cyan":
-                    color = Color.CYAN;
-                    break;
-                case "magenta":
-                    color = Color.MAGENTA;
-                    break;
-                case "gray":
-                    color = Color.GRAY;
-                    break;
-                case "darkgray":
-                    color = Color.DARK_GRAY;
-                    break;
-                case "lightgray":
-                    color = Color.LIGHT_GRAY;
-                    break;
-                case "orange":
-                    color = Color.ORANGE;
-                    break;
-                case "pink":
-                    color = Color.PINK;
-                    break;
-                default:
-                    try {
-                        color = Color.decode(colorName);
-                    } catch (NumberFormatException e) {
-                        color = Color.BLACK;
-                    }
-                    break;
-            }
-            return color;
+    public static Color convertStringToColor(String colorName) throws IllegalArgumentException {
+        Color color;
+        switch (colorName.toLowerCase()) {
+            case "black":
+                color = Color.BLACK;
+                break;
+            case "white":
+                color = Color.WHITE;
+                break;
+            case "red":
+                color = Color.RED;
+                break;
+            case "green":
+                color = Color.GREEN;
+                break;
+            case "blue":
+                color = Color.BLUE;
+                break;
+            case "yellow":
+                color = Color.YELLOW;
+                break;
+            case "cyan":
+                color = Color.CYAN;
+                break;
+            case "magenta":
+                color = Color.MAGENTA;
+                break;
+            case "gray":
+                color = Color.GRAY;
+                break;
+            case "darkgray":
+                color = Color.DARK_GRAY;
+                break;
+            case "lightgray":
+                color = Color.LIGHT_GRAY;
+                break;
+            case "orange":
+                color = Color.ORANGE;
+                break;
+            case "pink":
+                color = Color.PINK;
+                break;
+            default:
+                try {
+                    color = Color.decode(colorName);
+                } catch (NumberFormatException e) {
+                    throw new IllegalArgumentException("La couleur fournie n'existe pas.");
+                }
+                break;
         }
+        return color;
+    }
 }

@@ -39,6 +39,7 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
         this.modifierCommandList = new ArrayList<>();
         this.modifierCommandList.add("clear");
         this.modifierCommandList.add("erase");
+        this.modifierCommandList.add("color");
 
         this.sendButton = new JButton("Entrer");
         this.sendButton.addActionListener(this);
@@ -101,6 +102,7 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
             } catch (Exception e) {
                 // Gérer toutes les autres exceptions
                 this.history.addCommand(new Command("Erreur imprévue s'est produite : " + e.getMessage()));
+                e.printStackTrace();
             }
         }
         this.textArea.setText("");
@@ -115,7 +117,7 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
         String elementAction = getString(instruction, "elementAction");
         String elementName = getString(instruction, "elementName");
         List<Double> coords = getList(instruction, "coords");
-        Color strokeColor = getColor(instruction, "strokeColor", Color.BLACK);
+        Color strokeColor = getColor(instruction, "strokeColor", this.svgPreview.getDefaultColor());
         boolean isFill = false;
         Color fillColor = getColor(instruction, "fillColor", null);
         if (fillColor != null) {

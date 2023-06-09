@@ -23,6 +23,7 @@ public class SVGPreview extends Observable {
     private SVGGeneratorContext svgGeneratorContext; // Contexte de génération SVG
     private SVGDocument svgDocument; // Document SVG
     private Map<String, DrawShapeAction> shapeList;
+    private Color defaultColor;
 
     public SVGPreview() {
         // Créer un document SVG
@@ -124,5 +125,13 @@ public class SVGPreview extends Observable {
 
     public SVGGraphics2D getSVGGraphics() {
         return this.svgGraphics;
+    }
+
+    public Color getDefaultColor() {
+        return defaultColor;
+    }
+
+    public void setDefaultColor(Color defaultColor) {
+        this.defaultColor = defaultColor;
     }
 }
