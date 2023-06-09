@@ -23,7 +23,7 @@ public class EraseSVG implements SVGCommand {
     }
 
     @Override
-    public void execute(SVGPreview svgPreview, String elementName) {
+    public void execute(SVGPreview svgPreview, String shapeName) {
         svgPreview.delElement(eltName);
     }
 

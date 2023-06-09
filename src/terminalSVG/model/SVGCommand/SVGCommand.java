@@ -6,5 +6,5 @@ public interface SVGCommand {
 
     String getName();
     String getHelp();
-    void execute(SVGPreview svgPreview, String elementName);
+    void execute(SVGPreview svgPreview, String shapeName);
 }

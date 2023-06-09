@@ -26,8 +26,8 @@ public abstract class DrawShapeAction implements SVGCommand {
     @Override
     public abstract String getHelp();
     @Override
-    public void execute(SVGPreview svgPreview, String elementName) {
-        svgPreview.addElement(elementName,this);
+    public void execute(SVGPreview svgPreview, String shapeName) {
+        svgPreview.addElement(shapeName,this);
     }
 
     public abstract void draw(SVGPreview svgPreview);

@@ -38,24 +38,24 @@ public class SVGPreview extends Observable {
         return (SVGDocument) domImpl.createDocument(svgNS, "svg", null);
     }
 
-    public void addElement(String eltName,DrawShapeAction elt) {
-        this.shapeList.put(eltName,elt);
+    public void addElement(String shapeName,DrawShapeAction shape) {
+        this.shapeList.put(shapeName,shape);
         buildShapes();
     }
 
-    public void delElement(String eltName) throws IllegalArgumentException {
-        if(!this.shapeList.containsKey(eltName)){
+    public void delElement(String shapeName) throws IllegalArgumentException {
+        if(!this.shapeList.containsKey(shapeName)){
             throw new IllegalArgumentException("Aucun élement SVG ne correspond à votre requête");
         }
-        this.shapeList.remove(eltName);
+        this.shapeList.remove(shapeName);
         buildShapes();
     }
 
     public void buildShapes(){
         clearSVGDocument();
-        for (Map.Entry<String, DrawShapeAction> entry : shapeList.entrySet()) {
-            entry.getValue().draw(this);
-            updateSVGDocument(entry.getValue().getClass().getSimpleName() + " : " + entry.getValue().getName());
+        for (Map.Entry<String, DrawShapeAction> shape : shapeList.entrySet()) {
+            shape.getValue().draw(this);
+            updateSVGDocument(shape.getValue().getClass().getSimpleName() + " : " + shape.getValue().getName());
         }
         updateSVGDocument("END");
     }
