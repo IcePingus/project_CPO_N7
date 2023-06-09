@@ -63,7 +63,7 @@ public class RectangleSVG extends DrawShapeAction {
     }
 
     @Override
-    public void execute(SVGPreview svgPreview) {
+    public void draw(SVGPreview svgPreview) {
         svgPreview.getSVGGraphics().setColor(getStrokeColor());
 
         int x = (int) Math.round(point.getX());
@@ -80,4 +80,5 @@ public class RectangleSVG extends DrawShapeAction {
             svgPreview.getSVGGraphics().fillRect(x, y, s1, s2);
         }
     }
+
 }

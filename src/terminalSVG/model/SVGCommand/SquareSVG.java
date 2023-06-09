@@ -52,21 +52,21 @@ public class SquareSVG extends DrawShapeAction {
 		return COMMAND_NAME;
 	}
 
-
-    public void execute(SVGPreview svgPreview) {
+	@Override
+	public void draw(SVGPreview svgPreview) {
 		svgPreview.getSVGGraphics().setColor(strokeColor);
 
-        int x = (int) Math.round(point.getX());
-        int y = (int) Math.round(point.getY());
-        int length = (int) Math.round(sideLength);
+		int x = (int) Math.round(point.getX());
+		int y = (int) Math.round(point.getY());
+		int length = (int) Math.round(sideLength);
 
-        // Dessiner le contour du carré
-        svgPreview.getSVGGraphics().drawRect(x, y, length, length);
+		// Dessiner le contour du carré
+		svgPreview.getSVGGraphics().drawRect(x, y, length, length);
 
-        if (isFill) {
-            // Remplir le carré
-            svgPreview.getSVGGraphics().setColor(fillColor);
-            svgPreview.getSVGGraphics().fillRect(x, y, length, length);
-        }
-    }
+		if (isFill) {
+			// Remplir le carré
+			svgPreview.getSVGGraphics().setColor(fillColor);
+			svgPreview.getSVGGraphics().fillRect(x, y, length, length);
+		}
+	}
 }

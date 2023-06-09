@@ -1,6 +1,5 @@
 package terminalSVG.model.SVGCommand;
 
-import org.apache.batik.svggen.SVGGraphics2D;
 import terminalSVG.model.SVGPreview;
 
 import java.awt.*;
@@ -31,7 +30,11 @@ public abstract class DrawShapeAction implements SVGCommand {
     public abstract String getHelp();
 
     @Override
-    public abstract void execute(SVGPreview svgPreview);
+    public void execute(SVGPreview svgPreview, String elementName) {
+        svgPreview.addElement(elementName,this);
+    }
+
+    public abstract void draw(SVGPreview svgPreview);
 
     public void setName(String newName) {
         this.name = newName;

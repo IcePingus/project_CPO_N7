@@ -1,6 +1,5 @@
 package terminalSVG.model.SVGCommand;
 
-import org.apache.batik.svggen.SVGGraphics2D;
 import terminalSVG.model.SVGPreview;
 
 import java.awt.*;
@@ -59,7 +58,7 @@ public class CircleSVG extends DrawShapeAction {
         return this.description;
     }
 
-    public void execute(SVGPreview svgPreview) {
+    public void draw(SVGPreview svgPreview){
         // Dessiner le cercle avec le SVGGraphics2D
         svgPreview.getSVGGraphics().setColor(getStrokeColor());
 
@@ -76,5 +75,4 @@ public class CircleSVG extends DrawShapeAction {
             svgPreview.getSVGGraphics().fillOval(x, y, diametre, diametre);
         }
     }
-
 }

@@ -49,31 +49,31 @@ public class PolygonSVG extends DrawShapeAction {
 		return this.description;
 	}
 
-    public void execute(SVGPreview svgPreview) {
-
+	@Override
+	public void draw(SVGPreview svgPreview) {
 		svgPreview.getSVGGraphics().setColor(getStrokeColor());
 
-        // Créer les tableaux de coordonnées x et y
-        int[] xArray = new int[points.size()];
-        int[] yArray = new int[points.size()];
+		// Créer les tableaux de coordonnées x et y
+		int[] xArray = new int[points.size()];
+		int[] yArray = new int[points.size()];
 
-        for (int i = 0; i < points.size(); i++) {
-            Point point = points.get(i);
-            xArray[i] = (int) point.getX();
-            yArray[i] = (int) point.getY();
-        }
+		for (int i = 0; i < points.size(); i++) {
+			Point point = points.get(i);
+			xArray[i] = (int) point.getX();
+			yArray[i] = (int) point.getY();
+		}
 
-        // Créer le polygone avec les coordonnées
-        Polygon polygon = new Polygon(xArray, yArray, points.size());
+		// Créer le polygone avec les coordonnées
+		Polygon polygon = new Polygon(xArray, yArray, points.size());
 
-        // Dessiner le polygone avec le SVGGraphics2D
-        svgPreview.getSVGGraphics().setColor(getStrokeColor());
-        svgPreview.getSVGGraphics().draw(polygon);
+		// Dessiner le polygone avec le SVGGraphics2D
+		svgPreview.getSVGGraphics().setColor(getStrokeColor());
+		svgPreview.getSVGGraphics().draw(polygon);
 
-        if (isFill) {
-            // Remplir le polygone avec une couleur spécifique
-        	svgPreview.getSVGGraphics().setColor(getFillColor());
-            svgPreview.getSVGGraphics().fill(polygon);
-        }
-    }
+		if (isFill) {
+			// Remplir le polygone avec une couleur spécifique
+			svgPreview.getSVGGraphics().setColor(getFillColor());
+			svgPreview.getSVGGraphics().fill(polygon);
+		}
+	}
 }

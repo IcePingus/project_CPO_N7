@@ -6,26 +6,31 @@ import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.svg.SVGDocument;
+import terminalSVG.model.SVGCommand.DrawShapeAction;
+import terminalSVG.model.SVGCommand.SVGCommand;
 
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.awt.*;
-import java.awt.geom.Ellipse2D;
 import java.io.File;
 import java.io.StringWriter;
+import java.util.Hashtable;
+import java.util.Map;
 import java.util.Observable;
 
 public class SVGPreview extends Observable {
     private SVGGraphics2D svgGraphics; // Contexte graphique pour dessiner des éléments SVG
     private SVGGeneratorContext svgGeneratorContext; // Contexte de génération SVG
     private SVGDocument svgDocument; // Document SVG
+    private Map<String, DrawShapeAction> elementsList;
 
     public SVGPreview() {
         // Créer un document SVG
         this.svgDocument = createSVGDocument();
         this.svgGeneratorContext = SVGGeneratorContext.createDefault(svgDocument);
         this.svgGraphics = new SVGGraphics2D(svgGeneratorContext, true);
+        this.elementsList = new Hashtable<>();
     }
 
     private SVGDocument createSVGDocument() {
@@ -37,6 +42,31 @@ public class SVGPreview extends Observable {
     public void setCanvasSize(int width, int height) {
         svgGraphics.setSVGCanvasSize(new Dimension(width, height));
         this.updateCanvas("Changement de taille");
+    }
+
+    public void addElement(String eltName,DrawShapeAction elt) {
+        this.elementsList.put(eltName,elt);
+        update();
+    }
+
+    public void delElement(String eltName) throws IllegalArgumentException {
+        if(!this.elementsList.containsKey(eltName)){
+            throw new IllegalArgumentException("Aucun élement SVG ne correspond à votre requête");
+        }
+        this.elementsList.remove(eltName);
+        update();
+    }
+
+    public void update(){
+        clearCanva();
+        System.out.println(this.elementsList.toString());
+        for (Map.Entry<String, DrawShapeAction> entry : elementsList.entrySet()) {
+            System.out.println(entry);
+            entry.getValue().draw(this);
+            updateCanvas(  entry.getValue() + "-" + entry.getKey());
+        }
+        updateCanvas("END");
+        System.out.println(getSVGCode());
     }
 
     public void updateCanvas(String comment) {
@@ -51,16 +81,18 @@ public class SVGPreview extends Observable {
         this.notifyObservers();
     }
 
-    public void clear() {
-        // Supprimer tous les éléments SVG du document
+    public void clearList() {
+        this.elementsList.clear();
+        update();
+    }
+
+    public void clearCanva() {
         Node root = svgDocument.getDocumentElement();
         while (root.hasChildNodes()) {
             root.removeChild(root.getFirstChild());
         }
-
-        this.setChanged();
-        this.notifyObservers();
     }
+
 
     public String getSVGCode() {
         try {
@@ -94,5 +126,8 @@ public class SVGPreview extends Observable {
 
     public SVGGraphics2D getSVGGraphics() {
         return this.svgGraphics;
+    }
+
+    public void setDefaultColor(Color color) {
     }
 }

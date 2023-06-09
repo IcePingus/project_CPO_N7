@@ -62,7 +62,7 @@ public class OvalSVG extends DrawShapeAction {
     }
 
     @Override
-    public void execute(SVGPreview svgPreview) {
+    public void draw(SVGPreview svgPreview) {
         // Dessiner le cercle avec le SVGGraphics2D
         svgPreview.getSVGGraphics().setColor(getStrokeColor());
 

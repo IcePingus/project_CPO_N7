@@ -10,11 +10,11 @@ public class Parser {
     private static Map<String, CommandParser> commandParsers = new HashMap<>();
 
 
-    public static Map<String, Object> parse(String input, List<String> setterList,List<String> modifierList) throws IllegalArgumentException {
-        for(String commands : setterList) {
+    public static Map<String, Object> parse(String input, List<String> setterList, List<String> modifierList) throws IllegalArgumentException {
+        for (String commands : setterList) {
             Parser.commandParsers.put(commands, new ElementCommandParser());
         }
-        for(String commands : modifierList) {
+        for (String commands : modifierList) {
             Parser.commandParsers.put(commands, new GeneralCommandParser());
         }
 
@@ -33,6 +33,7 @@ public class Parser {
             throw new IllegalArgumentException("[Erreur] La commande n'est pas prise en charge : " + command);
         }
     }
+
     static class ElementCommandParser implements CommandParser {
         @Override
         public Map<String, Object> parseCommand(String[] elements) throws IllegalArgumentException {
@@ -40,21 +41,21 @@ public class Parser {
             Map<String, Object> instruction = new Hashtable<>();
 
             if (elements.length < 2) {
-                throw new IllegalArgumentException("[Erreur] La commande doit spécifier un nom pour l'élément.");
-            }
+                    throw new IllegalArgumentException("[Erreur] La commande doit spécifier un nom pour l'élément.");
+                }
 
-            instruction.put("elementAction", elements[0]);
-            instruction.put("elementName", elements[1]);
+                instruction.put("elementAction", elements[0]);
+                instruction.put("elementName", elements[1]);
 
-            for (int i = 2; i < elements.length; i++) {
-                String element = elements[i].trim();
+                for (int i = 2; i < elements.length; i++) {
+                    String element = elements[i].trim();
 
-                if (element.equals("-s") && i + 1 < elements.length) {
-                    instruction.put("strokeColor", convertStringToColor(elements[i + 1].trim()));
-                    i++;  // Ignore the next argument since it was used for the stroke color
-                } else if (element.equals("-f") && i + 1 < elements.length) {
-                    instruction.put("fillColor", convertStringToColor(elements[i + 1].trim()));
-                    i++;  // Ignore the next argument since it was used for the fill color
+                    if (element.equals("-s") && i + 1 < elements.length) {
+                        instruction.put("strokeColor", convertStringToColor(elements[i + 1].trim()));
+                        i++;  // Ignore the next argument since it was used for the stroke color
+                    } else if (element.equals("-f") && i + 1 < elements.length) {
+                        instruction.put("fillColor", convertStringToColor(elements[i + 1].trim()));
+                        i++;  // Ignore the next argument since it was used for the fill color
                 } else {
                     try {
                         coordinates.add(Double.parseDouble(element));
@@ -69,14 +70,15 @@ public class Parser {
             }
 
             instruction.put("coords", coordinates);
-            instruction.put("elementActionType","setter");
+            instruction.put("elementActionType", "setter");
             return instruction;
+
         }
     }
 
     static class GeneralCommandParser implements CommandParser {
         @Override
-        public Map<String, Object> parseCommand(String[] elements) throws IllegalArgumentException {
+        public Map<String, Object> parseCommand(String[] elements) {
             Map<String, Object> instruction = new Hashtable<>();
             String command = elements[0].trim();
             instruction.put("elementAction", command);
@@ -86,65 +88,77 @@ public class Parser {
             try {
                 Class<?> commandClass = Class.forName("terminalSVG.model.SVGCommand." + className + "SVG");
                 Method parseMethod = commandClass.getDeclaredMethod("parseCommand", Map.class, String[].class);
-                parseMethod.invoke(null, instruction, elements);
-            } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                throw new IllegalArgumentException("[Erreur] La commande n'est pas prise en charge : " + command);
+
+                try {
+                    parseMethod.invoke(null, instruction, elements);
+                    instruction.put("elementActionType", "modifier");
+                } catch (InvocationTargetException e) {
+                    Throwable cause = e.getCause();
+                    if (cause instanceof IllegalArgumentException) {
+                        throw (IllegalArgumentException) cause;
+                    } else {
+                        throw new IllegalArgumentException("[Erreur] : " + command + ":" + cause.getMessage());
+                    }
+                }
+            } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException e) {
+                throw new IllegalArgumentException("[Erreur] : " + command);
             }
-            instruction.put("elementActionType","modifier");
+
             return instruction;
         }
     }
-    public static Color convertStringToColor(String colorName) {
-        Color color;
 
-        switch (colorName.toLowerCase()) {
-            case "black":
-                color = Color.BLACK;
-                break;
-            case "white":
-                color = Color.WHITE;
-                break;
-            case "red":
-                color = Color.RED;
-                break;
-            case "green":
-                color = Color.GREEN;
-                break;
-            case "blue":
-                color = Color.BLUE;
-                break;
-            case "yellow":
-                color = Color.YELLOW;
-                break;
-            case "cyan":
-                color = Color.CYAN;
-                break;
-            case "magenta":
-                color = Color.MAGENTA;
-                break;
-            case "gray":
-                color = Color.GRAY;
-                break;
-            case "darkgray":
-                color = Color.DARK_GRAY;
-                break;
-            case "lightgray":
-                color = Color.LIGHT_GRAY;
-                break;
-            case "orange":
-                color = Color.ORANGE;
-                break;
-            case "pink":
-                color = Color.PINK;
-                break;
-            default:
-                try {
-                    color = Color.decode(colorName);
-                } catch (NumberFormatException e) {
+        public static Color convertStringToColor(String colorName) {
+            Color color;
+
+            switch (colorName.toLowerCase()) {
+                case "black":
                     color = Color.BLACK;
-                }
-                break;
+                    break;
+                case "white":
+                    color = Color.WHITE;
+                    break;
+                case "red":
+                    color = Color.RED;
+                    break;
+                case "green":
+                    color = Color.GREEN;
+                    break;
+                case "blue":
+                    color = Color.BLUE;
+                    break;
+                case "yellow":
+                    color = Color.YELLOW;
+                    break;
+                case "cyan":
+                    color = Color.CYAN;
+                    break;
+                case "magenta":
+                    color = Color.MAGENTA;
+                    break;
+                case "gray":
+                    color = Color.GRAY;
+                    break;
+                case "darkgray":
+                    color = Color.DARK_GRAY;
+                    break;
+                case "lightgray":
+                    color = Color.LIGHT_GRAY;
+                    break;
+                case "orange":
+                    color = Color.ORANGE;
+                    break;
+                case "pink":
+                    color = Color.PINK;
+                    break;
+                default:
+                    try {
+                        color = Color.decode(colorName);
+                    } catch (NumberFormatException e) {
+                        color = Color.BLACK;
+                    }
+                    break;
+            }
+            return color;
         }
-        return color;
-    }
 }

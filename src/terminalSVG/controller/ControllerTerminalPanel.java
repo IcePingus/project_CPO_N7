@@ -38,6 +38,7 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
 
         this.modifierList = new ArrayList<>();
         this.modifierList.add("clear");
+        this.modifierList.add("erase");
 
         this.sendButton = new JButton("Entrer");
         this.sendButton.addActionListener(this);
@@ -96,25 +97,21 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
         String action = elementAction;
         action += "SVG";
         action = Character.toUpperCase(action.charAt(0)) + action.substring(1);
-        SVGCommand shape = null;
+        SVGCommand svgCommand = null;
         Class<?> actionClass = Class.forName("terminalSVG.model.SVGCommand." + action);
             if (elementActionType.equals("setter")) {
-                Constructor<?> constructor = actionClass.getDeclaredConstructor(String.class, List.class, boolean.class, Color.class, Color.class);
-                constructor.setAccessible(true);
-                shape = (DrawShapeAction) constructor.newInstance(elementName, coords, isFill, strokeColor, fillColor);
+                Constructor<?> shapeConstructor = actionClass.getDeclaredConstructor(String.class, List.class, boolean.class, Color.class, Color.class);
+                shapeConstructor.setAccessible(true);
+                svgCommand = (DrawShapeAction) shapeConstructor.newInstance(elementName, coords, isFill, strokeColor, fillColor);
             } else if (elementActionType.equals("modifier")) {
-                Constructor<?> constructor2 = actionClass.getDeclaredConstructor(Map.class);
-                constructor2.setAccessible(true);
-                shape = (SVGCommand) constructor2.newInstance(instruction);
+                Constructor<?> CommandConstructor = actionClass.getDeclaredConstructor(Map.class);
+                CommandConstructor.setAccessible(true);
+                svgCommand = (SVGCommand) CommandConstructor.newInstance(instruction);
             }
-            else{
-                // Cas par défaut si aucune correspondance
-                shape = null;
+            if (svgCommand == null) {
+                throw new IllegalArgumentException("Commande marche po");
             }
-            if (shape != null) {
-                shape.execute(this.svgPreview);
-                this.svgPreview.updateCanvas(elementAction + "-" + elementName);
-            }
+            svgCommand.execute(this.svgPreview,elementName);
         } catch (NoSuchMethodException e) {
             throw new RuntimeException(e);
         } catch (InvocationTargetException e) {
@@ -156,10 +153,11 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
                 addElement(Parser.parse(commandText,this.setterList,this.modifierList));
             } catch (IllegalArgumentException e) {
                 // Gérer l'exception IllegalArgumentException
-                this.history.addCommand(new Command(e.getMessage()));
+                this.history.addCommand(new Command("Erreur : " + e.getMessage()));
             } catch (Exception e) {
                 // Gérer toutes les autres exceptions
                 this.history.addCommand(new Command("Erreur imprévue s'est produite : " + e.getMessage()));
+                e.printStackTrace();
             }
         }
         this.textArea.setText("");
