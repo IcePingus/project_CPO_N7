@@ -34,9 +34,7 @@ public class TerminalProjectPanel extends JPanel implements ActionListener {
         // A. Instance Panels Historique & PreviewCodeSVG (preview)
         // -> Remplacer ici par le panel du module conçu pour le previewCodeSVG
         ViewHistoryPanel vhPanel = new ViewHistoryPanel();
-        JPanel vSVGCodePreviewPanel = new JPanel();
-        JLabel previewSVGCodeLabel = new JLabel("Terminal - Preview Code SVG");
-        vSVGCodePreviewPanel.add(previewSVGCodeLabel);
+        ViewSVGCodePreviewPanel vSVGCodePreviewPanel = new ViewSVGCodePreviewPanel();
 
         // B. Instance modèle Historique & Ajout observer
         History h = new History(null);
@@ -50,6 +48,7 @@ public class TerminalProjectPanel extends JPanel implements ActionListener {
         SVGPreview svgp = new SVGPreview();
 
         svgp.addObserver(vSVGCanvaPreviewPanel); //Observer SVGCanvaPreview -> SVGPreview
+        svgp.addObserver(vSVGCodePreviewPanel);
 
         // ----------- III. Partie Controller -----------
         // A. Instance Panels Controller -> Historique & SVGPreview
