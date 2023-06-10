@@ -124,11 +124,11 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
             isFill = true;
         }
         try {
-        String action = elementAction;
-        action += "SVG";
-        action = Character.toUpperCase(action.charAt(0)) + action.substring(1);
-        SVGCommand svgCommand = null;
-        Class<?> actionClass = Class.forName("terminalSVG.model.SVGCommand." + action);
+            String action = elementAction;
+            action += "SVG";
+            action = Character.toUpperCase(action.charAt(0)) + action.substring(1);
+            SVGCommand svgCommand = null;
+            Class<?> actionClass = Class.forName("terminalSVG.model.SVGCommand." + action);
             if (elementActionType.equals("setter")) {
                 Constructor<?> shapeConstructor = actionClass.getDeclaredConstructor(String.class, List.class, boolean.class, Color.class, Color.class);
                 shapeConstructor.setAccessible(true);
