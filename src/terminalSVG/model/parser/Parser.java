@@ -16,7 +16,6 @@ public class Parser {
             Parser.commandParsers.put(commands, new GeneralCommandParser());
         }
 
-        //System.out.print(commandParsers);
         if (input == null || input.isEmpty()) {
             throw new IllegalArgumentException("La commande est vide.");
         }
@@ -50,10 +49,10 @@ public class Parser {
 
                     if (element.equals("-s") && i + 1 < elements.length) {
                         instruction.put("strokeColor", convertStringToColor(elements[i + 1].trim()));
-                        i++;  // Ignore the next argument since it was used for the stroke color
+                        i++;
                     } else if (element.equals("-f") && i + 1 < elements.length) {
                         instruction.put("fillColor", convertStringToColor(elements[i + 1].trim()));
-                        i++;  // Ignore the next argument since it was used for the fill color
+                        i++;
                 } else {
                     try {
                         coordinates.add(Double.parseDouble(element));
