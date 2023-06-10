@@ -1,6 +1,5 @@
 package terminalSVG.model.SVGCommand;
 
-import org.apache.batik.svggen.SVGGraphics2D;
 import terminalSVG.model.SVGPreview;
 
 import java.awt.*;
@@ -22,13 +21,33 @@ public class CircleSVG extends DrawShapeAction {
             + "\n"
     );
 
-    public CircleSVG() {
-    }
     public CircleSVG(String n, List<Double> coords, boolean f, Color cStroke, Color cFill) {
         super(n,f,cStroke,cFill);
         assert coords.size() == COORDS_LIST_SIZE;
         this.center = new Point(coords.get(0), coords.get(1));
         this.radius = coords.get(2);
+    }
+
+    public void draw(SVGPreview svgPreview){
+        // Dessiner le cercle avec le SVGGraphics2D
+        svgPreview.getSVGGraphics().setColor(getStrokeColor());
+
+        int x = (int) Math.round(center.getX() - radius);
+        int y = (int) Math.round(center.getY() - radius);
+        int diametre = (int) Math.round(radius * 2);
+
+        // Dessiner le contour du cercle
+        svgPreview.getSVGGraphics().drawOval(x, y, diametre, diametre);
+
+        if (isFill) {
+            // Remplir le cercle
+            svgPreview.getSVGGraphics().setColor(this.fillColor);
+            svgPreview.getSVGGraphics().fillOval(x, y, diametre, diametre);
+        }
+    }
+
+    public String getHelp() {
+        return this.description;
     }
 
     public Point getCenter() {
@@ -53,28 +72,6 @@ public class CircleSVG extends DrawShapeAction {
 
     public Integer getCoordsListSize() {
         return COORDS_LIST_SIZE;
-    }
-
-    public String getHelp() {
-        return this.description;
-    }
-
-    public void execute(SVGPreview svgPreview) {
-        // Dessiner le cercle avec le SVGGraphics2D
-        svgPreview.getSVGGraphics().setColor(getStrokeColor());
-
-        int x = (int) Math.round(center.getX() - radius);
-        int y = (int) Math.round(center.getY() - radius);
-        int diametre = (int) Math.round(radius * 2);
-
-        // Dessiner le contour du cercle
-        svgPreview.getSVGGraphics().drawOval(x, y, diametre, diametre);
-
-        if (isFill) {
-            // Remplir le cercle
-            svgPreview.getSVGGraphics().setColor(getFillColor());
-            svgPreview.getSVGGraphics().fillOval(x, y, diametre, diametre);
-        }
     }
 
 }

@@ -16,14 +16,30 @@ public class OvalSVG extends DrawShapeAction {
     private final String description = ("\n" + "Utilisation Oval : "
     );
 
-    public OvalSVG() {
-    }
     public OvalSVG(String name, List<Double> coords, boolean isFill, Color strokeColor, Color fillColor) {
         super(name, isFill, strokeColor, fillColor);
         assert coords.size() == COORDS_LIST_SIZE;
         this.center = new Point(coords.get(0),coords.get(1));
         this.width = coords.get(2);
         this.height = coords.get(3);
+    }
+
+    public void draw(SVGPreview svgPreview) {
+        // Dessiner le cercle avec le SVGGraphics2D
+        svgPreview.getSVGGraphics().setColor(getStrokeColor());
+
+        // Dessiner le contour du cercle
+        svgPreview.getSVGGraphics().drawOval((int)center.getX(), (int)center.getY(), (int)width, (int)height);
+
+        if (isFill) {
+            // Remplir le cercle
+            svgPreview.getSVGGraphics().setColor(this.fillColor);
+            svgPreview.getSVGGraphics().fillOval((int)center.getX(), (int)center.getY(), (int)width, (int)height);
+        }
+    }
+
+    public String getHelp() {
+        return this.description;
     }
 
     public Point getCenter() {
@@ -53,26 +69,8 @@ public class OvalSVG extends DrawShapeAction {
     public static String getCommandName() {
         return COMMAND_NAME;
     }
+
     public Integer getCoordsListSize() {
         return COORDS_LIST_SIZE;
-    }
-
-    public String getHelp() {
-        return this.description;
-    }
-
-    @Override
-    public void execute(SVGPreview svgPreview) {
-        // Dessiner le cercle avec le SVGGraphics2D
-        svgPreview.getSVGGraphics().setColor(getStrokeColor());
-
-        // Dessiner le contour du cercle
-        svgPreview.getSVGGraphics().drawOval((int)center.getX(), (int)center.getY(), (int)width, (int)height);
-
-        if (isFill) {
-            // Remplir le cercle
-            svgPreview.getSVGGraphics().setColor(getFillColor());
-            svgPreview.getSVGGraphics().fillOval((int)center.getX(), (int)center.getY(), (int)width, (int)height);
-        }
     }
 }

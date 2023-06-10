@@ -16,15 +16,34 @@ public class RectangleSVG extends DrawShapeAction {
     private final String description = ("\n" + "Utilisation Rectangle : "
     );
 
-    public RectangleSVG() {
-    }
-
     public RectangleSVG(String name, List<Double> coords, boolean isFill, Color strokeColor, Color fillColor) {
         super(name, isFill, strokeColor, fillColor);
         assert coords.size() == COORDS_LIST_SIZE;
         this.point = new Point(coords.get(0),coords.get(1));
         this.sideLength1 = coords.get(2);
         this.sideLength2 = coords.get(3);
+    }
+
+    public void draw(SVGPreview svgPreview) {
+        svgPreview.getSVGGraphics().setColor(getStrokeColor());
+
+        int x = (int) Math.round(point.getX());
+        int y = (int) Math.round(point.getY());
+        int s1 = (int) Math.round(sideLength1);
+        int s2 = (int) Math.round(sideLength2);
+
+        // Dessiner le contour du carré
+        svgPreview.getSVGGraphics().drawRect(x, y, s1, s2);
+
+        if (isFill) {
+            // Remplir le carré
+            svgPreview.getSVGGraphics().setColor(fillColor);
+            svgPreview.getSVGGraphics().fillRect(x, y, s1, s2);
+        }
+    }
+
+    public String getHelp() {
+        return this.description;
     }
 
     public Point getPoint() {
@@ -54,30 +73,8 @@ public class RectangleSVG extends DrawShapeAction {
     public static String getCommandName() {
         return COMMAND_NAME;
     }
+
     public Integer getCoordsListSize() {
         return COORDS_LIST_SIZE;
-    }
-    @Override
-    public String getHelp() {
-        return this.description;
-    }
-
-    @Override
-    public void execute(SVGPreview svgPreview) {
-        svgPreview.getSVGGraphics().setColor(getStrokeColor());
-
-        int x = (int) Math.round(point.getX());
-        int y = (int) Math.round(point.getY());
-        int s1 = (int) Math.round(sideLength1);
-        int s2 = (int) Math.round(sideLength2);
-
-        // Dessiner le contour du carré
-        svgPreview.getSVGGraphics().drawRect(x, y, s1, s2);
-
-        if (isFill) {
-            // Remplir le carré
-            svgPreview.getSVGGraphics().setColor(fillColor);
-            svgPreview.getSVGGraphics().fillRect(x, y, s1, s2);
-        }
     }
 }

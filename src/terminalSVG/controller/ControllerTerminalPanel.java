@@ -3,7 +3,6 @@ package terminalSVG.controller;
 import terminalSVG.model.*;
 import terminalSVG.model.SVGCommand.*;
 
-import org.apache.batik.svggen.SVGGraphics2D;
 import terminalSVG.model.parser.Parser;
 
 import javax.swing.*;
@@ -14,6 +13,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -22,10 +22,23 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
     private JTextArea textArea;
     private JButton sendButton;
     private SVGPreview svgPreview;
+    private final List<String> setterCommandList;
+    private final List<String> modifierCommandList;
     public ControllerTerminalPanel(History h, SVGPreview svgp) {
         super();
         this.history = h;
         this.svgPreview = svgp;
+
+        this.setterCommandList = new ArrayList<>();
+        this.setterCommandList.add("rectangle");
+        this.setterCommandList.add("circle");
+        this.setterCommandList.add("oval");
+        this.setterCommandList.add("square");
+        this.setterCommandList.add("polygon");
+
+        this.modifierCommandList = new ArrayList<>();
+        this.modifierCommandList.add("clear");
+        this.modifierCommandList.add("erase");
 
         this.sendButton = new JButton("Entrer");
         this.sendButton.addActionListener(this);
@@ -48,7 +61,7 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    addCommand();
+                    prepareCommand();
                 }
             }
         });
@@ -69,7 +82,35 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
         this.add(container);
     }
 
-    public void addElement(Map<String, Object> instruction) throws ClassNotFoundException {
+    /**
+     * Ajoute la commande à l'historique et efface le contenu de la zone de texte.
+     * Envoie la commande en traitement dans le parser adéquat en fonction de l'entrée donnée.
+     * Récupère une map correspondante à la commande parsée et l'envoie en traitement.
+     */
+    public void prepareCommand() {
+        String commandText = this.textArea.getText().trim(); // Retirer les espaces avant et après le texte
+
+        if (!commandText.isEmpty()) {
+            this.history.addCommand(new Command(commandText));
+            try {
+                // Appel de la méthode parse de la classe Parsing
+                executeCommand(Parser.parse(commandText,this.setterCommandList,this.modifierCommandList));
+            } catch (IllegalArgumentException e) {
+                // Gérer l'exception IllegalArgumentException
+                this.history.addCommand(new Command("[Erreur] : " + e.getMessage()));
+            } catch (Exception e) {
+                // Gérer toutes les autres exceptions
+                this.history.addCommand(new Command("Erreur imprévue s'est produite : " + e.getMessage()));
+            }
+        }
+        this.textArea.setText("");
+    }
+
+    /**
+     * Récupère la map parsée et s'occupe du traitement et de l'exécution de la commande sur la SVGPreview.
+     * Construit et instancie l'objet associé à la commande de façon dynamique (introspection).
+     */
+    public void executeCommand(Map<String, Object> instruction) throws ClassNotFoundException {
         String elementActionType = getString(instruction, "elementActionType");
         String elementAction = getString(instruction, "elementAction");
         String elementName = getString(instruction, "elementName");
@@ -84,25 +125,25 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
         String action = elementAction;
         action += "SVG";
         action = Character.toUpperCase(action.charAt(0)) + action.substring(1);
-        System.out.println(action);
+        SVGCommand svgCommand = null;
         Class<?> actionClass = Class.forName("terminalSVG.model.SVGCommand." + action);
-            switch(elementActionType) {
-                case("setter"):
-                    Constructor<?> constructor = actionClass.getDeclaredConstructor(String.class, List.class, boolean.class, Color.class, Color.class);
-                    constructor.setAccessible(true);
-                    DrawShapeAction shape = (DrawShapeAction) constructor.newInstance(elementName, coords, isFill, strokeColor, fillColor);
-                    shape.execute(this.svgPreview);
-                break;
-                case("modifier"):
-                    //TODO
-                break;
-                default:
+            if (elementActionType.equals("setter")) {
+                Constructor<?> shapeConstructor = actionClass.getDeclaredConstructor(String.class, List.class, boolean.class, Color.class, Color.class);
+                shapeConstructor.setAccessible(true);
+                svgCommand = (DrawShapeAction) shapeConstructor.newInstance(elementName, coords, isFill, strokeColor, fillColor);
+            } else if (elementActionType.equals("modifier")) {
+                Constructor<?> CommandConstructor = actionClass.getDeclaredConstructor(Map.class);
+                CommandConstructor.setAccessible(true);
+                svgCommand = (SVGCommand) CommandConstructor.newInstance(instruction);
             }
-            this.svgPreview.updateCanvas(elementAction + "-" + elementName);
+            if (svgCommand == null) {
+                throw new IllegalArgumentException("ERROR");
+            }
+            svgCommand.execute(this.svgPreview,elementName);
         } catch (NoSuchMethodException e) {
             throw new RuntimeException(e);
         } catch (InvocationTargetException e) {
-            this.history.addCommand(new Command("[Erreur] Nombre d'arguments incorrect"));
+            this.history.addCommand(new Command("[Erreur] : Nombre d'arguments incorrect"));
         } catch (InstantiationException e) {
             throw new RuntimeException(e);
         } catch (IllegalAccessException e) {
@@ -124,33 +165,8 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
     private Color getColor(Map<String, Object> map, String key, Color defaultValue) {
         return map.containsKey(key) ? (Color) map.get(key) : defaultValue;
     }
-
-    /**
-     * Ajoute la commande à l'historique et efface le contenu de la zone de texte.
-     * Envoie la commande en traitement pour le SVGPreview.
-     */
-    public void addCommand() {
-        String commandText = this.textArea.getText().trim(); // Retirer les espaces avant et après le texte
-
-        if (!commandText.isEmpty()) {
-            this.history.addCommand(new Command(commandText));
-
-            try {
-                // Appel de la méthode parse de la classe Parsing
-                addElement(Parser.parse(commandText));
-            } catch (IllegalArgumentException e) {
-                // Gérer l'exception IllegalArgumentException
-                this.history.addCommand(new Command(e.getMessage()));
-            } catch (Exception e) {
-                // Gérer toutes les autres exceptions
-                this.history.addCommand(new Command("Erreur imprévue s'est produite : " + e.getMessage()));
-            }
-        }
-        this.textArea.setText("");
-    }
-
     @Override
     public void actionPerformed(ActionEvent e) {
-        addCommand();
+        prepareCommand();
     }
 }
