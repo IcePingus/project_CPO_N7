@@ -102,7 +102,6 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
             } catch (Exception e) {
                 // Gérer toutes les autres exceptions
                 this.history.addCommand(new Command("Erreur imprévue s'est produite : " + e.getMessage()));
-                e.printStackTrace();
             }
         }
         this.textArea.setText("");
