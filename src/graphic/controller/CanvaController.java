@@ -137,5 +137,4 @@ public class CanvaController implements Observer {
             this.canva.setMouseMotionListener();
         }
     }
-
 }

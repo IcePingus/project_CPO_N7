@@ -46,6 +46,10 @@ public class ToolInternalFrame extends JInternalFrame implements ActionListener,
         this.toolbox.addTool(new PickerTool(colorController));
         this.toolbox.addTool(new HighlighterTool());
 
+        TextTool textTool = new TextTool();
+        this.toolbox.addObserver(textTool);
+        this.toolbox.addTool(textTool);
+
         for (int i = 0; i < this.toolbox.getTools().size(); i++) {
             this.toolsPanel.add(this.toolbox.getToolsButtons().get(i));
             this.toolbox.getToolsButtons().get(i).setName(this.toolbox.getTools().get(i).getName());

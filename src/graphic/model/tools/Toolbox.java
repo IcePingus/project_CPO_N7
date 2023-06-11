@@ -51,6 +51,8 @@ public class Toolbox extends Observable {
 
     public void setToolSize(int size) {
         this.toolSize = size;
+        this.setChanged();
+        this.notifyObservers();
     }
 
     public int getToolSize() {
