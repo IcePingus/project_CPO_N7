@@ -33,7 +33,7 @@ public class PickerTool implements ToolCommand {
     }
 
     @Override
-    public void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click, int size, boolean square) {
+    public void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click, int size, boolean square, JComponent jComponent) {
         Color color = new Color(bufferedImage.getRGB(currentX, currentY));
         if(click == InputEvent.BUTTON1_DOWN_MASK) {
             this.colorController.setPrimaryColor(color);
