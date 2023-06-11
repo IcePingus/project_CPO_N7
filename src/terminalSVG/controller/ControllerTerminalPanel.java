@@ -39,6 +39,7 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
         this.modifierCommandList = new ArrayList<>();
         this.modifierCommandList.add("clear");
         this.modifierCommandList.add("erase");
+        this.modifierCommandList.add("color");
 
         this.sendButton = new JButton("Entrer");
         this.sendButton.addActionListener(this);
@@ -115,18 +116,18 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
         String elementAction = getString(instruction, "elementAction");
         String elementName = getString(instruction, "elementName");
         List<Double> coords = getList(instruction, "coords");
-        Color strokeColor = getColor(instruction, "strokeColor", Color.BLACK);
+        Color strokeColor = getColor(instruction, "strokeColor", this.svgPreview.getDefaultColor());
         boolean isFill = false;
         Color fillColor = getColor(instruction, "fillColor", null);
         if (fillColor != null) {
             isFill = true;
         }
         try {
-        String action = elementAction;
-        action += "SVG";
-        action = Character.toUpperCase(action.charAt(0)) + action.substring(1);
-        SVGCommand svgCommand = null;
-        Class<?> actionClass = Class.forName("terminalSVG.model.SVGCommand." + action);
+            String action = elementAction;
+            action += "SVG";
+            action = Character.toUpperCase(action.charAt(0)) + action.substring(1);
+            SVGCommand svgCommand = null;
+            Class<?> actionClass = Class.forName("terminalSVG.model.SVGCommand." + action);
             if (elementActionType.equals("setter")) {
                 Constructor<?> shapeConstructor = actionClass.getDeclaredConstructor(String.class, List.class, boolean.class, Color.class, Color.class);
                 shapeConstructor.setAccessible(true);
