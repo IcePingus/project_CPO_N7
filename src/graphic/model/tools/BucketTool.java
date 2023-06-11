@@ -47,7 +47,7 @@ public class BucketTool implements ToolCommand {
     }
 
     @Override
-    public void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click, int size, boolean square, boolean isFirstPoint, JComponent canva) {
+    public void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click, int size, boolean square, boolean isFirstPoint, boolean isFirstPoint, JComponent canva) {
         Color color = null;
         if (click == InputEvent.BUTTON1_DOWN_MASK) {
             color = primaryColor;

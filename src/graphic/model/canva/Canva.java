@@ -29,6 +29,7 @@ public class Canva extends JComponent {
         this.imageStates = new ArrayList<>();
         this.currentIndex = 0;
         this.zoom = 1.0;
+        this.isFirstPoint = true;
         this.setDoubleBuffered(false);
         this.requestFocusInWindow();
         this.addMouseListener(new MouseAdapter() {

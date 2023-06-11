@@ -55,7 +55,7 @@ public class TextTool implements ToolCommand, FocusListener, KeyListener {
     }
 
     @Override
-    public void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click, int size, boolean square, JComponent jComponent) {
+    public void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click, int size, boolean square, boolean isFirstClick, JComponent canva) {
         this.jComponent = jComponent;
         this.graphics2D = graphics2D;
         Color color = null;

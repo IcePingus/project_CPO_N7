@@ -1,7 +1,6 @@
 package graphic.model.tools;
 
 import graphic.controller.CanvaController;
-import graphic.controller.ColorController;
 import graphic.model.color.ColorModel;
 
 import javax.swing.*;
@@ -50,7 +49,7 @@ public class ShapeTool implements ToolCommand {
     }
 
     @Override
-    public void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click, int size, boolean square, boolean isFirstPoint) {
+    public void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click, int size, boolean square, boolean isFirstPoint, JComponent jComponent) {
         if (isFirstPoint) {
             this.oldX = oldX;
             this.oldY = oldY;
