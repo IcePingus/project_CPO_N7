@@ -13,6 +13,7 @@ public class PickerTool implements ToolCommand {
     private final String name;
     private final Icon image;
     private final boolean isResizable;
+    private final boolean isSquareRoundShape;
     private final ColorController colorController;
 
     public PickerTool(ColorController colorController) {
@@ -20,6 +21,7 @@ public class PickerTool implements ToolCommand {
         this.image = new ImageIcon(getClass().getResource("/assets/images/picker.png"));
         this.isResizable = false;
         this.colorController = colorController;
+        this.isSquareRoundShape = false;
     }
 
     @Override
@@ -30,6 +32,16 @@ public class PickerTool implements ToolCommand {
     @Override
     public Icon getImage() {
         return this.image;
+    }
+
+    @Override
+    public boolean getIsResizable() {
+        return this.isResizable;
+    }
+
+    @Override
+    public boolean getIsSquareRoundShape() {
+        return this.isSquareRoundShape;
     }
 
     @Override

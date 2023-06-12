@@ -9,11 +9,13 @@ public class RubberTool implements ToolCommand {
     private final String name;
     private final Icon image;
     private final boolean isResizable;
+    private final boolean isSquareRoundShape;
 
     public RubberTool() {
         this.name = "Rubber";
         this.image = new ImageIcon(getClass().getResource("/assets/images/rubber.png"));
         this.isResizable = true;
+        this.isSquareRoundShape = true;
     }
 
     @Override
@@ -29,6 +31,11 @@ public class RubberTool implements ToolCommand {
     @Override
     public boolean getIsResizable() {
         return this.isResizable;
+    }
+
+    @Override
+    public boolean getIsSquareRoundShape() {
+        return this.isSquareRoundShape;
     }
 
     @Override
