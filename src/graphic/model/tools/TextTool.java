@@ -27,11 +27,11 @@ public class TextTool implements ToolCommand, FocusListener, KeyListener {
         this.name = "Text";
         this.image = new ImageIcon(getClass().getResource("/assets/images/text.png"));
         this.isResizable = true;
+        this.isSquareRoundShape = false;
         this.primaryColor = Color.BLACK;
         this.secondaryColor = Color.WHITE;
         this.text = "";
         this.size = 10;
-        this.isSquareRoundShape = false;
     }
 
     @Override
