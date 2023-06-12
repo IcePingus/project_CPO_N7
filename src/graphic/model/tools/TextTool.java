@@ -135,7 +135,7 @@ public class TextTool implements ToolCommand, FocusListener, KeyListener {
                 if (this.text.length() != 0) {
                     this.text = this.text.substring(0, this.text.length() - 1);
                 }
-            } else if (Character.isLetter(e.getKeyChar())) {
+            } else if (Character.isLetter(e.getKeyChar()) || Character.isSpaceChar(e.getKeyChar())) {
                 this.text += e.getKeyChar();
             }
         }
