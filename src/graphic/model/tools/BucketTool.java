@@ -13,7 +13,7 @@ public class BucketTool implements ToolCommand {
     private final String name;
     private final Icon image;
     private final boolean isResizable;
-
+    Boolean isSquareRoundShape;
     private Color primaryColor;
     private Color secondaryColor;
 
@@ -23,6 +23,7 @@ public class BucketTool implements ToolCommand {
         this.isResizable = false;
         this.primaryColor = Color.BLACK;
         this.secondaryColor = Color.WHITE;
+        this.isSquareRoundShape = false;
     }
 
     @Override
@@ -41,7 +42,12 @@ public class BucketTool implements ToolCommand {
     }
 
     @Override
-    public void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click, int size, boolean square) {
+    public boolean getIsSquareRoundShape() {
+        return this.isSquareRoundShape;
+    }
+
+    @Override
+    public void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click, int size, boolean square, JComponent jComponent) {
         Color color = null;
         if (click == InputEvent.BUTTON1_DOWN_MASK) {
             color = primaryColor;

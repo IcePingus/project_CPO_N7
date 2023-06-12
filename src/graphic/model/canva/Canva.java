@@ -11,7 +11,7 @@ import java.awt.image.WritableRaster;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Canva extends JComponent  {
+public class Canva extends JComponent {
 
     private List<BufferedImage> imageStates;
     private int currentIndex;
@@ -36,7 +36,7 @@ public class Canva extends JComponent  {
 
                 BufferedImage newImage = nextBufferedImage();
 
-                toolbox.getActiveTool().execute(oldX, oldY, currentX, currentY, newImage, g2, e.getModifiersEx(), toolbox.getToolSize(), toolbox.getIsSquareShape());
+                toolbox.getActiveTool().execute(oldX, oldY, currentX, currentY, newImage, g2, e.getModifiersEx(), toolbox.getToolSize(), toolbox.getIsSquareShape(), Canva.this);
 
                 repaint();
             }
@@ -143,7 +143,7 @@ public class Canva extends JComponent  {
                 currentY = e.getY() - ((getHeight() - imageStates.get(currentIndex).getHeight()) / 2);
 
                 if (g2 != null) {
-                    toolbox.getActiveTool().execute(oldX, oldY, currentX, currentY, imageStates.get(currentIndex), g2, e.getModifiersEx(), toolbox.getToolSize(), toolbox.getIsSquareShape());
+                    toolbox.getActiveTool().execute(oldX, oldY, currentX, currentY, imageStates.get(currentIndex), g2, e.getModifiersEx(), toolbox.getToolSize(), toolbox.getIsSquareShape(), Canva.this);
                     oldX = currentX;
                     oldY = currentY;
                 }

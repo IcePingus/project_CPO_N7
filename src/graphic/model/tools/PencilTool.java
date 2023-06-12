@@ -13,6 +13,7 @@ public class PencilTool implements ToolCommand {
     private final String name;
     private final Icon image;
     private final boolean isResizable;
+    private final boolean isSquareRoundShape;
     private Color primaryColor;
     private Color secondaryColor;
 
@@ -22,6 +23,7 @@ public class PencilTool implements ToolCommand {
         this.primaryColor = Color.BLACK;
         this.secondaryColor = Color.WHITE;
         this.isResizable = true;
+        this.isSquareRoundShape = true;
     }
 
     @Override
@@ -40,7 +42,12 @@ public class PencilTool implements ToolCommand {
     }
 
     @Override
-    public void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click, int size, boolean square) {
+    public boolean getIsSquareRoundShape() {
+        return this.isSquareRoundShape;
+    }
+
+    @Override
+    public void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click, int size, boolean square, JComponent jComponent) {
         Color color = null;
         if (click == InputEvent.BUTTON1_DOWN_MASK) {
             color = primaryColor;

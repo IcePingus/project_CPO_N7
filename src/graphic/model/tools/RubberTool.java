@@ -9,11 +9,13 @@ public class RubberTool implements ToolCommand {
     private final String name;
     private final Icon image;
     private final boolean isResizable;
+    private final boolean isSquareRoundShape;
 
     public RubberTool() {
         this.name = "Rubber";
         this.image = new ImageIcon(getClass().getResource("/assets/images/rubber.png"));
         this.isResizable = true;
+        this.isSquareRoundShape = true;
     }
 
     @Override
@@ -32,7 +34,12 @@ public class RubberTool implements ToolCommand {
     }
 
     @Override
-    public void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click, int size, boolean square) {
+    public boolean getIsSquareRoundShape() {
+        return this.isSquareRoundShape;
+    }
+
+    @Override
+    public void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click, int size, boolean square, JComponent jComponent) {
         graphics2D.setPaint(Color.WHITE);
         graphics2D.drawLine(oldX, oldY, currentX, currentY);
 

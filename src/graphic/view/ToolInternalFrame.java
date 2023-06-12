@@ -20,6 +20,8 @@ public class ToolInternalFrame extends JInternalFrame implements ActionListener,
     private JRadioButton circleShapeButton;
     private ButtonGroup shapeButtonGroup;
     private JPanel toolsPanel;
+    private JPanel toolOptionsPanel;
+    private JPanel squareShapePanel;
     private JPanel sliderPanel;
     private JLabel sizeLabel;
 
@@ -30,7 +32,7 @@ public class ToolInternalFrame extends JInternalFrame implements ActionListener,
         this.setResizable(false);
         this.setClosable(false);
         //this.setSize(148, 190);
-        this.setSize(148, 250);
+        this.setSize(148, 280);
         this.setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
         this.setVisible(true);
 
@@ -38,13 +40,17 @@ public class ToolInternalFrame extends JInternalFrame implements ActionListener,
 
         this.toolsPanel = new JPanel();
 
-        this.toolsPanel.setLayout(new GridLayout(3,2));
+        this.toolsPanel.setLayout(new GridLayout(3, 2));
 
         this.toolbox = toolbox;
         this.toolbox.addTool(new RubberTool());
         this.toolbox.addTool(new BucketTool());
         this.toolbox.addTool(new PickerTool(colorController));
         this.toolbox.addTool(new HighlighterTool());
+
+        TextTool textTool = new TextTool();
+        this.toolbox.addObserver(textTool);
+        this.toolbox.addTool(textTool);
 
         for (int i = 0; i < this.toolbox.getTools().size(); i++) {
             this.toolsPanel.add(this.toolbox.getToolsButtons().get(i));
@@ -59,7 +65,10 @@ public class ToolInternalFrame extends JInternalFrame implements ActionListener,
         this.add(this.toolsPanel, BorderLayout.CENTER);
 
         this.sliderPanel = new JPanel();
-        this.sliderPanel.setLayout(new GridLayout(2, 2));
+        this.sliderPanel.setLayout(new GridLayout(1, 2));
+
+        this.squareShapePanel = new JPanel();
+        this.squareShapePanel.setLayout(new GridLayout(1, 2));
 
         this.sizeLabel = new JLabel(" 5");
 
@@ -78,11 +87,15 @@ public class ToolInternalFrame extends JInternalFrame implements ActionListener,
 
         this.sliderPanel.add(sizeLabel);
         this.sliderPanel.add(sliderSize);
-        this.sliderPanel.add(this.squareShapeButton);
-        this.sliderPanel.add(this.circleShapeButton);
+        this.squareShapePanel.add(this.squareShapeButton);
+        this.squareShapePanel.add(this.circleShapeButton);
 
-        this.add(this.sliderPanel, BorderLayout.SOUTH);
+        this.toolOptionsPanel = new JPanel();
+        this.toolOptionsPanel.setLayout(new GridLayout(2, 1));
 
+        this.add(this.toolOptionsPanel, BorderLayout.SOUTH);
+        this.toolOptionsPanel.add(this.sliderPanel);
+        this.toolOptionsPanel.add(this.squareShapePanel);
     }
 
     @Override
@@ -97,12 +110,27 @@ public class ToolInternalFrame extends JInternalFrame implements ActionListener,
                     this.toolbox.getToolsButtons().get(i).setBackground(Color.red);
                     this.toolbox.setActiveTool(this.activeTool);
 
-                    if (!this.toolbox.getActiveTool().getIsResizable()) {
-                        this.sliderPanel.setVisible(false);
+                    this.toolOptionsPanel.setVisible(true);
+                    if (!this.toolbox.getActiveTool().getIsResizable() && !this.toolbox.getActiveTool().getIsSquareRoundShape()) {
+                        this.toolOptionsPanel.setVisible(false);
+                        this.toolOptionsPanel.removeAll();
                         this.setSize(148, 240);
-                    } else {
-                        this.sliderPanel.setVisible(true);
+                    } else if (!this.toolbox.getActiveTool().getIsResizable() && this.toolbox.getActiveTool().getIsSquareRoundShape()) {
+                        this.toolOptionsPanel.setLayout(new GridLayout(1, 1));
+                        this.toolOptionsPanel.removeAll();
+                        this.toolOptionsPanel.add(this.squareShapePanel);
                         this.setSize(148, 250);
+                    } else if (this.toolbox.getActiveTool().getIsResizable() && !this.toolbox.getActiveTool().getIsSquareRoundShape()) {
+                        this.toolOptionsPanel.setLayout(new GridLayout(1, 1));
+                        this.toolOptionsPanel.removeAll();
+                        this.toolOptionsPanel.add(this.sliderPanel);
+                        this.setSize(148, 250);
+                    } else {
+                        this.toolOptionsPanel.setLayout(new GridLayout(2, 1));
+                        this.toolOptionsPanel.removeAll();
+                        this.toolOptionsPanel.add(this.sliderPanel);
+                        this.toolOptionsPanel.add(this.squareShapePanel);
+                        this.setSize(148, 280);
                     }
                 }
             }

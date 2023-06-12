@@ -9,6 +9,7 @@ public interface ToolCommand extends Observer {
     String name = null;
     Icon image = null;
     Boolean isResizable = true;
+    Boolean isSquareRoundShape = true;
 
     default String getName() {
         return this.name;
@@ -19,5 +20,7 @@ public interface ToolCommand extends Observer {
     }
     default boolean getIsResizable() { return this.isResizable; }
 
-    void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click, int size, boolean square);
+    boolean getIsSquareRoundShape();
+
+    void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click, int size, boolean square, JComponent jComponent);
 }
