@@ -36,17 +36,13 @@ public class Canva extends JComponent {
 
                 BufferedImage newImage = nextBufferedImage();
 
-                toolbox.getActiveTool().execute(oldX, oldY, currentX, currentY, newImage, g2, e.getModifiersEx(), toolbox.getToolSize(), toolbox.getIsSquareShape(), getCanva());
+                toolbox.getActiveTool().execute(oldX, oldY, currentX, currentY, newImage, g2, e.getModifiersEx(), toolbox.getToolSize(), toolbox.getIsSquareShape(), Canva.this);
 
                 repaint();
             }
 
         });
         this.setMouseMotionListener();
-    }
-
-    public Canva getCanva() {
-        return this;
     }
 
     private void enableKeyboardInputs() {
@@ -147,7 +143,7 @@ public class Canva extends JComponent {
                 currentY = e.getY() - ((getHeight() - imageStates.get(currentIndex).getHeight()) / 2);
 
                 if (g2 != null) {
-                    toolbox.getActiveTool().execute(oldX, oldY, currentX, currentY, imageStates.get(currentIndex), g2, e.getModifiersEx(), toolbox.getToolSize(), toolbox.getIsSquareShape(), getCanva());
+                    toolbox.getActiveTool().execute(oldX, oldY, currentX, currentY, imageStates.get(currentIndex), g2, e.getModifiersEx(), toolbox.getToolSize(), toolbox.getIsSquareShape(), Canva.this);
                     oldX = currentX;
                     oldY = currentY;
                 }
