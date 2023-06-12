@@ -20,5 +20,7 @@ public interface ToolCommand extends Observer {
     }
     default boolean getIsResizable() { return this.isResizable; }
 
+    boolean getIsSquareRoundShape();
+
     void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click, int size, boolean square, boolean isFirstPoint, JComponent canva);
 }

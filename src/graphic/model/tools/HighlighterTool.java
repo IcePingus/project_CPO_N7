@@ -13,7 +13,7 @@ public class HighlighterTool implements ToolCommand {
     private final String name;
     private final Icon image;
     private final boolean isResizable;
-    Boolean isSquareRoundShape;
+    private boolean isSquareRoundShape;
     private Color primaryColor;
     private Color secondaryColor;
 
