@@ -13,6 +13,7 @@ public class PencilTool implements ToolCommand {
     private final String name;
     private final Icon image;
     private final boolean isResizable;
+    private final boolean isSquareRoundShape;
     private Color primaryColor;
     private Color secondaryColor;
 
@@ -22,6 +23,7 @@ public class PencilTool implements ToolCommand {
         this.primaryColor = Color.BLACK;
         this.secondaryColor = Color.WHITE;
         this.isResizable = true;
+        this.isSquareRoundShape = true;
     }
 
     @Override
@@ -40,7 +42,12 @@ public class PencilTool implements ToolCommand {
     }
 
     @Override
-    public void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click, int size) {
+    public boolean getIsSquareRoundShape() {
+        return this.isSquareRoundShape;
+    }
+
+    @Override
+    public void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click, int size, boolean square, JComponent jComponent) {
         Color color = null;
         if (click == InputEvent.BUTTON1_DOWN_MASK) {
             color = primaryColor;
@@ -50,40 +57,36 @@ public class PencilTool implements ToolCommand {
         if (color != null) {
             graphics2D.setPaint(color);
             graphics2D.drawLine(oldX, oldY, currentX, currentY);
-            for (int i = 0; i < size/2; i++) {
-                for (int j = 0 - size; j < size/2; j++) {
-                    graphics2D.drawLine(oldX - j, oldY - size, currentX - j, currentY - size);
-                    graphics2D.drawLine(oldX - j, oldY - size, currentX - j, currentY + size);
-                    graphics2D.drawLine(oldX - j, oldY - size, currentX + j, currentY - size);
-                    graphics2D.drawLine(oldX - j, oldY - size, currentX + j, currentY + size);
-                    graphics2D.drawLine(oldX - j, oldY + size, currentX - j, currentY - size);
-                    graphics2D.drawLine(oldX - j, oldY + size, currentX - j, currentY + size);
-                    graphics2D.drawLine(oldX - j, oldY - size, currentX + j, currentY + size);
-                    graphics2D.drawLine(oldX - j, oldY + size, currentX + j, currentY + size);
-                    graphics2D.drawLine(oldX + j, oldY - size, currentX - j, currentY - size);
-                    graphics2D.drawLine(oldX + j, oldY - size, currentX - j, currentY + size);
-                    graphics2D.drawLine(oldX + j, oldY - size, currentX + j, currentY - size);
-                    graphics2D.drawLine(oldX + j, oldY - size, currentX + j, currentY + size);
-                    graphics2D.drawLine(oldX + j, oldY + size, currentX - j, currentY - size);
-                    graphics2D.drawLine(oldX + j, oldY + size, currentX - j, currentY + size);
-                    graphics2D.drawLine(oldX + j, oldY + size, currentX + j, currentY - size);
-                    graphics2D.drawLine(oldX + j, oldY + size, currentX + j, currentY + size);
 
-                    graphics2D.drawLine(oldX - size, oldY - j, currentX - size, currentY + j);
-                    graphics2D.drawLine(oldX - size, oldY - j, currentX + size, currentY - j);
-                    graphics2D.drawLine(oldX - size, oldY - j, currentX + size, currentY + j);
-                    graphics2D.drawLine(oldX - size, oldY + j, currentX - size, currentY - j);
-                    graphics2D.drawLine(oldX - size, oldY + j, currentX - size, currentY + j);
-                    graphics2D.drawLine(oldX - size, oldY - j, currentX + size, currentY + j);
-                    graphics2D.drawLine(oldX - size, oldY + j, currentX + size, currentY + j);
-                    graphics2D.drawLine(oldX + size, oldY - j, currentX - size, currentY - j);
-                    graphics2D.drawLine(oldX + size, oldY - j, currentX - size, currentY + j);
-                    graphics2D.drawLine(oldX + size, oldY - j, currentX + size, currentY - j);
-                    graphics2D.drawLine(oldX + size, oldY - j, currentX + size, currentY + j);
-                    graphics2D.drawLine(oldX + size, oldY + j, currentX - size, currentY - j);
-                    graphics2D.drawLine(oldX + size, oldY + j, currentX - size, currentY + j);
-                    graphics2D.drawLine(oldX + size, oldY + j, currentX + size, currentY - j);
-                    graphics2D.drawLine(oldX + size, oldY + j, currentX + size, currentY + j);
+            if (square) {
+                graphics2D.fillRect(oldX - size / 2, oldY - size / 2, size, size);
+            } else {
+                graphics2D.fillOval(oldX - size / 2, oldY - size / 2, size, size);
+            }
+
+            int distanceX = Math.abs(currentX - oldX);
+            int distanceY = Math.abs(currentY - oldY);
+            int directionX = oldX < currentX ? 1 : -1;
+            int directionY = oldY < currentY ? 1 : -1;
+            int erreur = distanceX - distanceY;
+            int erreur2;
+
+            while (oldX != currentX || oldY != currentY) {
+
+                if (square) {
+                    graphics2D.fillRect(oldX - size / 2, oldY - size / 2, size, size);
+                } else {
+                    graphics2D.fillOval(oldX - size / 2, oldY - size / 2, size, size);
+                }
+
+                erreur2 = 2 * erreur;
+                if (erreur2 > -distanceY) {
+                    erreur -= distanceY;
+                    oldX += directionX;
+                }
+                if (erreur2 < distanceX) {
+                    erreur += distanceX;
+                    oldY += directionY;
                 }
             }
         }

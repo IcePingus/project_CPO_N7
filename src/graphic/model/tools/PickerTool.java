@@ -13,6 +13,7 @@ public class PickerTool implements ToolCommand {
     private final String name;
     private final Icon image;
     private final boolean isResizable;
+    private final boolean isSquareRoundShape;
     private final ColorController colorController;
 
     public PickerTool(ColorController colorController) {
@@ -20,6 +21,7 @@ public class PickerTool implements ToolCommand {
         this.image = new ImageIcon(getClass().getResource("/assets/images/picker.png"));
         this.isResizable = false;
         this.colorController = colorController;
+        this.isSquareRoundShape = false;
     }
 
     @Override
@@ -33,11 +35,23 @@ public class PickerTool implements ToolCommand {
     }
 
     @Override
-    public void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click, int size) {
+    public boolean getIsResizable() {
+        return this.isResizable;
+    }
+
+    @Override
+    public boolean getIsSquareRoundShape() {
+        return this.isSquareRoundShape;
+    }
+
+    @Override
+    public void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click, int size, boolean square, JComponent jComponent) {
         Color color = new Color(bufferedImage.getRGB(currentX, currentY));
         if(click == InputEvent.BUTTON1_DOWN_MASK) {
             this.colorController.setPrimaryColor(color);
+            this.colorController.setIsPrimaryColor(true);
         } else if(click == InputEvent.BUTTON3_DOWN_MASK) {
+            this.colorController.setIsPrimaryColor(false);
             this.colorController.setSecondaryColor(color);
         }
     }
