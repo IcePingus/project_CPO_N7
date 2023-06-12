@@ -12,6 +12,7 @@ public class TextTool implements ToolCommand, FocusListener, KeyListener {
     private final String name;
     private final Icon image;
     private final boolean isResizable;
+    private final boolean isSquareRoundShape;
     private int size;
     private Graphics2D graphics2D;
     private JComponent jComponent;
@@ -30,6 +31,7 @@ public class TextTool implements ToolCommand, FocusListener, KeyListener {
         this.secondaryColor = Color.WHITE;
         this.text = "";
         this.size = 10;
+        this.isSquareRoundShape = false;
     }
 
     @Override
@@ -45,6 +47,11 @@ public class TextTool implements ToolCommand, FocusListener, KeyListener {
     @Override
     public boolean getIsResizable() {
         return this.isResizable;
+    }
+
+    @Override
+    public boolean getIsSquareRoundShape() {
+        return this.isSquareRoundShape;
     }
 
     @Override
@@ -64,7 +71,6 @@ public class TextTool implements ToolCommand, FocusListener, KeyListener {
             this.currentY = currentY;
             this.size = size;
             if (this.jtextField != null) {
-                //this.jComponent.remove(jtextField);
                 focusLost(new FocusEvent(this.jComponent, 0));
             } else {
                 this.jtextField = new JTextField();
