@@ -1,6 +1,7 @@
 package graphic.controller;
 
 import com.nitido.utils.toaster.Toaster;
+import graphic.exception.BadFormatException;
 import graphic.model.tools.Toolbox;
 import graphic.model.canva.Canva;
 import graphic.view.SelectionPanel;
@@ -22,9 +23,11 @@ import java.util.Observer;
 public class CanvaController implements Observer {
 
     private final Canva canva;
+    private final JFileChooser fileChooser;
 
     public CanvaController(Canva canva) {
         this.canva = canva;
+        this.fileChooser = new JFileChooser();
     }
 
     public int getCanvaWidth() {
@@ -38,8 +41,23 @@ public class CanvaController implements Observer {
     public void exportPNG() {
         Toaster toasterManager = new Toaster();
         try {
-            toasterManager.showToaster("Image exported !");
-            ImageIO.write(this.canva.getBufferedImage(), "png", new File("export/image.png"));
+
+            JFileChooser jfc = new JFileChooser();
+            int retVal = jfc.showSaveDialog(null);
+            if(retVal==JFileChooser.APPROVE_OPTION){
+                File f = jfc.getSelectedFile();
+                String absolutePath = f.getAbsolutePath();
+                if (!f.toString().endsWith(".jpg") && !f.toString().endsWith(".png")) {
+                    if (f.toString().contains(".")) {
+                        toasterManager.showToaster("Bad format! You can only export png or jpg image!");
+                        throw new BadFormatException("Bad format!");
+                    } else {
+                        absolutePath += ".png";
+                    }
+                }
+                ImageIO.write(this.canva.getBufferedImage(),"png", new File(absolutePath));
+            }
+
         } catch (IOException e) {
             toasterManager.showToaster("There was an error while attempting to save the image.");
             e.printStackTrace();
