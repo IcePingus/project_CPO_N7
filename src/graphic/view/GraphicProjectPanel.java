@@ -244,9 +244,9 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
         } else if (e.getSource() == this.quit) {
             this.canvaController.quit(this.frame);
         } else if (e.getSource() == this.undo) {
-            //refacto a faire
+            this.canva.undo();
         } else if (e.getSource() == this.redo) {
-            //refacto a faire
+            this.canva.redo();
         } else if (e.getSource() == this.paste) {
             this.canvaController.clipboardToBufferedImage();
         } else if (e.getSource() == this.resize) {
