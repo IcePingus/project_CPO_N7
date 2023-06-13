@@ -42,6 +42,11 @@ public class RectangleSVG extends DrawShapeAction {
         }
     }
 
+    @Override
+    public void translateX(Double dx) {
+
+    }
+
     public String getHelp() {
         return this.description;
     }
