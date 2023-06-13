@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
+import java.security.Key;
 import java.util.Observable;
 
 public class TextTool implements ToolCommand, FocusListener, KeyListener {
@@ -110,13 +111,7 @@ public class TextTool implements ToolCommand, FocusListener, KeyListener {
     public void focusLost(FocusEvent e) {
         if (this.jtextField != null) {
             if (this.jtextField.getSelectedText() == null) {
-                this.graphics2D.setFont(this.jtextField.getFont());
-                this.graphics2D.setPaint(this.jtextField.getForeground());
-                this.graphics2D.drawString(this.text, this.jtextField.getX(), this.jtextField.getY() + this.size);
-                this.jComponent.remove(this.jtextField);
-                this.jComponent.repaint();
-                this.jtextField = null;
-                this.text = "";
+                placeText();
             } else {
                 this.jtextField.setBounds(currentX, currentY, size * 7, size);
                 if (this.isPrimaryColor) {
@@ -127,6 +122,16 @@ public class TextTool implements ToolCommand, FocusListener, KeyListener {
                 this.jtextField.requestFocus();
             }
         }
+    }
+
+    public void placeText() {
+        this.graphics2D.setFont(this.jtextField.getFont());
+        this.graphics2D.setPaint(this.jtextField.getForeground());
+        this.graphics2D.drawString(this.text, this.jtextField.getX(), this.jtextField.getY() + this.size);
+        this.jComponent.remove(this.jtextField);
+        this.jComponent.repaint();
+        this.jtextField = null;
+        this.text = "";
     }
 
     @Override
@@ -141,6 +146,8 @@ public class TextTool implements ToolCommand, FocusListener, KeyListener {
                 if (this.text.length() != 0) {
                     this.text = this.text.substring(0, this.text.length() - 1);
                 }
+            } else if (e.getKeyChar() == KeyEvent.VK_ENTER) {
+                placeText();
             } else if (Character.isLetter(e.getKeyChar()) || Character.isSpaceChar(e.getKeyChar())) {
                 this.text += e.getKeyChar();
             }
