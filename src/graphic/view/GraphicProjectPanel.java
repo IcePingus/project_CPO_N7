@@ -8,10 +8,7 @@ import graphic.model.tools.Toolbox;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
+import java.awt.event.*;
 
 public class GraphicProjectPanel extends JDesktopPane implements ActionListener {
 
@@ -72,8 +69,8 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
 
         JMenu menuImage = new JMenu("Image");
         this.resize = new JMenuItem("Resize");
-        this.flipHorizontalImage = new JMenuItem("Flip horizontal");
-        this.flipVerticalImage = new JMenuItem("Flip vertical");
+        this.flipHorizontalImage = new JMenuItem("Horizontal flip");
+        this.flipVerticalImage = new JMenuItem("Vertical flip");
         this.clear = new JMenuItem("Clear image");
 
         JMenu menuEffects = new JMenu("Effects");
@@ -131,6 +128,111 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
             public void componentHidden(ComponentEvent e) {
             }
         });
+        this.enableKeyboardInputs();
+    }
+
+    private void enableKeyboardInputs() {
+        InputMap inputMap = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap actionMap = getActionMap();
+
+        KeyStroke saveImageKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_S, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
+        inputMap.put(saveImageKeyStroke, "saveImage");
+        actionMap.put("saveImage", new AbstractAction() {
+            public void actionPerformed(ActionEvent actionEvent) {
+                canvaController.exportPNG();
+            }
+        });
+
+        KeyStroke importImageKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_I, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
+        inputMap.put(importImageKeyStroke, "importImage");
+        actionMap.put("importImage", new AbstractAction() {
+            public void actionPerformed(ActionEvent actionEvent) {
+                canvaController.importImage(frame);
+            }
+        });
+
+        KeyStroke undoKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_Z, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
+        inputMap.put(undoKeyStroke, "undo");
+        actionMap.put("undo", new AbstractAction() {
+            public void actionPerformed(ActionEvent actionEvent) {
+                canva.undo();
+            }
+        });
+
+        KeyStroke redoKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_Y, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
+        inputMap.put(redoKeyStroke, "redo");
+        actionMap.put("redo", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                canva.redo();
+            }
+        });
+
+        KeyStroke pasteKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_V, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
+        inputMap.put(pasteKeyStroke, "paste");
+        actionMap.put("paste", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                canvaController.clipboardToBufferedImage();
+            }
+        });
+
+        KeyStroke resizeKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_R, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
+        inputMap.put(resizeKeyStroke, "resize");
+        actionMap.put("resize", new AbstractAction() {
+            public void actionPerformed(ActionEvent actionEvent) {
+                resizeDialog.setLocation(getSize().width / 3, getSize().height / 3);
+                resizeDialog.setVisible(true);
+            }
+        });
+
+        KeyStroke leftHorizontalFlipKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
+        inputMap.put(leftHorizontalFlipKeyStroke, "horizontalFlip");
+        actionMap.put("horizontalFlip", new AbstractAction() {
+            public void actionPerformed(ActionEvent actionEvent) {
+                canvaController.flipImageHorizontal();
+            }
+        });
+
+        KeyStroke rightHorizontalFlipKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
+        inputMap.put(rightHorizontalFlipKeyStroke, "horizontalFlip");
+        actionMap.put("horizontalFlip", new AbstractAction() {
+            public void actionPerformed(ActionEvent actionEvent) {
+                canvaController.flipImageHorizontal();
+            }
+        });
+
+        KeyStroke upVerticalFlipKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_UP, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
+        inputMap.put(upVerticalFlipKeyStroke, "verticalFlip");
+        actionMap.put("verticalFlip", new AbstractAction() {
+            public void actionPerformed(ActionEvent actionEvent) {
+                canvaController.flipImageVertical();
+            }
+        });
+
+        KeyStroke downVerticalFlipKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
+        inputMap.put(downVerticalFlipKeyStroke, "verticalFlip");
+        actionMap.put("verticalFlip", new AbstractAction() {
+            public void actionPerformed(ActionEvent actionEvent) {
+                canvaController.flipImageVertical();
+            }
+        });
+
+        KeyStroke clearKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
+        inputMap.put(clearKeyStroke, "clear");
+        actionMap.put("clear", new AbstractAction() {
+            public void actionPerformed(ActionEvent actionEvent) {
+                canvaController.clear();
+            }
+        });
+
+        KeyStroke blackAndWhiteKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_B, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
+        inputMap.put(blackAndWhiteKeyStroke, "blackAndWhite");
+        actionMap.put("blackAndWhite", new AbstractAction() {
+            public void actionPerformed(ActionEvent actionEvent) {
+                canvaController.blackAndWhiteTransform();
+            }
+        });
     }
 
     @Override
@@ -142,9 +244,9 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
         } else if (e.getSource() == this.quit) {
             this.canvaController.quit(this.frame);
         } else if (e.getSource() == this.undo) {
-            //refacto a faire
+            this.canva.undo();
         } else if (e.getSource() == this.redo) {
-            //refacto a faire
+            this.canva.redo();
         } else if (e.getSource() == this.paste) {
             this.canvaController.clipboardToBufferedImage();
         } else if (e.getSource() == this.resize) {

@@ -25,7 +25,6 @@ public class Canva extends JComponent {
         this.currentIndex = 0;
         this.setDoubleBuffered(false);
         this.requestFocusInWindow();
-        this.enableKeyboardInputs();
         this.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
                 // save coord x,y when mouse is pressed
@@ -45,28 +44,6 @@ public class Canva extends JComponent {
         this.setMouseMotionListener();
     }
 
-    private void enableKeyboardInputs() {
-        InputMap inputMap = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-        ActionMap actionMap = getActionMap();
-
-        KeyStroke undoKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_Z, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
-        inputMap.put(undoKeyStroke, "undo");
-        actionMap.put("undo", new AbstractAction() {
-            public void actionPerformed(ActionEvent actionEvent) {
-                undo();
-            }
-        });
-
-        KeyStroke redoKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_Y, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
-        inputMap.put(redoKeyStroke, "redo");
-        actionMap.put("redo", new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                redo();
-            }
-        });
-    }
-
     private BufferedImage copyBufferedImage(BufferedImage source) {
         ColorModel cm = source.getColorModel();
         boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
@@ -80,7 +57,7 @@ public class Canva extends JComponent {
         return newImage;
     }
 
-    private void undo() {
+    public void undo() {
         if (this.imageStates.size() > 1 && this.currentIndex > 0) {
             this.currentIndex--;
             this.g2 = (Graphics2D) this.imageStates.get(this.currentIndex).getGraphics();
@@ -88,7 +65,7 @@ public class Canva extends JComponent {
         }
     }
 
-    private void redo() {
+    public void redo() {
         if (this.currentIndex < this.imageStates.size() - 1) {
             this.currentIndex++;
             this.g2 = (Graphics2D) this.imageStates.get(this.currentIndex).getGraphics();
@@ -111,6 +88,7 @@ public class Canva extends JComponent {
             this.imageStates.subList(this.currentIndex + 1, this.imageStates.size()).clear();
         }
         this.g2 = (Graphics2D) bufferedImage.getGraphics();
+        this.repaint();
     }
 
     public void setG2(Graphics2D g2) {

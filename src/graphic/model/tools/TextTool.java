@@ -6,7 +6,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
-import java.security.Key;
 import java.util.Observable;
 
 public class TextTool implements ToolCommand, FocusListener, KeyListener {
