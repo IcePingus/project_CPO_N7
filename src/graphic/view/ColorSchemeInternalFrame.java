@@ -54,31 +54,30 @@ public class ColorSchemeInternalFrame extends JInternalFrame implements ChangeLi
         this.rLabel.setHorizontalAlignment(SwingConstants.CENTER);
         this.rLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 24));
 
-        JPanel jp = new JPanel();
+        JPanel lrChoice = new JPanel();
         GridLayout gl = new GridLayout(2, 2);
         gl.setHgap(10);
-        jp.setLayout(gl);
-        jp.setBorder(new EmptyBorder(10, 10, 10, 0));
-        jp.add(this.primaryButton);
-        jp.add(this.secondaryButton);
-        jp.add(this.lLabel);
-        jp.add(this.rLabel);
-
-        JPanel jp2 = new JPanel();
-        jp2.setLayout(new BorderLayout());
-        this.add(jp2, BorderLayout.WEST);
-        jp2.add(jp, BorderLayout.NORTH);
+        lrChoice.setLayout(gl);
+        lrChoice.add(this.primaryButton);
+        lrChoice.add(this.secondaryButton);
+        lrChoice.add(this.lLabel);
+        lrChoice.add(this.rLabel);
 
         this.hexColor = new JTextField(6);
         this.hexColor.setText("000000");
 
-        JPanel jp3 = new JPanel();
-        jp3.setLayout(new BorderLayout());
+        JPanel hexChoice = new JPanel();
+        hexChoice.setLayout(new BorderLayout());
         JLabel hashtag = new JLabel("#");
-        jp3.add(hashtag, BorderLayout.WEST);
-        jp3.add(this.hexColor, BorderLayout.CENTER);
+        hexChoice.add(hashtag, BorderLayout.WEST);
+        hexChoice.add(this.hexColor, BorderLayout.CENTER);
 
-        jp2.add(jp3, BorderLayout.SOUTH);
+        JPanel colorChoice = new JPanel();
+        colorChoice.setBorder(new EmptyBorder(10, 10, 10, 0));
+        colorChoice.setLayout(new BorderLayout());
+        this.add(colorChoice, BorderLayout.WEST);
+        colorChoice.add(lrChoice, BorderLayout.NORTH);
+        colorChoice.add(hexChoice, BorderLayout.SOUTH);
 
         this.hexColor.getDocument().addDocumentListener(this);
 
