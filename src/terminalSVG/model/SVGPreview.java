@@ -85,6 +85,15 @@ public class SVGPreview extends Observable {
             root.removeChild(root.getFirstChild());
         }
     }
+    public void renameElement(String shapeName, String newName) throws IllegalArgumentException {
+        if(!this.shapeList.containsKey(shapeName)){
+            throw new IllegalArgumentException("Aucun élement SVG ne correspond à votre requête");
+        }
+        shapeList.get(shapeName).setName(newName);
+        addElement(newName,shapeList.get(shapeName));
+        delElement(shapeName);
+        buildShapes();
+    }
 
     public void setCanvasSize(int width, int height) {
         svgGraphics.setSVGCanvasSize(new Dimension(width, height));
