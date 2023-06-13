@@ -109,17 +109,13 @@ public class TextTool implements ToolCommand, FocusListener, KeyListener {
     @Override
     public void focusLost(FocusEvent e) {
         if (this.jtextField != null) {
-            if (this.jtextField.getSelectedText() == null) {
-                placeText();
+            this.jtextField.setBounds(currentX, currentY, size * 7, size);
+            if (this.isPrimaryColor) {
+                this.jtextField.setForeground(this.primaryColor);
             } else {
-                this.jtextField.setBounds(currentX, currentY, size * 7, size);
-                if (this.isPrimaryColor) {
-                    this.jtextField.setForeground(this.primaryColor);
-                } else {
-                    this.jtextField.setForeground(this.secondaryColor);
-                }
-                this.jtextField.requestFocus();
+                this.jtextField.setForeground(this.secondaryColor);
             }
+            this.jtextField.requestFocus();
         }
     }
 
