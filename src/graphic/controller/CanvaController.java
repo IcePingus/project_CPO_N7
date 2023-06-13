@@ -2,6 +2,7 @@ package graphic.controller;
 
 import com.nitido.utils.toaster.Toaster;
 import graphic.exception.BadFormatException;
+import graphic.exception.ClipboardVoidException;
 import graphic.model.tools.Toolbox;
 import graphic.model.canva.Canva;
 import graphic.view.SelectionPanel;
@@ -11,6 +12,8 @@ import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import java.awt.*;
 import java.awt.color.ColorSpace;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
@@ -23,11 +26,9 @@ import java.util.Observer;
 public class CanvaController implements Observer {
 
     private final Canva canva;
-    private final JFileChooser fileChooser;
 
     public CanvaController(Canva canva) {
         this.canva = canva;
-        this.fileChooser = new JFileChooser();
     }
 
     public int getCanvaWidth() {
@@ -81,7 +82,7 @@ public class CanvaController implements Observer {
     }
 
     public void quit(JFrame frame) {
-        String[] options = new String[] {"Yes and save the image", "Yes without saving", "No"};
+        String[] options = new String[]{"Yes and save the image", "Yes without saving", "No"};
         int resultOptionPane = JOptionPane.showOptionDialog(null, "Do you really want to quit ?", "Exit",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
                 null, options, options[0]);
@@ -112,7 +113,7 @@ public class CanvaController implements Observer {
     }
 
     public void importImage(JFrame frame) {
-        String filename = File.separator+"tmp";
+        String filename = File.separator + "tmp";
         JFileChooser fileChooser = new JFileChooser(new File(filename));
 
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -146,6 +147,29 @@ public class CanvaController implements Observer {
         this.canva.getG2().setPaint(Color.WHITE);
         this.canva.getG2().fillRect(0, 0, this.canva.getWidth(), this.canva.getHeight());
         this.canva.repaint();
+    }
+
+    public void clipboardToBufferedImage() {
+        try {
+            Transferable transferable = Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null);
+
+            if (transferable != null && transferable.isDataFlavorSupported(DataFlavor.imageFlavor)) {
+                BufferedImage clipboardImage = (BufferedImage) transferable.getTransferData(DataFlavor.imageFlavor);
+                if (clipboardImage.getWidth() > this.canva.getBufferedImage().getWidth() || clipboardImage.getHeight() > this.canva.getBufferedImage().getHeight()) {
+                    resizeCanva(clipboardImage.getWidth(), clipboardImage.getHeight());
+                    this.canva.getG2().drawImage(clipboardImage, 0, 0, null);
+                } else {
+                    this.canva.getG2().drawImage(clipboardImage, 0, 0, null);
+                }
+                this.canva.repaint();
+            } else {
+                Toaster toasterManager = new Toaster();
+                toasterManager.showToaster("The clipboard doesn't contain an image!");
+                throw new ClipboardVoidException("Clipboard without image");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

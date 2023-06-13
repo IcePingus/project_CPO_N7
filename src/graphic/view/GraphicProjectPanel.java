@@ -19,6 +19,9 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
     private CanvaController canvaController;
     private JMenuItem saveImage;
     private JMenuItem quit;
+    private JMenuItem undo;
+    private JMenuItem redo;
+    private JMenuItem paste;
     private JMenuItem importImage;
     private JMenuItem bwTransform;
     private JMenuItem resize;
@@ -62,6 +65,11 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
         this.importImage = new JMenuItem("Import image");
         this.quit = new JMenuItem("Exit");
 
+        JMenu menuEdit = new JMenu("Edit");
+        this.undo = new JMenuItem("Undo");
+        this.redo = new JMenuItem("Redo");
+        this.paste = new JMenuItem("Paste");
+
         JMenu menuImage = new JMenu("Image");
         this.resize = new JMenuItem("Resize");
         this.flipHorizontalImage = new JMenuItem("Flip horizontal");
@@ -74,6 +82,9 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
         this.saveImage.addActionListener(this);
         this.importImage.addActionListener(this);
         this.quit.addActionListener(this);
+        this.undo.addActionListener(this);
+        this.redo.addActionListener(this);
+        this.paste.addActionListener(this);
         this.resize.addActionListener(this);
         this.flipHorizontalImage.addActionListener(this);
         this.flipVerticalImage.addActionListener(this);
@@ -83,6 +94,9 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
         menuFile.add(this.saveImage);
         menuFile.add(this.importImage);
         menuFile.add(this.quit);
+        menuEdit.add(this.undo);
+        menuEdit.add(this.redo);
+        menuEdit.add(this.paste);
         menuImage.add(this.resize);
         menuImage.add(this.flipHorizontalImage);
         menuImage.add(this.flipVerticalImage);
@@ -90,6 +104,7 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
         menuEffects.add(this.bwTransform);
 
         mb.add(menuFile);
+        mb.add(menuEdit);
         mb.add(menuImage);
         mb.add(menuEffects);
         frame.setJMenuBar(mb);
@@ -126,6 +141,12 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
             this.canvaController.importImage(this.frame);
         } else if (e.getSource() == this.quit) {
             this.canvaController.quit(this.frame);
+        } else if (e.getSource() == this.undo) {
+            //refacto a faire
+        } else if (e.getSource() == this.redo) {
+            //refacto a faire
+        } else if (e.getSource() == this.paste) {
+            this.canvaController.clipboardToBufferedImage();
         } else if (e.getSource() == this.resize) {
             this.resizeDialog.setLocation(this.getSize().width / 3, this.getSize().height / 3);
             this.resizeDialog.setVisible(true);
