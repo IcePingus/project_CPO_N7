@@ -26,9 +26,6 @@ public class SaveSVG implements SVGCommand {
     @Override
     public void execute(SVGPreview svgPreview, String shapeName) {
         try {
-            if (!eltName.endsWith(".svg")) {
-                eltName += ".svg";
-            }
             svgPreview.saveSVG(eltName);
         } catch (TransformerException e) {
             throw new RuntimeException(e);
@@ -36,9 +33,14 @@ public class SaveSVG implements SVGCommand {
     }
 
     public static void parseCommand(Map<String, Object> instruction, String[] elements) throws IllegalArgumentException {
-        if (!(elements.length == 2)) {
+        if (elements.length > 2) {
             throw new IllegalArgumentException("Préciser le nom de l'enregistrement");
         }
-        instruction.put("elementName", elements[1].trim());
+        if (elements.length == 2 && !elements[1].trim().isEmpty()) {
+            instruction.put("elementName", elements[1].trim());
+        } else {
+            instruction.put("elementName", "canva.svg");
+        }
     }
+
 }
