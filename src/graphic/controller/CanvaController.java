@@ -2,6 +2,7 @@ package graphic.controller;
 
 import com.nitido.utils.toaster.Toaster;
 import graphic.exception.BadFormatException;
+import graphic.exception.ClipboardVoidException;
 import graphic.model.tools.Toolbox;
 import graphic.model.canva.Canva;
 import graphic.view.SelectionPanel;
@@ -25,11 +26,9 @@ import java.util.Observer;
 public class CanvaController implements Observer {
 
     private final Canva canva;
-    private final JFileChooser fileChooser;
 
     public CanvaController(Canva canva) {
         this.canva = canva;
-        this.fileChooser = new JFileChooser();
     }
 
     public int getCanvaWidth() {
@@ -166,6 +165,7 @@ public class CanvaController implements Observer {
             } else {
                 Toaster toasterManager = new Toaster();
                 toasterManager.showToaster("The clipboard doesn't contain an image!");
+                throw new ClipboardVoidException("Clipboard without image");
             }
         } catch (Exception e) {
             e.printStackTrace();
