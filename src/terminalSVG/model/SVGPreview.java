@@ -96,7 +96,7 @@ public class SVGPreview extends Observable {
     }
     public void saveSVG(String filename) throws TransformerException {
         Transformer transformer = TransformerFactory.newInstance().newTransformer();
-        Result output = new StreamResult(new File(filename));
+        Result output = new StreamResult(new File("./export/" + filename));
         Source input = new DOMSource(svgDocument);
         transformer.transform(input, output);
     }
