@@ -1,5 +1,6 @@
 package graphic.view;
 
+import graphic.controller.CanvaController;
 import graphic.controller.ColorController;
 import graphic.model.color.ColorModel;
 import graphic.model.tools.*;
@@ -7,6 +8,8 @@ import graphic.model.tools.*;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,9 +26,9 @@ public class ToolInternalFrame extends JInternalFrame implements ActionListener,
     private JPanel toolOptionsPanel;
     private JPanel squareShapePanel;
     private JPanel sliderPanel;
-    private JLabel sizeLabel;
+    private JTextField sizeLabel;
 
-    public ToolInternalFrame(Toolbox toolbox, ColorController colorController, ColorModel colorModel) {
+    public ToolInternalFrame(Toolbox toolbox, ColorController colorController, ColorModel colorModel, CanvaController canvaController) {
         super("Tools");
         this.setMaximizable(false);
         this.setIconifiable(true);
@@ -47,6 +50,7 @@ public class ToolInternalFrame extends JInternalFrame implements ActionListener,
         this.toolbox.addTool(new BucketTool());
         this.toolbox.addTool(new PickerTool(colorController));
         this.toolbox.addTool(new HighlighterTool());
+        this.toolbox.addTool(new ShapeTool(canvaController));
 
         TextTool textTool = new TextTool();
         this.toolbox.addObserver(textTool);
@@ -70,7 +74,37 @@ public class ToolInternalFrame extends JInternalFrame implements ActionListener,
         this.squareShapePanel = new JPanel();
         this.squareShapePanel.setLayout(new GridLayout(1, 2));
 
-        this.sizeLabel = new JLabel(" 5");
+        this.sizeLabel = new JTextField("5");
+        this.sizeLabel.addActionListener(this);
+
+        /*this.sizeLabel.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                if (Integer.parseInt(sizeLabel.getText()) <= 0 ||Integer.parseInt(sizeLabel.getText()) > 1000) {
+                    JOptionPane.showMessageDialog(null,
+                            "Please enter number bigger than 0 and smaller than 1000", "Tool size",
+                            JOptionPane.WARNING_MESSAGE);
+                    if (Integer.parseInt(sizeLabel.getText()) <= 0) {
+                        sizeLabel.setText(1 + "");
+                    } else {
+                        sizeLabel.setText(1000 + "");
+                    }
+                }
+                sliderSize.setValue(Integer.parseInt(sizeLabel.getText()));
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                if (sizeLabel.getText().equals("")) {
+                    sizeLabel.setText(1 + "");
+                }
+                sliderSize.setValue(Integer.parseInt(sizeLabel.getText()));
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+            }
+        });*/
 
         this.sliderSize = new JSlider(1, 1000, 5);
         this.sliderSize.addChangeListener(this);
@@ -102,6 +136,14 @@ public class ToolInternalFrame extends JInternalFrame implements ActionListener,
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == this.squareShapeButton || e.getSource() == this.circleShapeButton) {
             this.toolbox.setIsSquareShape(this.squareShapeButton.isSelected());
+        } else if (e.getSource() == this.sizeLabel) {
+            if (Integer.parseInt(this.sizeLabel.getText()) <= 0 || Integer.parseInt(this.sizeLabel.getText()) > 1000) {
+                JOptionPane.showMessageDialog(null,
+                        "Please enter number bigger than 0 and smaller than 1000", "Tool size",
+                        JOptionPane.WARNING_MESSAGE);
+            } else {
+                this.sliderSize.setValue(Integer.parseInt(this.sizeLabel.getText()));
+            }
         } else {
             for (int i = 0; i < this.toolbox.getTools().size(); i++) {
                 if (e.getSource() == this.toolbox.getToolsButtons().get(i) && this.activeTool != i) {
@@ -139,7 +181,7 @@ public class ToolInternalFrame extends JInternalFrame implements ActionListener,
 
     @Override
     public void stateChanged(ChangeEvent e) {
-        this.sizeLabel.setText(" " + this.sliderSize.getValue());
+        this.sizeLabel.setText(this.sliderSize.getValue() + "");
         this.toolbox.setToolSize(this.sliderSize.getValue());
     }
 }

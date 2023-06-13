@@ -37,7 +37,10 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
         ColorModel colorModel = new ColorModel();
         ColorController colorController = new ColorController(colorModel);
 
-        ToolInternalFrame toolInternalFrame = new ToolInternalFrame(toolbox, colorController, colorModel);
+        this.canva = new Canva(toolbox);
+        this.canvaController = new CanvaController(this.canva);
+
+        ToolInternalFrame toolInternalFrame = new ToolInternalFrame(toolbox, colorController, colorModel, canvaController);
         toolInternalFrame.setVisible(true);
         this.add(toolInternalFrame);
         this.setSize(this.getToolkit().getScreenSize());
@@ -47,9 +50,6 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
         colorSchemeInternalFrame.setLocation(this.getSize().width - 430, 0);
         colorSchemeInternalFrame.setVisible(true);
         this.add(colorSchemeInternalFrame);
-
-        this.canva = new Canva(toolbox);
-        this.canvaController = new CanvaController(this.canva);
 
         this.resizeDialog = new ResizeDialog(this.canvaController);
 

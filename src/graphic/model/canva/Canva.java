@@ -19,6 +19,7 @@ public class Canva extends JComponent {
     private Graphics2D g2;
     private int currentX, currentY, oldX, oldY;
     private Toolbox toolbox;
+    private boolean isFirstPoint;
     private double zoom = 1;
     private int zoomPointX;
     private int zoomPointY;
@@ -40,9 +41,11 @@ public class Canva extends JComponent {
                 currentX = oldX;
                 currentY = oldY;
 
+                isFirstPoint = true;
+
                 BufferedImage newImage = nextBufferedImage();
 
-                toolbox.getActiveTool().execute(oldX, oldY, currentX, currentY, newImage, g2, e.getModifiersEx(), toolbox.getToolSize(), toolbox.getIsSquareShape(), Canva.this);
+                toolbox.getActiveTool().execute(oldX, oldY, currentX, currentY, newImage, g2, e.getModifiersEx(), toolbox.getToolSize(), toolbox.getIsSquareShape(), isFirstPoint, Canva.this);
 
                 repaint();
             }
@@ -139,7 +142,8 @@ public class Canva extends JComponent {
                 currentY = (int) doubleCurrentY;
 
                 if (g2 != null) {
-                    toolbox.getActiveTool().execute(oldX, oldY, currentX, currentY, imageStates.get(currentIndex), g2, e.getModifiersEx(), toolbox.getToolSize(), toolbox.getIsSquareShape(), Canva.this);
+                    toolbox.getActiveTool().execute(oldX, oldY, currentX, currentY, imageStates.get(currentIndex), g2, e.getModifiersEx(), toolbox.getToolSize(), toolbox.getIsSquareShape(), isFirstPoint, Canva.this);
+                    if (isFirstPoint) isFirstPoint = false;
                     oldX = currentX;
                     oldY = currentY;
                 }

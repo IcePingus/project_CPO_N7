@@ -20,8 +20,8 @@ public class PickerTool implements ToolCommand {
         this.name = "Picker";
         this.image = new ImageIcon(getClass().getResource("/assets/images/picker.png"));
         this.isResizable = false;
-        this.colorController = colorController;
         this.isSquareRoundShape = false;
+        this.colorController = colorController;
     }
 
     @Override
@@ -45,7 +45,7 @@ public class PickerTool implements ToolCommand {
     }
 
     @Override
-    public void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click, int size, boolean square, JComponent jComponent) {
+    public void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click, int size, boolean square, boolean isFirstPoint, JComponent canva) {
         Color color = new Color(bufferedImage.getRGB(currentX, currentY));
         if(click == InputEvent.BUTTON1_DOWN_MASK) {
             this.colorController.setPrimaryColor(color);

@@ -20,10 +20,10 @@ public class HighlighterTool implements ToolCommand {
     public HighlighterTool() {
         this.name = "Highlighter";
         this.image = new ImageIcon(getClass().getResource("/assets/images/highlighter.png"));
-        this.primaryColor = Color.BLACK;
-        this.secondaryColor = Color.WHITE;
         this.isResizable = true;
         this.isSquareRoundShape = false;
+        this.primaryColor = Color.BLACK;
+        this.secondaryColor = Color.WHITE;
     }
 
     @Override
@@ -47,7 +47,7 @@ public class HighlighterTool implements ToolCommand {
     }
 
     @Override
-    public void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click, int size, boolean square, JComponent jComponent) {
+    public void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click, int size, boolean square, boolean isFirstPoint, JComponent canva) {
         Color color = null;
         if (click == InputEvent.BUTTON1_DOWN_MASK) {
             color = new Color(primaryColor.getRed(), primaryColor.getGreen(), primaryColor.getBlue(), 17);
