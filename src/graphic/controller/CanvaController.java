@@ -3,7 +3,6 @@ package graphic.controller;
 import com.nitido.utils.toaster.Toaster;
 import graphic.exception.BadFormatException;
 import graphic.exception.ClipboardVoidException;
-import graphic.model.tools.Toolbox;
 import graphic.model.canva.Canva;
 import graphic.view.SelectionPanel;
 
@@ -21,9 +20,8 @@ import java.awt.image.ColorConvertOp;
 import java.io.File;
 import java.io.IOException;
 import java.util.Observable;
-import java.util.Observer;
 
-public class CanvaController implements Observer {
+public class CanvaController {
 
     private final Canva canva;
 
@@ -199,11 +197,4 @@ public class CanvaController implements Observer {
         }
     }
 
-    @Override
-    public void update(Observable o, Object arg) {
-        if (o instanceof Toolbox) {
-            this.canva.setToolbox((Toolbox) o);
-            this.canva.setMouseMotionListener();
-        }
-    }
 }

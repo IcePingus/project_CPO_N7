@@ -53,7 +53,6 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
 
         this.resizeDialog = new ResizeDialog(this.canvaController);
 
-        toolbox.addObserver(this.canvaController);
         this.add(this.canva, BorderLayout.CENTER);
 
         JMenuBar mb = new JMenuBar();

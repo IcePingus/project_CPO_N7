@@ -13,7 +13,8 @@ public class HighlighterTool implements ToolCommand {
     private final String name;
     private final Icon image;
     private final boolean isResizable;
-    private boolean isSquareRoundShape;
+    private final boolean isSquareRoundShape;
+    private final boolean hasShapeSelection;
     private Color primaryColor;
     private Color secondaryColor;
 
@@ -22,6 +23,7 @@ public class HighlighterTool implements ToolCommand {
         this.image = new ImageIcon(getClass().getResource("/assets/images/highlighter.png"));
         this.isResizable = true;
         this.isSquareRoundShape = false;
+        this.hasShapeSelection = false;
         this.primaryColor = Color.BLACK;
         this.secondaryColor = Color.WHITE;
     }
@@ -44,6 +46,11 @@ public class HighlighterTool implements ToolCommand {
     @Override
     public boolean getIsSquareRoundShape() {
         return this.isSquareRoundShape;
+    }
+
+    @Override
+    public boolean getHasShapeSelection() {
+        return this.hasShapeSelection;
     }
 
     @Override
