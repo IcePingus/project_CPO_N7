@@ -32,36 +32,40 @@ public class CanvaController implements Observer {
     }
 
     public int getCanvaWidth() {
-        return this.canva.getWidth();
+        return this.canva.getBufferedImage().getWidth();
     }
 
     public int getCanvaHeight() {
-        return this.canva.getHeight();
+        return this.canva.getBufferedImage().getHeight();
     }
 
-    public void exportPNG() {
+    public void export(String path) {
         Toaster toasterManager = new Toaster();
         try {
-
-            JFileChooser jfc = new JFileChooser();
-            int retVal = jfc.showSaveDialog(null);
-            if(retVal==JFileChooser.APPROVE_OPTION){
-                File f = jfc.getSelectedFile();
-                String absolutePath = f.getAbsolutePath();
-                if (!f.toString().endsWith(".jpg") && !f.toString().endsWith(".png")) {
-                    if (f.toString().contains(".")) {
-                        toasterManager.showToaster("Bad format! You can only export png or jpg image!");
-                        throw new BadFormatException("Bad format!");
-                    } else {
-                        absolutePath += ".png";
-                    }
-                }
-                ImageIO.write(this.canva.getBufferedImage(),"png", new File(absolutePath));
-            }
-
+            ImageIO.write(this.canva.getBufferedImage(), "png", new File(path));
+            toasterManager.showToaster("Image exported!");
         } catch (IOException e) {
             toasterManager.showToaster("There was an error while attempting to save the image.");
             e.printStackTrace();
+        }
+    }
+
+    public void chooseExportPath() {
+        Toaster toasterManager = new Toaster();
+        JFileChooser jfc = new JFileChooser();
+        int retVal = jfc.showSaveDialog(null);
+        if (retVal == JFileChooser.APPROVE_OPTION) {
+            File f = jfc.getSelectedFile();
+            String absolutePath = f.getAbsolutePath();
+            if (!f.toString().endsWith(".jpg") && !f.toString().endsWith(".png")) {
+                if (f.toString().contains(".")) {
+                    toasterManager.showToaster("Bad format! You can only export png or jpg image!");
+                    throw new BadFormatException("Bad format!");
+                } else {
+                    absolutePath += ".png";
+                }
+            }
+            export(absolutePath);
         }
     }
 
@@ -87,7 +91,7 @@ public class CanvaController implements Observer {
                 JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
                 null, options, options[0]);
         if (resultOptionPane == 0) {
-            this.exportPNG();
+            this.chooseExportPath();
         }
         if (resultOptionPane == 0 || resultOptionPane == 1) {
             frame.setContentPane(new SelectionPanel(frame));
@@ -111,7 +115,7 @@ public class CanvaController implements Observer {
         this.canva.setBufferedImage(resizedImage);
     }
 
-    public void importImage(JFrame frame) {
+    public void chooseImportPath(JFrame frame) {
         String filename = File.separator + "tmp";
         JFileChooser fileChooser = new JFileChooser(new File(filename));
 
@@ -134,8 +138,12 @@ public class CanvaController implements Observer {
         });
 
         fileChooser.showOpenDialog(frame);
+        importFile(fileChooser.getSelectedFile());
+    }
+
+    public void importFile(File file) {
         try {
-            this.canva.setBufferedImage(ImageIO.read(fileChooser.getSelectedFile()));
+            this.canva.setBufferedImage(ImageIO.read(file));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -148,6 +156,10 @@ public class CanvaController implements Observer {
         this.canva.repaint();
     }
 
+    public void pasteImage(BufferedImage clipboardImage) {
+        this.canva.getG2().drawImage(clipboardImage, 0, 0, null);
+    }
+
     public void clipboardToBufferedImage() {
         try {
             Transferable transferable = Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null);
@@ -156,9 +168,9 @@ public class CanvaController implements Observer {
                 BufferedImage clipboardImage = (BufferedImage) transferable.getTransferData(DataFlavor.imageFlavor);
                 if (clipboardImage.getWidth() > this.canva.getBufferedImage().getWidth() || clipboardImage.getHeight() > this.canva.getBufferedImage().getHeight()) {
                     resizeCanva(clipboardImage.getWidth(), clipboardImage.getHeight());
-                    this.canva.getG2().drawImage(clipboardImage, 0, 0, null);
+                    pasteImage(clipboardImage);
                 } else {
-                    this.canva.getG2().drawImage(clipboardImage, 0, 0, null);
+                    pasteImage(clipboardImage);
                 }
                 this.canva.repaint();
             } else {

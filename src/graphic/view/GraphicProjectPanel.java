@@ -139,7 +139,7 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
         inputMap.put(saveImageKeyStroke, "saveImage");
         actionMap.put("saveImage", new AbstractAction() {
             public void actionPerformed(ActionEvent actionEvent) {
-                canvaController.exportPNG();
+                canvaController.chooseExportPath();
             }
         });
 
@@ -147,7 +147,7 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
         inputMap.put(importImageKeyStroke, "importImage");
         actionMap.put("importImage", new AbstractAction() {
             public void actionPerformed(ActionEvent actionEvent) {
-                canvaController.importImage(frame);
+                canvaController.chooseImportPath(frame);
             }
         });
 
@@ -238,9 +238,9 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == this.saveImage) {
-            this.canvaController.exportPNG();
+            this.canvaController.chooseExportPath();
         } else if (e.getSource() == this.importImage) {
-            this.canvaController.importImage(this.frame);
+            this.canvaController.chooseImportPath(this.frame);
         } else if (e.getSource() == this.quit) {
             this.canvaController.quit(this.frame);
         } else if (e.getSource() == this.undo) {
@@ -250,6 +250,7 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
         } else if (e.getSource() == this.paste) {
             this.canvaController.clipboardToBufferedImage();
         } else if (e.getSource() == this.resize) {
+            this.resizeDialog.setInputs();
             this.resizeDialog.setLocation(this.getSize().width / 3, this.getSize().height / 3);
             this.resizeDialog.setVisible(true);
         } else if (e.getSource() == this.flipHorizontalImage) {
