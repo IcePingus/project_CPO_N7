@@ -4,11 +4,11 @@ import terminalSVG.model.SVGPreview;
 
 import java.util.Map;
 
-public class TranslateSVG implements SVGCommand {
+public class TranslateXSVG implements SVGCommand {
 
     private Double dx;
 
-    public TranslateSVG(Map<String, Object> instruction) {
+    public TranslateXSVG(Map<String, Object> instruction) {
         this.dx = (Double) instruction.get("translationX");
     }
 
@@ -28,7 +28,6 @@ public class TranslateSVG implements SVGCommand {
     }
 
     public static void parseCommand(Map<String, Object> instruction, String[] elements) throws IllegalArgumentException {
-        System.out.println(elements.length);
         if (elements.length < 2) {
             throw new IllegalArgumentException("Préciser le nom d'une forme à translater");
         } else if (!(elements.length == 3)) {
