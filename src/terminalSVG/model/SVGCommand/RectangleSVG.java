@@ -4,6 +4,7 @@ import terminalSVG.model.SVGPreview;
 
 import java.awt.*;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -64,6 +65,26 @@ public class RectangleSVG extends DrawShapeAction {
         this.point.translater(dx,dy);
     }
 
+    @Override
+    public void resize(Map<String, Object> sizes) {
+        Double w = 0.0;
+        Double h = 0.0;
+        if (sizes.containsKey("newWidth")) {
+            w = (Double) sizes.get("newWidth");
+        }
+        if (sizes.containsKey("newHeight")) {
+            h = (Double) sizes.get("newHeight");
+        }
+
+        if (w < 0.0 || h < 0.0) {
+            throw new IllegalArgumentException("Width and height must be non-negative");
+        }
+
+        this.setSideLength1(w);
+        this.setSideLength2(h);
+    }
+
+
     public String getHelp() {
         return this.description;
     }
@@ -101,6 +122,9 @@ public class RectangleSVG extends DrawShapeAction {
      * @param sideLength1 the side length 1
      */
     public void setSideLength1(double sideLength1) {
+        if (sideLength1 == 0.0) {
+            sideLength1 = this.getSideLength1();
+        }
         this.sideLength1 = sideLength1;
     }
 
@@ -119,6 +143,9 @@ public class RectangleSVG extends DrawShapeAction {
      * @param sideLength2 the side length 2
      */
     public void setSideLength2(double sideLength2) {
+        if (sideLength2 == 0.0) {
+            sideLength2 = this.getSideLength2();
+        }
         this.sideLength2 = sideLength2;
     }
 
