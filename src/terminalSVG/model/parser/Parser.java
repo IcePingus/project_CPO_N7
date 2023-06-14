@@ -4,10 +4,23 @@ import java.awt.Color;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
-
+/**
+ The Parser class provides static methods for parsing input commands in SVG terminal.
+ It supports parsing both element-specific commands and general commands using reflection.
+ The class contains two nested classes, ElementCommandParser and GeneralCommandParser,
+ which implement the CommandParser interface for parsing specific types of commands.
+ */
 public class Parser {
     private static Map<String, CommandParser> commandParsers = new HashMap<>();
-
+    /**
+     * Parses the input command and returns a map containing the parsed command.
+     *
+     * @param input        The input command to parse.
+     * @param setterList   The list of setter commands.
+     * @param modifierList The list of modifier commands.
+     * @return A map containing the parsed command.
+     * @throws IllegalArgumentException If the command is invalid or contains errors.
+     */
     public static Map<String, Object> parse(String input, List<String> setterList, List<String> modifierList) throws IllegalArgumentException {
         for (String commands : setterList) {
             Parser.commandParsers.put(commands, new ElementCommandParser());
@@ -30,8 +43,17 @@ public class Parser {
             throw new IllegalArgumentException("La commande n'est pas prise en charge : " + command);
         }
     }
-
+    /**
+     * A command parser for element-specific commands.
+     */
     static class ElementCommandParser implements CommandParser {
+        /**
+         * Parses an element-specific command and returns a map containing the parsed command.
+         *
+         * @param elements The elements of the command.
+         * @return A map containing the parsed command.
+         * @throws IllegalArgumentException If the command is invalid or contains errors.
+         */
         @Override
         public Map<String, Object> parseCommand(String[] elements) throws IllegalArgumentException {
             List<Double> coordinates = new ArrayList<>();
@@ -72,8 +94,17 @@ public class Parser {
 
         }
     }
-
+    /**
+     * A command parser for general commands.
+     */
     static class GeneralCommandParser implements CommandParser {
+        /**
+         * Parses a general command and returns a map containing the parsed command.
+         *
+         * @param elements The elements of the command.
+         * @return A map containing the parsed command.
+         * @throws IllegalArgumentException If the command is invalid or contains errors.
+         */
         @Override
         public Map<String, Object> parseCommand(String[] elements) {
             Map<String, Object> instruction = new Hashtable<>();
@@ -104,7 +135,13 @@ public class Parser {
             return instruction;
         }
     }
-
+    /**
+     * Converts a color name to a Color object.
+     *
+     * @param colorName The color name to convert.
+     * @return The Color object representing the color.
+     * @throws IllegalArgumentException If the provided color name does not exist.
+     */
     public static Color convertStringToColor(String colorName) throws IllegalArgumentException {
         Color color;
         switch (colorName.toLowerCase()) {

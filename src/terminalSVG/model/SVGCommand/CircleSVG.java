@@ -5,6 +5,9 @@ import terminalSVG.model.SVGPreview;
 import java.awt.*;
 import java.util.List;
 
+/**
+ * The type Circle svg.
+ */
 public class CircleSVG extends DrawShapeAction {
     private Point center;
     private double radius;
@@ -16,18 +19,26 @@ public class CircleSVG extends DrawShapeAction {
             + "\n\t\t" + "rayon : rayon du cercle"
             + "\n"
             + "\n\t" + "Exemple :"
-            + "\n\t" + "	java allumettes.Jouer Xavier@humain "
-            + "Ordinateur@naif"
+            + "\n\t" + ""
+            + ""
             + "\n"
     );
 
-    public CircleSVG(String n, List<Double> coords, boolean f, Color cStroke, Color cFill) {
-        super(n, f, cStroke, cFill);
+    /**
+     * Instantiates a new Circle svg.
+     *
+     * @param name       the name of the circle
+     * @param coords  the coordinates of the center of the circle
+     * @param isFill  is the circle filled or not
+     * @param cStroke the c stroke
+     * @param cFill   the c fill
+     */
+    public CircleSVG(String name, List<Double> coords, boolean isFill, Color cStroke, Color cFill) {
+        super(name, isFill, cStroke, cFill);
         assert coords.size() == COORDS_LIST_SIZE;
         this.center = new Point(coords.get(0), coords.get(1));
         this.radius = coords.get(2);
     }
-
     public void draw(SVGPreview svgPreview) {
         // Dessiner le cercle avec le SVGGraphics2D
         svgPreview.getSVGGraphics().setColor(getStrokeColor());
@@ -45,7 +56,6 @@ public class CircleSVG extends DrawShapeAction {
             svgPreview.getSVGGraphics().fillOval(x, y, diametre, diametre);
         }
     }
-
     @Override
     public void translate(Double dx, Double dy) {
         if(dx == null){
@@ -61,26 +71,56 @@ public class CircleSVG extends DrawShapeAction {
         return this.description;
     }
 
+    /**
+     * Gets center.
+     *
+     * @return the center
+     */
     public Point getCenter() {
         return center;
     }
 
+    /**
+     * Sets center.
+     *
+     * @param center the center
+     */
     public void setCenter(Point center) {
         this.center = center;
     }
 
+    /**
+     * Gets radius.
+     *
+     * @return the radius
+     */
     public double getRadius() {
         return radius;
     }
 
+    /**
+     * Sets radius.
+     *
+     * @param radius the radius
+     */
     public void setRadius(double radius) {
         this.radius = radius;
     }
 
+    /**
+     * Gets command name.
+     *
+     * @return the command name
+     */
     public static String getCommandName() {
         return COMMAND_NAME;
     }
 
+    /**
+     * Gets coords list size.
+     *
+     * @return the coords list size
+     */
     public Integer getCoordsListSize() {
         return COORDS_LIST_SIZE;
     }

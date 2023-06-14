@@ -4,25 +4,44 @@ import terminalSVG.model.SVGPreview;
 
 import javax.xml.transform.TransformerException;
 import java.util.Map;
-
+/**
+ * This class represents an SVG command for saving an SVG file.
+ */
 public class SaveSVG implements SVGCommand {
 
     private String eltName;
-
+    /**
+     * Constructs a SaveSVG object with the specified instruction map.
+     *
+     * @param instruction The instruction map containing the name of the SVG element to save.
+     */
     public SaveSVG(Map<String, Object> instruction) {
         this.eltName = (String) instruction.get("elementName");
     }
-
+    /**
+     * Gets the name of the command.
+     *
+     * @return The name of the command.
+     */
     @Override
     public String getName() {
         return null;
     }
-
+    /**
+     * Gets the help information for the command.
+     *
+     * @return The help information for the command.
+     */
     @Override
     public String getHelp() {
         return null;
     }
-
+    /**
+     * Executes the save command on the SVGPreview object.
+     *
+     * @param svgPreview The SVGPreview object on which to perform the save operation.
+     * @param shapeName  The name of the shape (unused).
+     */
     @Override
     public void execute(SVGPreview svgPreview, String shapeName) {
         try {
@@ -31,7 +50,13 @@ public class SaveSVG implements SVGCommand {
             throw new RuntimeException(e);
         }
     }
-
+    /**
+     * Parses the command and populates the instruction map with the provided elements.
+     *
+     * @param instruction The instruction map to populate.
+     * @param elements    The elements of the command.
+     * @throws IllegalArgumentException If the command elements are invalid or incomplete.
+     */
     public static void parseCommand(Map<String, Object> instruction, String[] elements) throws IllegalArgumentException {
         if (elements.length > 2) {
             throw new IllegalArgumentException("Préciser le nom de l'enregistrement");

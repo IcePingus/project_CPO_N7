@@ -6,6 +6,9 @@ import java.awt.*;
 import java.util.List;
 
 
+/**
+ * The command to create a Rectangle.
+ */
 public class RectangleSVG extends DrawShapeAction {
     private Point point;
     private double sideLength1;
@@ -15,6 +18,15 @@ public class RectangleSVG extends DrawShapeAction {
     private final String description = ("\n" + "Utilisation Rectangle : "
     );
 
+    /**
+     * Instantiates a new Rectangle svg.
+     *
+     * @param name        the name of the rectangle
+     * @param coords      the coordinates of the point left upper corner
+     * @param isFill      is the rectangle filled or not
+     * @param strokeColor the stroke color of the rectangle
+     * @param fillColor   the fill color of the rectangle
+     */
     public RectangleSVG(String name, List<Double> coords, boolean isFill, Color strokeColor, Color fillColor) {
         super(name, isFill, strokeColor, fillColor);
         assert coords.size() == COORDS_LIST_SIZE;
@@ -56,34 +68,74 @@ public class RectangleSVG extends DrawShapeAction {
         return this.description;
     }
 
+    /**
+     * Gets point of the rectangle.
+     *
+     * @return the point
+     */
     public Point getPoint() {
         return point;
     }
 
+    /**
+     * Sets point of the rectangle.
+     *
+     * @param point the point
+     */
     public void setPoint(Point point) {
         this.point = point;
     }
 
+    /**
+     * Gets side length 1.
+     *
+     * @return the side length 1
+     */
     public double getSideLength1() {
         return sideLength1;
     }
 
+    /**
+     * Sets side length 1.
+     *
+     * @param sideLength1 the side length 1
+     */
     public void setSideLength1(double sideLength1) {
         this.sideLength1 = sideLength1;
     }
 
+    /**
+     * Gets side length 2.
+     *
+     * @return the side length 2
+     */
     public double getSideLength2() {
         return sideLength2;
     }
 
+    /**
+     * Sets side length 2.
+     *
+     * @param sideLength2 the side length 2
+     */
     public void setSideLength2(double sideLength2) {
         this.sideLength2 = sideLength2;
     }
 
+    /**
+     * Gets command name.
+     *
+     * @return the command name
+     */
     public static String getCommandName() {
         return COMMAND_NAME;
     }
 
+    /**
+     * Gets coords list size.
+     *
+     * @return the coords list size
+     */
     public Integer getCoordsListSize() {
         return COORDS_LIST_SIZE;
     }

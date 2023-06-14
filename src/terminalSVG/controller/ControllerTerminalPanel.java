@@ -16,7 +16,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
+/**
+ * The `ControllerTerminalPanel` class represents a JPanel that serves as the controller for the SVG terminal application.
+ * It handles user input, command parsing, and execution of commands on the SVGPreview.
+ */
 public class ControllerTerminalPanel extends JPanel implements ActionListener {
     private History history;
     private JTextArea textArea;
@@ -24,6 +27,12 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
     private SVGPreview svgPreview;
     private final List<String> setterCommandList;
     private final List<String> modifierCommandList;
+    /**
+     * Constructs a new instance of the `ControllerTerminalPanel` class with the specified history and SVGPreview.
+     *
+     * @param h The history object to store the executed commands.
+     * @param svgp The SVGPreview object to render the SVG commands.
+     */
     public ControllerTerminalPanel(History h, SVGPreview svgp) {
         super();
         this.history = h;
@@ -88,9 +97,7 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
     }
 
     /**
-     * Ajoute la commande à l'historique et efface le contenu de la zone de texte.
-     * Envoie la commande en traitement dans le parser adéquat en fonction de l'entrée donnée.
-     * Récupère une map correspondante à la commande parsée et l'envoie en traitement.
+     * Adds the command to the history, clears the content of the text area, and prepares the command for execution.
      */
     public void prepareCommand() {
         String commandText = this.textArea.getText().trim(); // Retirer les espaces avant et après le texte
@@ -112,8 +119,11 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
     }
 
     /**
-     * Récupère la map parsée et s'occupe du traitement et de l'exécution de la commande sur la SVGPreview.
-     * Construit et instancie l'objet associé à la commande de façon dynamique (introspection).
+     * Retrieves the parsed map and handles the processing and execution of the command on the SVGPreview.
+     * Constructs and instantiates the associated object dynamically using introspection.
+     *
+     * @param instruction The parsed command represented as a map.
+     * @throws ClassNotFoundException If the specified class is not found.
      */
     public void executeCommand(Map<String, Object> instruction) throws ClassNotFoundException {
         String elementActionType = getString(instruction, "elementActionType");
@@ -155,18 +165,35 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
             throw new RuntimeException(e);
         }
     }
-
+    /**
+     * Utility method to extract a string value from the map with a default value.
+     *
+     * @param map The map containing the values.
+     * @param key The key to retrieve the value.
+     * @return The extracted string value or an empty string if the key is not found.
+     */
     // Méthode utilitaire pour extraire une chaîne de caractères du dictionnaire avec une valeur par défaut
     private String getString(Map<String, Object> map, String key) {
         return map.containsKey(key) ? (String) map.get(key) : "";
     }
-
-    // Méthode utilitaire pour extraire une liste de valeurs du dictionnaire avec une valeur par défaut
+    /**
+     * Utility method to extract a list of double values from the map with a default value.
+     *
+     * @param map The map containing the values.
+     * @param key The key to retrieve the value.
+     * @return The extracted list of double values or null if the key is not found.
+     */
     private List<Double> getList(Map<String, Object> map, String key) {
         return map.containsKey(key) ? (List<Double>) map.get(key) : null;
     }
-
-    // Méthode utilitaire pour extraire une couleur du dictionnaire avec une valeur par défaut
+    /**
+     * Utility method to extract a color value from the map with a default value.
+     *
+     * @param map The map containing the values.
+     * @param key The key to retrieve the value.
+     * @param defaultValue The default color value.
+     * @return The extracted color value or the default value if the key is not found.
+     */
     private Color getColor(Map<String, Object> map, String key, Color defaultValue) {
         return map.containsKey(key) ? (Color) map.get(key) : defaultValue;
     }
