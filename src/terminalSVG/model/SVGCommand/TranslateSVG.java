@@ -5,12 +5,18 @@ import terminalSVG.model.parser.Parser;
 
 import java.security.InvalidParameterException;
 import java.util.Map;
-
+/**
+ * The TranslateSVG class represents an SVG command for translating an SVG element.
+ */
 public class TranslateSVG implements SVGCommand {
 
     private Double dx;
     private Double dy;
-
+    /**
+     * Constructs a TranslateSVG object with the specified translation values.
+     *
+     * @param instruction A map containing the instruction parameters.
+     */
     public TranslateSVG(Map<String, Object> instruction) {
         this.dx = (Double) instruction.get("translationX");
         this.dy = (Double) instruction.get("translationY");
@@ -30,7 +36,13 @@ public class TranslateSVG implements SVGCommand {
     public void execute(SVGPreview svgPreview, String shapeName) {
         svgPreview.translateElement(shapeName, dx ,dy);
     }
-
+    /**
+     * Parses the command parameters and populates the instruction map.
+     *
+     * @param instruction The instruction map to populate.
+     * @param elements    The command elements to parse.
+     * @throws IllegalArgumentException If the command parameters are invalid.
+     */
     public static void parseCommand(Map<String, Object> instruction, String[] elements) throws IllegalArgumentException {
         boolean foundX = false;
         boolean foundY = false;

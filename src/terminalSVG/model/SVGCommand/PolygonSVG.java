@@ -6,6 +6,9 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Polygon svg.
+ */
 public class PolygonSVG extends DrawShapeAction {
     private List<Point> points;
 	private final Integer COORDS_LIST_SIZE = 4;
@@ -13,6 +16,15 @@ public class PolygonSVG extends DrawShapeAction {
 	private final String description = ("\n" + "Utilisation Polygon : "
 	);
 
+	/**
+	 * Instantiates a new Polygon svg.
+	 *
+	 * @param name        the name of the polygon
+	 * @param coords      the coordinates of the points of the polygon
+	 * @param isFill      is the polygon is filled or not
+	 * @param strokeColor the stroke color of the polygon
+	 * @param fillColor   the fill color of the polygon
+	 */
 	public PolygonSVG(String name, List<Double> coords, boolean isFill, Color strokeColor, Color fillColor) {
 		super(name, isFill, strokeColor, fillColor);
 		assert coords.size() >= COORDS_LIST_SIZE;
@@ -71,18 +83,38 @@ public class PolygonSVG extends DrawShapeAction {
 		return this.description;
 	}
 
+	/**
+	 * Gets the points of the polygon.
+	 *
+	 * @return the points
+	 */
 	public List<Point> getPoints() {
 		return points;
 	}
 
+	/**
+	 * Sets points of the polygon.
+	 *
+	 * @param points the points
+	 */
 	public void setPoints(List<Point> points) {
 		this.points = points;
 	}
 
+	/**
+	 * Gets command name.
+	 *
+	 * @return the command name
+	 */
 	public static String getCommandName() {
 		return COMMAND_NAME;
 	}
 
+	/**
+	 * Gets coords list size.
+	 *
+	 * @return the coords list size
+	 */
 	public Integer getCoordsListSize() {
 		return COORDS_LIST_SIZE;
 	}

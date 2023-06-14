@@ -6,11 +6,19 @@ import terminalSVG.model.parser.Parser;
 import java.awt.*;
 import java.util.Map;
 
+/**
+ * The command Recolor svg.
+ */
 public class RecolorSVG implements SVGCommand {
 
     private Color sColor;
     private Color fColor;
 
+    /**
+     * Instantiates a new Recolor svg.
+     *
+     * @param instruction the instruction of recolor
+     */
     public RecolorSVG(Map<String, Object> instruction) {
         this.sColor =  (Color) instruction.get("strokeColor");
         this.fColor =  (Color) instruction.get("fillColor");
@@ -31,6 +39,13 @@ public class RecolorSVG implements SVGCommand {
         svgPreview.setNewColorShape(sColor, fColor,shapeName);
     }
 
+    /**
+     * Parse command.
+     *
+     * @param instruction the instruction to parse
+     * @param elements    the elements of the instruction
+     * @throws IllegalArgumentException the illegal argument exception
+     */
     public static void parseCommand(Map<String, Object> instruction, String[] elements) throws IllegalArgumentException {
 
         if (elements.length < 3) {

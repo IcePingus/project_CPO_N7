@@ -5,6 +5,9 @@ import terminalSVG.model.SVGPreview;
 import java.awt.*;
 import java.util.List;
 
+/**
+ * The type Oval svg.
+ */
 public class OvalSVG extends DrawShapeAction {
 
     private Point center;
@@ -16,6 +19,15 @@ public class OvalSVG extends DrawShapeAction {
     private final String description = ("\n" + "Utilisation Oval : "
     );
 
+    /**
+     * Instantiates a new Oval svg.
+     *
+     * @param name        the name of the oval
+     * @param coords      the coordinates of the center of the oval
+     * @param isFill      is the oval filled
+     * @param strokeColor the stroke color of the oval
+     * @param fillColor   the fill color of the oval
+     */
     public OvalSVG(String name, List<Double> coords, boolean isFill, Color strokeColor, Color fillColor) {
         super(name, isFill, strokeColor, fillColor);
         assert coords.size() == COORDS_LIST_SIZE;
@@ -53,34 +65,74 @@ public class OvalSVG extends DrawShapeAction {
         return this.description;
     }
 
+    /**
+     * Gets center of the oval.
+     *
+     * @return the center of the oval
+     */
     public Point getCenter() {
         return center;
     }
 
+    /**
+     * Sets center.
+     *
+     * @param center the center
+     */
     public void setCenter(Point center) {
         this.center = center;
     }
 
+    /**
+     * Gets width.
+     *
+     * @return the width
+     */
     public double getWidth() {
         return width;
     }
 
+    /**
+     * Sets width.
+     *
+     * @param width the width
+     */
     public void setWidth(double width) {
         this.width = width;
     }
 
+    /**
+     * Gets height.
+     *
+     * @return the height
+     */
     public double getHeight() {
         return height;
     }
 
+    /**
+     * Sets height.
+     *
+     * @param height the height
+     */
     public void setHeight(double height) {
         this.height = height;
     }
 
+    /**
+     * Gets command name.
+     *
+     * @return the command name
+     */
     public static String getCommandName() {
         return COMMAND_NAME;
     }
 
+    /**
+     * Gets coords list size.
+     *
+     * @return the coords list size
+     */
     public Integer getCoordsListSize() {
         return COORDS_LIST_SIZE;
     }
