@@ -56,9 +56,10 @@ public class PolygonSVG extends DrawShapeAction {
 
 	@Override
 	public void translateX(Double dx) {
-
+		for(Point point : points){
+			point.translater(dx,0);
+		}
 	}
-
 	public String getHelp() {
 		return this.description;
 	}

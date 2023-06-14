@@ -11,7 +11,6 @@ public class RectangleSVG extends DrawShapeAction {
     private double sideLength1;
     private double sideLength2;
     private static final Integer COORDS_LIST_SIZE = 4;
-
     private static final String COMMAND_NAME = "rectangle";
     private final String description = ("\n" + "Utilisation Rectangle : "
     );
@@ -44,7 +43,7 @@ public class RectangleSVG extends DrawShapeAction {
 
     @Override
     public void translateX(Double dx) {
-
+        this.point.translater(dx,0);
     }
 
     public String getHelp() {
