@@ -60,6 +60,14 @@ public class PolygonSVG extends DrawShapeAction {
 			point.translater(dx,0);
 		}
 	}
+
+	@Override
+	public void translateY(Double dy) {
+		for(Point point : points){
+			point.translater(0,dy);
+		}
+	}
+
 	public String getHelp() {
 		return this.description;
 	}

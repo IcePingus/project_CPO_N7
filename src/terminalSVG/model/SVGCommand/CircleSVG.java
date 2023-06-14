@@ -22,13 +22,13 @@ public class CircleSVG extends DrawShapeAction {
     );
 
     public CircleSVG(String n, List<Double> coords, boolean f, Color cStroke, Color cFill) {
-        super(n,f,cStroke,cFill);
+        super(n, f, cStroke, cFill);
         assert coords.size() == COORDS_LIST_SIZE;
         this.center = new Point(coords.get(0), coords.get(1));
         this.radius = coords.get(2);
     }
 
-    public void draw(SVGPreview svgPreview){
+    public void draw(SVGPreview svgPreview) {
         // Dessiner le cercle avec le SVGGraphics2D
         svgPreview.getSVGGraphics().setColor(getStrokeColor());
 
@@ -48,7 +48,12 @@ public class CircleSVG extends DrawShapeAction {
 
     @Override
     public void translateX(Double dx) {
-        this.center.translater(dx,0);
+        this.center.translater(dx, 0);
+    }
+
+    @Override
+    public void translateY(Double dy) {
+        this.center.translater(0, dy);
     }
 
     public String getHelp() {
