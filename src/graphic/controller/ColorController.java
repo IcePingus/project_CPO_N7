@@ -31,8 +31,8 @@ public class ColorController {
     public boolean getIsPrimaryColor() {
         return this.model.getIsPrimaryColor();
     }
-    public boolean setIsPrimaryColor(boolean isPrimaryColor) {
-        return this.model.setIsPrimaryColor(isPrimaryColor);
+    public void setIsPrimaryColor(boolean isPrimaryColor) {
+        this.model.setIsPrimaryColor(isPrimaryColor);
     }
 
 }

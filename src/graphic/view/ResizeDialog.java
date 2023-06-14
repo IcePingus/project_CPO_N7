@@ -45,11 +45,11 @@ public class ResizeDialog extends JDialog implements ActionListener {
         this.errorMessage.setForeground(Color.RED);
         this.errorMessage.setVisible(false);
 
-        this.widthInput = new JTextField(String.valueOf(canvaController.getCanvaWidth()));
-        this.heightInput = new JTextField(String.valueOf(canvaController.getCanvaHeight()));
-
         this.confirmButton = new JButton("Confirm");
         this.confirmButton.addActionListener(this);
+
+        this.widthInput = new JTextField();
+        this.heightInput = new JTextField();
 
         this.inputsPanel.add(this.widthLabel);
         this.inputsPanel.add(this.widthInput);
@@ -83,5 +83,10 @@ public class ResizeDialog extends JDialog implements ActionListener {
                 this.repaint();
             }
         }
+    }
+
+    public void setInputs() {
+        this.widthInput.setText(String.valueOf(canvaController.getCanvaWidth()));
+        this.heightInput.setText(String.valueOf(canvaController.getCanvaHeight()));
     }
 }

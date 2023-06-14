@@ -156,4 +156,8 @@ public class TextTool implements ToolCommand, FocusListener, KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
     }
+
+    public JTextField getJtextField() {
+        return jtextField;
+    }
 }

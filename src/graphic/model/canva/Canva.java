@@ -89,13 +89,17 @@ public class Canva extends JComponent {
     }
 
     public void setBufferedImage(BufferedImage bufferedImage) {
-        this.currentIndex++;
-        this.imageStates.add(this.currentIndex, bufferedImage);
-        if (this.imageStates.size() > this.currentIndex + 1) {
-            this.imageStates.subList(this.currentIndex + 1, this.imageStates.size()).clear();
+        if (this.imageStates.size() == 0) {
+            this.imageStates.add(bufferedImage);
+        } else {
+            this.currentIndex++;
+            this.imageStates.add(this.currentIndex, bufferedImage);
+            if (this.imageStates.size() > this.currentIndex + 1) {
+                this.imageStates.subList(this.currentIndex + 1, this.imageStates.size()).clear();
+            }
+            this.g2 = (Graphics2D) bufferedImage.getGraphics();
+            this.repaint();
         }
-        this.g2 = (Graphics2D) bufferedImage.getGraphics();
-        this.repaint();
     }
 
     public void setG2(Graphics2D g2) {
