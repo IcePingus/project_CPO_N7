@@ -140,4 +140,16 @@ public class SVGPreview extends Observable {
     public void setDefaultColor(Color defaultColor) {
         this.defaultColor = defaultColor;
     }
+
+    public void setNewColorShape(Color scolor, Color fcolor, String elementName) {
+        DrawShapeAction shape = getShapeByName(elementName);
+        shape.setStrokeColor(scolor);
+        shape.setFillColor(fcolor);
+        this.buildShapes();
+    }
+
+    public DrawShapeAction getShapeByName(String name) {
+        if (!(this.shapeList.containsKey(name))) throw new IllegalArgumentException("Aucun élement SVG ne correspond à votre requête");
+        return this.shapeList.get(name);
+    }
 }

@@ -41,7 +41,7 @@ public abstract class DrawShapeAction implements SVGCommand {
     }
 
     public void setStrokeColor(Color strokeColor) {
-        this.strokeColor = strokeColor;
+        if (strokeColor != null) this.strokeColor = strokeColor;
     }
 
     public boolean isFill() {
@@ -57,6 +57,9 @@ public abstract class DrawShapeAction implements SVGCommand {
     }
 
     public void setFillColor(Color fillColor) {
-        this.fillColor = fillColor;
+        if (fillColor != null) {
+            this.fillColor = fillColor;
+            this.isFill = true;
+        }
     }
 }
