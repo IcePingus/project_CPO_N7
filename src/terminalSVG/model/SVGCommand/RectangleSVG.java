@@ -46,6 +46,11 @@ public class RectangleSVG extends DrawShapeAction {
         this.point.translater(dx,0);
     }
 
+    @Override
+    public void translateY(Double dy) {
+        this.point.translater(0,dy);
+    }
+
     public String getHelp() {
         return this.description;
     }

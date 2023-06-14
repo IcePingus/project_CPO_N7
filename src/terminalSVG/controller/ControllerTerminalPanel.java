@@ -44,6 +44,7 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
         this.modifierCommandList.add("rename");
         this.modifierCommandList.add("recolor");
         this.modifierCommandList.add("translateX");
+        this.modifierCommandList.add("translateY");
 
         this.sendButton = new JButton("Entrer");
         this.sendButton.addActionListener(this);
