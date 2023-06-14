@@ -39,13 +39,8 @@ public class OvalSVG extends DrawShapeAction {
     }
 
     @Override
-    public void translateX(Double dx) {
-        this.center.translater(dx,0);
-    }
-
-    @Override
-    public void translateY(Double dy) {
-        this.center.translater(0, dy);
+    public void translate(Double dx, Double dy) {
+        this.center.translater(dx, dy);
     }
 
     public String getHelp() {

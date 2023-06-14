@@ -46,23 +46,15 @@ public class SVGPreview extends Observable {
         buildShapes();
     }
 
-    public void translateXElement(String shapeName, Double dx)  {
+    public void translateElement(String shapeName, Double dx, Double dy)  {
         if(!this.shapeList.containsKey(shapeName)){
             throw new IllegalArgumentException("Aucun élement SVG ne correspond à votre requête");
         }
         DrawShapeAction shape = shapeList.get(shapeName);
-        shape.translateX(dx);
+        shape.translate(dx,dy);
         buildShapes();
     }
 
-    public void translateYElement(String shapeName, Double dy)  {
-        if(!this.shapeList.containsKey(shapeName)){
-            throw new IllegalArgumentException("Aucun élement SVG ne correspond à votre requête");
-        }
-        DrawShapeAction shape = shapeList.get(shapeName);
-        shape.translateY(dy);
-        buildShapes();
-    }
 
     public void buildShapes(){
         clearSVGDocument();

@@ -32,9 +32,7 @@ public abstract class DrawShapeAction implements SVGCommand {
 
     public abstract void draw(SVGPreview svgPreview);
 
-    public abstract void translateX(Double dx);
-
-    public abstract void translateY(Double dy);
+    public abstract void translate(Double dx, Double dy);
     public void setName(String newName) {
         this.name = newName;
     }

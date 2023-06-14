@@ -47,13 +47,14 @@ public class CircleSVG extends DrawShapeAction {
     }
 
     @Override
-    public void translateX(Double dx) {
-        this.center.translater(dx, 0);
-    }
-
-    @Override
-    public void translateY(Double dy) {
-        this.center.translater(0, dy);
+    public void translate(Double dx, Double dy) {
+        if(dx == null){
+            dx = 0.0;
+        }
+        if(dy == null){
+            dy = 0.0;
+        }
+        this.center.translater(dx, dy);
     }
 
     public String getHelp() {

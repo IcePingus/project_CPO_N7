@@ -55,16 +55,9 @@ public class PolygonSVG extends DrawShapeAction {
 	}
 
 	@Override
-	public void translateX(Double dx) {
+	public void translate(Double dx, Double dy) {
 		for(Point point : points){
-			point.translater(dx,0);
-		}
-	}
-
-	@Override
-	public void translateY(Double dy) {
-		for(Point point : points){
-			point.translater(0,dy);
+			point.translater(dx,dy);
 		}
 	}
 
