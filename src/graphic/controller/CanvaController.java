@@ -101,6 +101,22 @@ public class CanvaController implements Observer {
         }
     }
 
+    public void undo() {
+        if (this.canva.getImageStates().size() > 1 && this.canva.getCurrentIndex() > 0) {
+            this.canva.setCurrentIndex(this.canva.getCurrentIndex() - 1);
+            this.canva.setG2((Graphics2D) this.canva.getImageStates().get(this.canva.getCurrentIndex()).getGraphics());
+            this.canva.repaint();
+        }
+    }
+
+    public void redo() {
+        if (this.canva.getCurrentIndex() < this.canva.getImageStates().size() - 1) {
+            this.canva.setCurrentIndex(this.canva.getCurrentIndex() + 1);
+            this.canva.setG2((Graphics2D) this.canva.getImageStates().get(this.canva.getCurrentIndex()).getGraphics());
+            this.canva.repaint();
+        }
+    }
+
     public void blackAndWhiteTransform() {
         BufferedImage newImage = this.canva.nextBufferedImage();
         ColorConvertOp op = new ColorConvertOp(ColorSpace.getInstance(ColorSpace.CS_GRAY), null);

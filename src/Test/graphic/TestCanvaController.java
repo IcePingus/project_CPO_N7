@@ -95,4 +95,23 @@ public class TestCanvaController {
         this.canvaController.pasteImage(ImageIO.read(new File("src/Test/graphic/ImageTest/canvaController/PasteImage.png")));
         assertEquals(true, ImageComparator.areImagesSimilar(this.canva.getBufferedImage(), expectedImage));
     }
+
+    @Test
+    public void testUndo() {
+        BufferedImage expectedImage = LoadImage.loadImage("src/Test/graphic/ImageTest/canvaController/TestPasteImage.png");
+        this.canva.setBufferedImage(LoadImage.loadImage("src/Test/graphic/ImageTest/canvaController/TestPasteImage.png"));
+        this.canva.setBufferedImage(LoadImage.loadImage("src/Test/graphic/ImageTest/canvaController/TestResize.png"));
+        this.canvaController.undo();
+        assertEquals(true, ImageComparator.areImagesSimilar(this.canva.getBufferedImage(), expectedImage));
+    }
+
+    @Test
+    public void testRedo() {
+        BufferedImage expectedImage = LoadImage.loadImage("src/Test/graphic/ImageTest/canvaController/TestResize.png");
+        this.canva.setBufferedImage(LoadImage.loadImage("src/Test/graphic/ImageTest/canvaController/TestPasteImage.png"));
+        this.canva.setBufferedImage(LoadImage.loadImage("src/Test/graphic/ImageTest/canvaController/TestResize.png"));
+        this.canvaController.undo();
+        this.canvaController.redo();
+        assertEquals(true, ImageComparator.areImagesSimilar(this.canva.getBufferedImage(), expectedImage));
+    }
 }
