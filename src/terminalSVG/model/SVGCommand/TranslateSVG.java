@@ -35,12 +35,9 @@ public class TranslateSVG implements SVGCommand {
         boolean foundX = false;
         boolean foundY = false;
 
-        if (elements.length < 3) {
-            throw new IllegalArgumentException("not enough arguments");
-        } else if (elements.length > 6) {
-            throw new IllegalArgumentException("You have too many arguments");
+        if (elements.length < 2) {
+            throw new IllegalArgumentException("Shape name needed");
         }
-
         for (int i = 2; i < elements.length; i++) {
             String element = elements[i].trim();
 
@@ -70,7 +67,7 @@ public class TranslateSVG implements SVGCommand {
                 i += 1; // Skip the next element since it is used as an argument for -y
             }
             else {
-                throw new IllegalArgumentException("Invalid argument");
+                throw new IllegalArgumentException("Invalid argument :" + element);
             }
         }
 
