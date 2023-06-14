@@ -32,6 +32,7 @@ public abstract class DrawShapeAction implements SVGCommand {
 
     public abstract void draw(SVGPreview svgPreview);
 
+    public abstract void translateX(Double dx);
     public void setName(String newName) {
         this.name = newName;
     }
@@ -62,4 +63,5 @@ public abstract class DrawShapeAction implements SVGCommand {
             this.isFill = true;
         }
     }
+
 }

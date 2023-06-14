@@ -46,6 +46,11 @@ public class CircleSVG extends DrawShapeAction {
         }
     }
 
+    @Override
+    public void translateX(Double dx) {
+        this.center.translater(dx,0);
+    }
+
     public String getHelp() {
         return this.description;
     }

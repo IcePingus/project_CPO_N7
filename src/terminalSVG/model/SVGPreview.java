@@ -1,5 +1,4 @@
 package terminalSVG.model;
-
 import org.apache.batik.svggen.SVGGeneratorContext;
 import org.apache.batik.svggen.SVGGraphics2D;
 import org.w3c.dom.DOMImplementation;
@@ -7,7 +6,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.svg.SVGDocument;
 import terminalSVG.model.SVGCommand.DrawShapeAction;
-
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
@@ -17,7 +15,6 @@ import java.io.StringWriter;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.Observable;
-
 public class SVGPreview extends Observable {
     private SVGGraphics2D svgGraphics; // Contexte graphique pour dessiner des éléments SVG
     private SVGGeneratorContext svgGeneratorContext; // Contexte de génération SVG
@@ -32,27 +29,33 @@ public class SVGPreview extends Observable {
         this.svgGraphics = new SVGGraphics2D(svgGeneratorContext, true);
         this.shapeList = new Hashtable<>();
     }
-
     private SVGDocument createSVGDocument() {
         DOMImplementation domImpl = org.apache.batik.anim.dom.SVGDOMImplementation.getDOMImplementation();
         String svgNS = org.apache.batik.anim.dom.SVGDOMImplementation.SVG_NAMESPACE_URI;
         return (SVGDocument) domImpl.createDocument(svgNS, "svg", null);
     }
-
-    public void addElement(String shapeName, DrawShapeAction shape) {
-        this.shapeList.put(shapeName, shape);
+    public void addElement(String shapeName,DrawShapeAction shape) {
+        this.shapeList.put(shapeName,shape);
         buildShapes();
     }
-
     public void delElement(String shapeName) throws IllegalArgumentException {
-        if (!this.shapeList.containsKey(shapeName)) {
+        if(!this.shapeList.containsKey(shapeName)){
             throw new IllegalArgumentException("Aucun élement SVG ne correspond à votre requête");
         }
         this.shapeList.remove(shapeName);
         buildShapes();
     }
 
-    public void buildShapes() {
+    public void translateXElement(String shapeName, Double dx)  {
+        if(!this.shapeList.containsKey(shapeName)){
+            throw new IllegalArgumentException("Aucun élement SVG ne correspond à votre requête");
+        }
+        DrawShapeAction shape = shapeList.get(shapeName);
+        shape.translateX(dx);
+        buildShapes();
+    }
+
+    public void buildShapes(){
         clearSVGDocument();
         for (Map.Entry<String, DrawShapeAction> shape : shapeList.entrySet()) {
             shape.getValue().draw(this);
@@ -60,15 +63,13 @@ public class SVGPreview extends Observable {
         }
         updateSVGDocument("END");
     }
-
     public void clearShapeList() throws IllegalArgumentException {
-        if (this.shapeList.isEmpty()) {
+        if(this.shapeList.isEmpty()) {
             throw new IllegalArgumentException("Le canva est vide");
         }
         this.shapeList.clear();
         buildShapes();
     }
-
     public void updateSVGDocument(String comment) {
         // Mettre à jour le document SVG
         this.svgGeneratorContext.setComment(comment);
@@ -78,7 +79,6 @@ public class SVGPreview extends Observable {
         this.setChanged();
         this.notifyObservers();
     }
-
     public void clearSVGDocument() {
         Node root = svgDocument.getDocumentElement();
         while (root.hasChildNodes()) {
@@ -99,7 +99,6 @@ public class SVGPreview extends Observable {
         svgGraphics.setSVGCanvasSize(new Dimension(width, height));
         this.updateSVGDocument("Changement de taille");
     }
-
     public String getSVGCode() {
         try {
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -115,7 +114,6 @@ public class SVGPreview extends Observable {
         }
         return null;
     }
-
     public void saveSVG(String filename) throws TransformerException {
         filename = filename.endsWith(".svg") ? filename : filename + ".svg";
 
@@ -124,11 +122,9 @@ public class SVGPreview extends Observable {
         Source input = new DOMSource(svgDocument);
         transformer.transform(input, output);
     }
-
     public SVGDocument getSvgDocument() {
         return this.svgDocument;
     }
-
     public SVGGraphics2D getSVGGraphics() {
         return this.svgGraphics;
     }

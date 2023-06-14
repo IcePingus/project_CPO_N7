@@ -37,6 +37,11 @@ public class SquareSVG extends DrawShapeAction {
 		}
 	}
 
+	@Override
+	public void translateX(Double dx) {
+		this.point.translater(dx,0);
+	}
+
 	public String getHelp() {
 		return this.description;
 	}
