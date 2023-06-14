@@ -88,14 +88,11 @@ public class Canva extends JComponent {
         this.addMouseMotionListener(new MouseMotionAdapter() {
 
             @Override
-            public void mouseMoved(MouseEvent e) {
-
-            }
-
-            @Override
             public void mouseDragged(MouseEvent e) {
-                currentX = e.getX() - ((getWidth() - imageStates.get(currentIndex).getWidth()) / 2);
-                currentY = e.getY() - ((getHeight() - imageStates.get(currentIndex).getHeight()) / 2);
+                double doubleCurrentX = e.getX() / zoom + (getBufferedImage().getWidth() - getWidth() / zoom) / 2;
+                currentX = (int) doubleCurrentX;
+                double doubleCurrentY = e.getY() / zoom + (getBufferedImage().getHeight() - getHeight() / zoom) / 2;
+                currentY = (int) doubleCurrentY;
 
                 if (g2 != null) {
                     toolbox.getActiveTool().execute(oldX, oldY, currentX, currentY, imageStates.get(currentIndex), g2, e.getModifiersEx(), toolbox.getToolSize(), toolbox.getIsSquareShape(), isFirstPoint, Canva.this);
@@ -105,6 +102,19 @@ public class Canva extends JComponent {
                 }
                 repaint();
             }
+        });
+        this.addMouseWheelListener(e -> {
+            zoomPointX = getWidth() / 2;
+            zoomPointY = getHeight() / 2;
+            if (e.getPreciseWheelRotation() < 0) {
+                zoom -= (double) getHeight() / 8000;
+            } else {
+                zoom += (double) getHeight() / 8000;
+            }
+            if (zoom < 0.1) {
+                zoom = 0.1;
+            }
+            repaint();
         });
     }
 
