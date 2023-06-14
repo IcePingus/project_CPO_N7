@@ -33,9 +33,9 @@ public class Canva extends JComponent {
         this.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
                 // save coord x,y when mouse is pressed
-                double doubleOldX = e.getX() / zoom + (getWidth() - getWidth() / zoom) / 2;
+                double doubleOldX = e.getX() / zoom + (getBufferedImage().getWidth() - getWidth() / zoom) / 2;
                 oldX = (int) doubleOldX;
-                double doubleOldY = e.getY() / zoom + (getHeight() - getHeight() / zoom) / 2;
+                double doubleOldY = e.getY() / zoom + (getBufferedImage().getHeight() - getHeight() / zoom) / 2;
                 oldY = (int) doubleOldY;
                 currentX = oldX;
                 currentY = oldY;
@@ -133,9 +133,9 @@ public class Canva extends JComponent {
         this.addMouseMotionListener(new MouseMotionAdapter() {
 
             public void mouseDragged(MouseEvent e) {
-                double doubleCurrentX = e.getX() / zoom + (getWidth() - getWidth() / zoom) / 2;
+                double doubleCurrentX = e.getX() / zoom + (getBufferedImage().getWidth() - getWidth() / zoom) / 2;
                 currentX = (int) doubleCurrentX;
-                double doubleCurrentY = e.getY() / zoom + (getHeight() - getHeight() / zoom) / 2;
+                double doubleCurrentY = e.getY() / zoom + (getBufferedImage().getHeight() - getHeight() / zoom) / 2;
                 currentY = (int) doubleCurrentY;
 
                 if (g2 != null) {
@@ -152,12 +152,12 @@ public class Canva extends JComponent {
                 zoomPointX = getWidth() / 2;
                 zoomPointY = getHeight() / 2;
                 if (e.getPreciseWheelRotation() < 0) {
-                    zoom -= 0.01;
+                    zoom -= (double) getHeight() / 8000;
                 } else {
-                    zoom += 0.01;
+                    zoom += (double) getHeight() / 8000;
                 }
-                if (zoom < 0.01) {
-                    zoom = 0.01;
+                if (zoom < 0.1) {
+                    zoom = 0.1;
                 }
                 repaint();
             }
