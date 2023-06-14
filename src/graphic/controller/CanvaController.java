@@ -66,7 +66,7 @@ public class CanvaController implements Observer {
     }
 
     public void flipImageHorizontal() {
-        BufferedImage newImage = this.canva.nextBufferedImage();
+        BufferedImage newImage = this.canva.getBufferedImage();
         AffineTransform affineTransform = AffineTransform.getScaleInstance(-1, 1);
         affineTransform.translate(-newImage.getWidth(), 0);
         AffineTransformOp op = new AffineTransformOp(affineTransform, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
@@ -74,7 +74,7 @@ public class CanvaController implements Observer {
     }
 
     public void flipImageVertical() {
-        BufferedImage newImage = this.canva.nextBufferedImage();
+        BufferedImage newImage = this.canva.getBufferedImage();
         AffineTransform affineTransform = AffineTransform.getScaleInstance(1, -1);
         affineTransform.translate(0, -newImage.getHeight());
         AffineTransformOp op = new AffineTransformOp(affineTransform, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);

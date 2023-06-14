@@ -5,6 +5,7 @@ import graphic.model.tools.Toolbox;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.WritableRaster;
@@ -18,18 +19,24 @@ public class Canva extends JComponent {
     private Graphics2D g2;
     private int currentX, currentY, oldX, oldY;
     private Toolbox toolbox;
+    private double zoom = 1;
+    private int zoomPointX;
+    private int zoomPointY;
 
     public Canva(Toolbox toolbox) {
         this.toolbox = toolbox;
         this.imageStates = new ArrayList<>();
         this.currentIndex = 0;
+        this.zoom = 1.0;
         this.setDoubleBuffered(false);
         this.requestFocusInWindow();
         this.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
                 // save coord x,y when mouse is pressed
-                oldX = e.getX() - ((getWidth() - imageStates.get(currentIndex).getWidth()) / 2);
-                oldY = e.getY() - ((getHeight() - imageStates.get(currentIndex).getHeight()) / 2);
+                double doubleOldX = e.getX() / zoom + (getWidth() - getWidth() / zoom) / 2;
+                oldX = (int) doubleOldX;
+                double doubleOldY = e.getY() / zoom + (getHeight() - getHeight() / zoom) / 2;
+                oldY = (int) doubleOldY;
                 currentX = oldX;
                 currentY = oldY;
 
@@ -108,7 +115,16 @@ public class Canva extends JComponent {
             this.g2.fillRect(0, 0, this.getWidth(), this.getHeight());
             this.repaint();
         }
-        g.drawImage(this.imageStates.get(this.currentIndex), ((this.getWidth() - this.imageStates.get(this.currentIndex).getWidth()) / 2), ((this.getHeight() - this.imageStates.get(this.currentIndex).getHeight()) / 2), null);    }
+        AffineTransform at = ((Graphics2D) g).getTransform();
+        at.translate(zoomPointX, zoomPointY);
+        at.scale(zoom, zoom);
+        at.translate(-zoomPointX, -zoomPointY);
+        ((Graphics2D) g).setTransform(at);
+
+        g.drawImage(this.imageStates.get(this.currentIndex), ((this.getWidth() - this.imageStates.get(this.currentIndex).getWidth()) / 2), ((this.getHeight() - this.imageStates.get(this.currentIndex).getHeight()) / 2), null);
+
+        this.repaint();
+    }
 
     public void setMouseMotionListener() {
         if (this.getMouseMotionListeners().length != 0) {
@@ -117,13 +133,31 @@ public class Canva extends JComponent {
         this.addMouseMotionListener(new MouseMotionAdapter() {
 
             public void mouseDragged(MouseEvent e) {
-                currentX = e.getX() - ((getWidth() - imageStates.get(currentIndex).getWidth()) / 2);
-                currentY = e.getY() - ((getHeight() - imageStates.get(currentIndex).getHeight()) / 2);
+                double doubleCurrentX = e.getX() / zoom + (getWidth() - getWidth() / zoom) / 2;
+                currentX = (int) doubleCurrentX;
+                double doubleCurrentY = e.getY() / zoom + (getHeight() - getHeight() / zoom) / 2;
+                currentY = (int) doubleCurrentY;
 
                 if (g2 != null) {
                     toolbox.getActiveTool().execute(oldX, oldY, currentX, currentY, imageStates.get(currentIndex), g2, e.getModifiersEx(), toolbox.getToolSize(), toolbox.getIsSquareShape(), Canva.this);
                     oldX = currentX;
                     oldY = currentY;
+                }
+                repaint();
+            }
+        });
+        this.addMouseWheelListener(new MouseWheelListener() {
+            @Override
+            public void mouseWheelMoved(MouseWheelEvent e) {
+                zoomPointX = getWidth() / 2;
+                zoomPointY = getHeight() / 2;
+                if (e.getPreciseWheelRotation() < 0) {
+                    zoom -= 0.01;
+                } else {
+                    zoom += 0.01;
+                }
+                if (zoom < 0.01) {
+                    zoom = 0.01;
                 }
                 repaint();
             }
