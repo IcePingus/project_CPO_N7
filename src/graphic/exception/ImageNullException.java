@@ -1,2 +1,7 @@
-package graphic.exception;public class ImageNullException {
+package graphic.exception;
+
+public class ImageNullException extends RuntimeException {
+    public ImageNullException(String message) {
+        super(message);
+    }
 }
