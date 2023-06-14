@@ -101,6 +101,7 @@ public class Parser {
                 throw new IllegalArgumentException(command);
             }
 
+            System.out.println(instruction);
 
             return instruction;
         }
