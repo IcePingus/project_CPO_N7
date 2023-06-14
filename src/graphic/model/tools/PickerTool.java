@@ -15,6 +15,7 @@ public class PickerTool implements ToolCommand {
     private final boolean isResizable;
     private final boolean isSquareRoundShape;
     private final boolean hasShapeSelection;
+    private final ColorController colorController;
 
     public PickerTool(ColorController colorController) {
         this.name = "Picker";
@@ -22,6 +23,7 @@ public class PickerTool implements ToolCommand {
         this.isResizable = false;
         this.isSquareRoundShape = false;
         this.hasShapeSelection = false;
+        this.colorController = colorController;
     }
 
     @Override
