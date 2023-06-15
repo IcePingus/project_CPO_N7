@@ -3,6 +3,8 @@ package terminalSVG.model.SVGCommand;
 import terminalSVG.model.SVGPreview;
 
 import java.awt.*;
+import java.util.List;
+import java.util.Map;
 
 /**
  * The type Draw shape action.
@@ -68,11 +70,14 @@ public abstract class DrawShapeAction implements SVGCommand {
      */
     public abstract void translate(Double dx, Double dy);
 
+    public abstract void resize(Map<String, Object> sizes);
+
     /**
      * Sets a new name to the shape.
      *
      * @param newName the new name of the shape
      */
+
     public void setName(String newName) {
         this.name = newName;
     }

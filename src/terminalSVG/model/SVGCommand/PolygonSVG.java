@@ -5,6 +5,7 @@ import terminalSVG.model.SVGPreview;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The type Polygon svg.
@@ -77,6 +78,11 @@ public class PolygonSVG extends DrawShapeAction {
 		for(Point point : points){
 			point.translater(dx,dy);
 		}
+	}
+
+	@Override
+	public void resize(Map<String, Object> sizes) {
+		throw new IllegalArgumentException("Resize impossible pour un polygone");
 	}
 
 	public String getHelp() {

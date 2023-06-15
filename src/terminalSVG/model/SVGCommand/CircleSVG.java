@@ -4,6 +4,7 @@ import terminalSVG.model.SVGPreview;
 
 import java.awt.*;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The type Circle svg.
@@ -65,6 +66,24 @@ public class CircleSVG extends DrawShapeAction {
             dy = 0.0;
         }
         this.center.translater(dx, dy);
+    }
+
+    @Override
+    public void resize(Map<String, Object> sizes) {
+        Double r = 0.0;
+
+        if (sizes.containsKey("newWidth") && !sizes.containsKey("newHeight")) {
+            r = (Double) sizes.get("newWidth");
+        } else if (!sizes.containsKey("newWidth") && sizes.containsKey("newHeight")) {
+            r = (Double) sizes.get("newHeight");
+        } else {
+            throw new IllegalArgumentException("Either newWidth or newHeight should be provided, but not both");
+        }
+
+        if (r < 0.0) {
+            throw new IllegalArgumentException("Width or height must be non-negative");
+        }
+        this.setRadius(r);
     }
 
     public String getHelp() {

@@ -4,6 +4,7 @@ import terminalSVG.model.SVGPreview;
 
 import java.awt.*;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The type Oval svg.
@@ -52,13 +53,32 @@ public class OvalSVG extends DrawShapeAction {
 
     @Override
     public void translate(Double dx, Double dy) {
-        if(dx == null){
+        if (dx == null) {
             dx = 0.0;
         }
-        if(dy == null){
+        if (dy == null) {
             dy = 0.0;
         }
         this.center.translater(dx, dy);
+    }
+
+    @Override
+    public void resize(Map<String, Object> sizes) {
+        Double w = 0.0;
+        Double h = 0.0;
+        if (sizes.containsKey("newWidth")) {
+            w = (Double) sizes.get("newWidth");
+        }
+        if (sizes.containsKey("newHeight")) {
+            h = (Double) sizes.get("newHeight");
+        }
+
+        if (w < 0.0 || h < 0.0) {
+            throw new IllegalArgumentException("Width and height must be non-negative");
+        }
+
+        this.setWidth(w);
+        this.setHeight(h);
     }
 
     public String getHelp() {
@@ -98,6 +118,9 @@ public class OvalSVG extends DrawShapeAction {
      * @param width the width
      */
     public void setWidth(double width) {
+        if (width == 0.0) {
+            width = this.getWidth();
+        }
         this.width = width;
     }
 
@@ -116,6 +139,9 @@ public class OvalSVG extends DrawShapeAction {
      * @param height the height
      */
     public void setHeight(double height) {
+        if (height == 0.0) {
+            height = this.getHeight();
+        }
         this.height = height;
     }
 

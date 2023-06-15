@@ -13,6 +13,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.StringWriter;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 /**
@@ -80,6 +81,15 @@ public class SVGPreview extends Observable {
         }
         DrawShapeAction shape = shapeList.get(shapeName);
         shape.translate(dx,dy);
+        buildShapes();
+    }
+
+    public void resizeElement(String shapeName,  Map<String, Object> sizes)  {
+        if(!this.shapeList.containsKey(shapeName)){
+            throw new IllegalArgumentException("Aucun élement SVG ne correspond à votre requête");
+        }
+        DrawShapeAction shape = shapeList.get(shapeName);
+        shape.resize(sizes);
         buildShapes();
     }
 

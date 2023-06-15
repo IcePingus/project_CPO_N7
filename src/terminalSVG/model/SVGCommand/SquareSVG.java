@@ -4,6 +4,8 @@ import terminalSVG.model.SVGPreview;
 
 import java.awt.*;
 import java.util.List;
+import java.util.Map;
+
 /**
  * This class represents an SVG command for drawing a square shape.
  */
@@ -67,11 +69,31 @@ public class SquareSVG extends DrawShapeAction {
 		}
 		this.point.translater(dx,dy);
 	}
+
+	@Override
+	public void resize(Map<String, Object> sizes) {
+		Double l = 0.0;
+
+		if (sizes.containsKey("newWidth") && !sizes.containsKey("newHeight")) {
+			l = (Double) sizes.get("newWidth");
+		} else if (!sizes.containsKey("newWidth") && sizes.containsKey("newHeight")) {
+			l = (Double) sizes.get("newHeight");
+		} else {
+			throw new IllegalArgumentException("Either newWidth or newHeight should be provided, but not both");
+		}
+
+		if (l < 0.0) {
+			throw new IllegalArgumentException("Width or height must be non-negative");
+		}
+		this.setSideLength(l);
+	}
+
 	/**
 	 * Gets the help information for using the square command.
 	 *
 	 * @return The help information for the square command.
 	 */
+
 	public String getHelp() {
 		return this.description;
 	}
