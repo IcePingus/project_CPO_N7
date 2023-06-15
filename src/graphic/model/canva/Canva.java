@@ -107,9 +107,9 @@ public class Canva extends JComponent {
             zoomPointX = getWidth() / 2;
             zoomPointY = getHeight() / 2;
             if (e.getPreciseWheelRotation() < 0) {
-                zoom -= (double) getHeight() / 8000;
-            } else {
                 zoom += (double) getHeight() / 8000;
+            } else {
+                zoom -= (double) getHeight() / 8000;
             }
             if (zoom < 0.1) {
                 zoom = 0.1;
@@ -172,7 +172,10 @@ public class Canva extends JComponent {
     protected void paintComponent(Graphics g) {
         this.g = g;
         if (this.imageStates.size() == 0 || this.imageStates.get(this.currentIndex) == null) {
-            this.imageStates.add(this.currentIndex, new BufferedImage((int) (this.getWidth() / 1.5), (int) (this.getHeight() / 1.5), BufferedImage.TYPE_INT_RGB));
+            this.imageStates.add(this.currentIndex, new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_RGB));
+            this.zoom = 0.75;
+            this.zoomPointX = getWidth() / 2;
+            this.zoomPointY = getHeight() / 2;
             this.g2 = (Graphics2D) this.imageStates.get(this.currentIndex).getGraphics();
 
             this.g2.setPaint(Color.WHITE);
