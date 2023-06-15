@@ -24,6 +24,8 @@ public class ResizeDialog extends JDialog implements ActionListener {
 
     private CanvaController canvaController;
 
+    private boolean isCropping;
+
     public ResizeDialog(CanvaController canvaController) {
         super();
         this.setResizable(false);
@@ -74,7 +76,11 @@ public class ResizeDialog extends JDialog implements ActionListener {
             try {
                 int width = Integer.parseInt(this.widthInput.getText());
                 int height = Integer.parseInt(this.heightInput.getText());
-                this.canvaController.resizeCanva(width, height);
+                if (this.isCropping) {
+                    this.canvaController.cropCanva(width, height);
+                } else {
+                    this.canvaController.resizeCanva(width, height);
+                }
                 this.errorMessage.setVisible(false);
                 this.setVisible(false);
             } catch (Exception exception) {
@@ -85,7 +91,8 @@ public class ResizeDialog extends JDialog implements ActionListener {
         }
     }
 
-    public void setInputs() {
+    public void setInputs(boolean isCropping) {
+        this.isCropping = isCropping;
         this.widthInput.setText(String.valueOf(canvaController.getCanvaWidth()));
         this.heightInput.setText(String.valueOf(canvaController.getCanvaHeight()));
     }

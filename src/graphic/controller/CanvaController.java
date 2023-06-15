@@ -129,6 +129,13 @@ public class CanvaController {
         this.canva.setBufferedImage(resizedImage);
     }
 
+    public void cropCanva(int width, int height) {
+        BufferedImage resizedImage = new BufferedImage(width, height, this.canva.getBufferedImage().getType());
+        this.canva.setG2(resizedImage.createGraphics());
+        this.canva.getG2().drawImage(this.canva.getBufferedImage(), 0, 0, width, height, null);
+        this.canva.setBufferedImage(resizedImage);
+    }
+
     public void chooseImportPath(JFrame frame) {
         String filename = File.separator + "tmp";
         JFileChooser fileChooser = new JFileChooser(new File(filename));
