@@ -14,14 +14,16 @@ public class PickerTool implements ToolCommand {
     private final Icon image;
     private final boolean isResizable;
     private final boolean isSquareRoundShape;
+    private final boolean hasShapeSelection;
     private final ColorController colorController;
 
     public PickerTool(ColorController colorController) {
         this.name = "Picker";
         this.image = new ImageIcon(getClass().getResource("/assets/images/picker.png"));
         this.isResizable = false;
-        this.colorController = colorController;
         this.isSquareRoundShape = false;
+        this.hasShapeSelection = false;
+        this.colorController = colorController;
     }
 
     @Override
@@ -45,7 +47,12 @@ public class PickerTool implements ToolCommand {
     }
 
     @Override
-    public void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click, int size, boolean square, JComponent jComponent) {
+    public boolean getHasShapeSelection() {
+        return this.hasShapeSelection;
+    }
+
+    @Override
+    public void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click, int size, boolean square, boolean isFirstPoint, JComponent canva) {
         Color color = new Color(bufferedImage.getRGB(currentX, currentY));
         if(click == InputEvent.BUTTON1_DOWN_MASK) {
             this.colorController.setPrimaryColor(color);

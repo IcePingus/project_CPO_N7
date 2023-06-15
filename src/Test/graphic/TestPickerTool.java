@@ -49,7 +49,7 @@ public class TestPickerTool {
     @Test
     public void testUpdatePrimaryColor() {
         this.colorModel.setIsPrimaryColor(false);
-        this.toolbox.getActiveTool().execute(20, 20, 20, 20, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON1_DOWN_MASK, 30, false, null);
+        this.toolbox.getActiveTool().execute(20, 20, 20, 20, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON1_DOWN_MASK, 30, false, true, null);
         assertEquals(Color.PINK, this.colorModel.getPrimaryColor());
         assertEquals(true, this.colorModel.getIsPrimaryColor());
     }
@@ -57,7 +57,7 @@ public class TestPickerTool {
     @Test
     public void testUpdateSecondaryColor() {
         this.colorModel.setIsPrimaryColor(true);
-        this.toolbox.getActiveTool().execute(50, 50, 50, 50, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON3_DOWN_MASK, 30, false, null);
+        this.toolbox.getActiveTool().execute(50, 50, 50, 50, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON3_DOWN_MASK, 30, false, true, null);
         assertEquals(Color.RED, this.colorModel.getSecondaryColor());
         assertEquals(false, this.colorModel.getIsPrimaryColor());
     }

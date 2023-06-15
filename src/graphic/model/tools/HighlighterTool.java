@@ -13,17 +13,19 @@ public class HighlighterTool implements ToolCommand {
     private final String name;
     private final Icon image;
     private final boolean isResizable;
-    Boolean isSquareRoundShape;
+    private final boolean isSquareRoundShape;
+    private final boolean hasShapeSelection;
     private Color primaryColor;
     private Color secondaryColor;
 
     public HighlighterTool() {
         this.name = "Highlighter";
         this.image = new ImageIcon(getClass().getResource("/assets/images/highlighter.png"));
-        this.primaryColor = Color.BLACK;
-        this.secondaryColor = Color.WHITE;
         this.isResizable = true;
         this.isSquareRoundShape = false;
+        this.hasShapeSelection = false;
+        this.primaryColor = Color.BLACK;
+        this.secondaryColor = Color.WHITE;
     }
 
     @Override
@@ -47,7 +49,12 @@ public class HighlighterTool implements ToolCommand {
     }
 
     @Override
-    public void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click, int size, boolean square, JComponent jComponent) {
+    public boolean getHasShapeSelection() {
+        return this.hasShapeSelection;
+    }
+
+    @Override
+    public void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click, int size, boolean square, boolean isFirstPoint, JComponent canva) {
         Color color = null;
         if (click == InputEvent.BUTTON1_DOWN_MASK) {
             color = new Color(primaryColor.getRed(), primaryColor.getGreen(), primaryColor.getBlue(), 17);

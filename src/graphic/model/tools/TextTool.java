@@ -13,6 +13,7 @@ public class TextTool implements ToolCommand, FocusListener, KeyListener {
     private final Icon image;
     private final boolean isResizable;
     private final boolean isSquareRoundShape;
+    private final boolean hasShapeSelection;
     private int size;
     private Graphics2D graphics2D;
     private JComponent jComponent;
@@ -27,11 +28,12 @@ public class TextTool implements ToolCommand, FocusListener, KeyListener {
         this.name = "Text";
         this.image = new ImageIcon(getClass().getResource("/assets/images/text.png"));
         this.isResizable = true;
+        this.isSquareRoundShape = false;
+        this.hasShapeSelection = false;
         this.primaryColor = Color.BLACK;
         this.secondaryColor = Color.WHITE;
         this.text = "";
         this.size = 10;
-        this.isSquareRoundShape = false;
     }
 
     @Override
@@ -55,8 +57,13 @@ public class TextTool implements ToolCommand, FocusListener, KeyListener {
     }
 
     @Override
-    public void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click, int size, boolean square, JComponent jComponent) {
-        this.jComponent = jComponent;
+    public boolean getHasShapeSelection() {
+        return this.hasShapeSelection;
+    }
+
+    @Override
+    public void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click, int size, boolean square, boolean isFirstClick, JComponent canva) {
+        this.jComponent = canva;
         this.graphics2D = graphics2D;
         Color color = null;
         if (click == InputEvent.BUTTON1_DOWN_MASK) {

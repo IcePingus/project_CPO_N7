@@ -46,14 +46,14 @@ public class TestHighlighterTool {
     @Test
     public void testHighlighterLine() {
         BufferedImage expectedImage = LoadImage.loadImage("src/Test/graphic/ImageTest/highlighterTool/TestLine.png");
-        this.toolbox.getActiveTool().execute(40, 90, 200, 200, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON1_DOWN_MASK, 30, true, null);
+        this.toolbox.getActiveTool().execute(40, 90, 200, 200, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON1_DOWN_MASK, 30, true, true, null);
         assertEquals(true, ImageComparator.areImagesSimilar(this.canva.getBufferedImage(), expectedImage));
     }
 
     @Test
     public void testHighlighterPoint() {
         BufferedImage expectedImage = LoadImage.loadImage("src/Test/graphic/ImageTest/highlighterTool/TestPoint.png");
-        this.toolbox.getActiveTool().execute(40, 40, 40, 40, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON1_DOWN_MASK, 30, true, null);
+        this.toolbox.getActiveTool().execute(40, 40, 40, 40, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON1_DOWN_MASK, 30, true, true, null);
         assertEquals(true, ImageComparator.areImagesSimilar(this.canva.getBufferedImage(), expectedImage));
     }
 
@@ -61,23 +61,23 @@ public class TestHighlighterTool {
     public void testChangePrimaryColor() throws IOException {
         BufferedImage expectedImage = LoadImage.loadImage("src/Test/graphic/ImageTest/highlighterTool/TestChangePrimaryColor.png");
         this.colorController.setPrimaryColor(Color.BLUE);
-        this.toolbox.getActiveTool().execute(40, 40, 40, 40, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON1_DOWN_MASK, 30, false, null);
+        this.toolbox.getActiveTool().execute(40, 40, 40, 40, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON1_DOWN_MASK, 30, false, true, null);
         this.colorController.setPrimaryColor(Color.RED);
-        this.toolbox.getActiveTool().execute(24, 83, 100, 223, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON1_DOWN_MASK, 30, false, null);
+        this.toolbox.getActiveTool().execute(24, 83, 100, 223, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON1_DOWN_MASK, 30, false, true, null);
         assertEquals(true, ImageComparator.areImagesSimilar(this.canva.getBufferedImage(), expectedImage));
     }
 
     @Test
     public void testChangeSecondaryColor() throws IOException {
         BufferedImage expectedImage = LoadImage.loadImage("src/Test/graphic/ImageTest/highlighterTool/TestChangeSecondaryColor.png");
-        this.toolbox.getActiveTool().execute(40, 40, 40, 40, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON3_DOWN_MASK, 30, false, null);
+        this.toolbox.getActiveTool().execute(40, 40, 40, 40, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON3_DOWN_MASK, 30, false, true, null);
 
         this.colorController.setSecondaryColor(Color.PINK);
         this.colorController.setIsPrimaryColor(false);
-        this.toolbox.getActiveTool().execute(80, 80, 80, 80, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON3_DOWN_MASK, 30, false, null);
+        this.toolbox.getActiveTool().execute(80, 80, 80, 80, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON3_DOWN_MASK, 30, false, true, null);
 
         this.colorController.setSecondaryColor(Color.RED);
-        this.toolbox.getActiveTool().execute(24, 83, 100, 223, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON3_DOWN_MASK, 30, false, null);
+        this.toolbox.getActiveTool().execute(24, 83, 100, 223, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON3_DOWN_MASK, 30, false, true, null);
         assertEquals(true, ImageComparator.areImagesSimilar(this.canva.getBufferedImage(), expectedImage));
     }
 }

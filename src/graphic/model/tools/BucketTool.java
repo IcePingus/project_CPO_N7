@@ -13,7 +13,8 @@ public class BucketTool implements ToolCommand {
     private final String name;
     private final Icon image;
     private final boolean isResizable;
-    Boolean isSquareRoundShape;
+    private final boolean isSquareRoundShape;
+    private final boolean hasShapeSelection;
     private Color primaryColor;
     private Color secondaryColor;
 
@@ -21,9 +22,10 @@ public class BucketTool implements ToolCommand {
         this.name = "Bucket";
         this.image = new ImageIcon(getClass().getResource("/assets/images/bucket.png"));
         this.isResizable = false;
+        this.isSquareRoundShape = false;
+        this.hasShapeSelection = false;
         this.primaryColor = Color.BLACK;
         this.secondaryColor = Color.WHITE;
-        this.isSquareRoundShape = false;
     }
 
     @Override
@@ -47,7 +49,12 @@ public class BucketTool implements ToolCommand {
     }
 
     @Override
-    public void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click, int size, boolean square, JComponent jComponent) {
+    public boolean getHasShapeSelection() {
+        return this.hasShapeSelection;
+    }
+
+    @Override
+    public void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click, int size, boolean square, boolean isFirstPoint, JComponent canva) {
         Color color = null;
         if (click == InputEvent.BUTTON1_DOWN_MASK) {
             color = primaryColor;

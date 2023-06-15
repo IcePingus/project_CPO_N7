@@ -1,5 +1,7 @@
 package graphic.model.tools;
 
+import graphic.model.ShapeTypes;
+
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +13,8 @@ public class Toolbox extends Observable {
     private ToolCommand activeTool;
     private int toolSize;
     private boolean isSquareShape;
+    private ShapeTypes shapeType;
+    private boolean isFilledShape;
 
     public Toolbox() {
         this.toolsButtons = new ArrayList<>();
@@ -19,6 +23,8 @@ public class Toolbox extends Observable {
         this.activeTool = this.getTool(0);
         this.toolSize = 5;
         this.isSquareShape = true;
+        this.shapeType = ShapeTypes.RECTANGLE;
+        this.isFilledShape = false;
     }
 
     public void addTool(ToolCommand tool) {
@@ -26,28 +32,44 @@ public class Toolbox extends Observable {
         this.toolCommands.add(tool);
     }
 
-    public ToolCommand getTool(int i) {
-        return this.toolCommands.get(i);
+    public List<JButton> getToolsButtons() {
+        return this.toolsButtons;
     }
 
     public List<ToolCommand> getTools() {
         return this.toolCommands;
     }
 
-    public List<JButton> getToolsButtons() {
-        return this.toolsButtons;
-    }
-
-    public void setActiveTool(int tool) {
-        this.activeTool = this.getTool(tool);
-
-        this.setChanged();
-        this.notifyObservers();
+    public ToolCommand getTool(int i) {
+        return this.toolCommands.get(i);
     }
 
     public ToolCommand getActiveTool() {
         return this.activeTool;
     }
+
+    public int getToolSize() {
+        return this.toolSize;
+    }
+
+    public boolean getIsSquareShape() {
+        return this.isSquareShape;
+    }
+
+    public ShapeTypes getShapeType() {
+        return this.shapeType;
+    }
+
+    public boolean getIsFilledShape() {
+        return this.isFilledShape;
+    }
+
+    public void setActiveTool(int tool) {
+        this.activeTool = this.getTool(tool);
+        this.setChanged();
+        this.notifyObservers();
+    }
+
 
     public void setToolSize(int size) {
         this.toolSize = size;
@@ -55,15 +77,19 @@ public class Toolbox extends Observable {
         this.notifyObservers();
     }
 
-    public int getToolSize() {
-        return this.toolSize;
-    }
-
     public void setIsSquareShape(boolean isSquareShape) {
         this.isSquareShape = isSquareShape;
     }
 
-    public boolean getIsSquareShape() {
-        return this.isSquareShape;
+    public void setShapeType(ShapeTypes shapeType) {
+        this.shapeType = shapeType;
+        this.setChanged();
+        this.notifyObservers();
+    }
+
+    public void setIsFilledShape(boolean filledShape) {
+        this.isFilledShape = filledShape;
+        this.setChanged();
+        this.notifyObservers();
     }
 }

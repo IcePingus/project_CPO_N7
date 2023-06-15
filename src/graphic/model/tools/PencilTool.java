@@ -14,16 +14,18 @@ public class PencilTool implements ToolCommand {
     private final Icon image;
     private final boolean isResizable;
     private final boolean isSquareRoundShape;
+    private final boolean hasShapeSelection;
     private Color primaryColor;
     private Color secondaryColor;
 
     public PencilTool() {
         this.name = "Pencil";
         this.image = new ImageIcon(getClass().getResource("/assets/images/pencil.png"));
-        this.primaryColor = Color.BLACK;
-        this.secondaryColor = Color.WHITE;
         this.isResizable = true;
         this.isSquareRoundShape = true;
+        this.hasShapeSelection = false;
+        this.primaryColor = Color.BLACK;
+        this.secondaryColor = Color.WHITE;
     }
 
     @Override
@@ -47,7 +49,12 @@ public class PencilTool implements ToolCommand {
     }
 
     @Override
-    public void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click, int size, boolean square, JComponent jComponent) {
+    public boolean getHasShapeSelection() {
+        return this.hasShapeSelection;
+    }
+
+    @Override
+    public void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click, int size, boolean square, boolean isFirstPoint, JComponent canva) {
         Color color = null;
         if (click == InputEvent.BUTTON1_DOWN_MASK) {
             color = primaryColor;

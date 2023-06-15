@@ -33,28 +33,28 @@ public class TestRubberTool {
     @Test
     public void testEraseLineSquare() throws IOException {
         BufferedImage expectedImage = LoadImage.loadImage("src/Test/graphic/ImageTest/rubberTool/TestLineSquare.png");
-        this.toolbox.getActiveTool().execute(40, 90, 200, 200, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON1_DOWN_MASK, 30, true, null);
+        this.toolbox.getActiveTool().execute(40, 90, 200, 200, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON1_DOWN_MASK, 30, true, true, null);
         assertEquals(true, ImageComparator.areImagesSimilar(this.canva.getBufferedImage(), expectedImage));
     }
 
     @Test
     public void testEraseLineRound() {
         BufferedImage expectedImage = LoadImage.loadImage("src/Test/graphic/ImageTest/rubberTool/TestLineRound.png");
-        this.toolbox.getActiveTool().execute(40, 90, 200, 200, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON1_DOWN_MASK, 30, false, null);
+        this.toolbox.getActiveTool().execute(40, 90, 200, 200, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON1_DOWN_MASK, 30, false, true, null);
         assertEquals(true, ImageComparator.areImagesSimilar(this.canva.getBufferedImage(), expectedImage));
     }
 
     @Test
     public void testErasePointSquare() {
         BufferedImage expectedImage = LoadImage.loadImage("src/Test/graphic/ImageTest/rubberTool/TestErasePointSquare.png");
-        this.toolbox.getActiveTool().execute(90, 90, 90, 90, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON1_DOWN_MASK, 30, true, null);
+        this.toolbox.getActiveTool().execute(90, 90, 90, 90, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON1_DOWN_MASK, 30, true, true, null);
         assertEquals(true, ImageComparator.areImagesSimilar(this.canva.getBufferedImage(), expectedImage));
     }
 
     @Test
     public void testErasePointRound() {
         BufferedImage expectedImage = LoadImage.loadImage("src/Test/graphic/ImageTest/rubberTool/TestErasePointRound.png");
-        this.toolbox.getActiveTool().execute(90, 90, 90, 90, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON1_DOWN_MASK, 30, false, null);
+        this.toolbox.getActiveTool().execute(90, 90, 90, 90, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON1_DOWN_MASK, 30, false, true, null);
         assertEquals(true, ImageComparator.areImagesSimilar(this.canva.getBufferedImage(), expectedImage));
     }
 }

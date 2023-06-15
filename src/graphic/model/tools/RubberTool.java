@@ -10,12 +10,14 @@ public class RubberTool implements ToolCommand {
     private final Icon image;
     private final boolean isResizable;
     private final boolean isSquareRoundShape;
+    private final boolean hasShapeSelection;
 
     public RubberTool() {
         this.name = "Rubber";
         this.image = new ImageIcon(getClass().getResource("/assets/images/rubber.png"));
         this.isResizable = true;
         this.isSquareRoundShape = true;
+        this.hasShapeSelection = false;
     }
 
     @Override
@@ -39,7 +41,12 @@ public class RubberTool implements ToolCommand {
     }
 
     @Override
-    public void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click, int size, boolean square, JComponent jComponent) {
+    public boolean getHasShapeSelection() {
+        return this.hasShapeSelection;
+    }
+
+    @Override
+    public void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click, int size, boolean square, boolean isFirstPoint, JComponent canva) {
         graphics2D.setPaint(Color.WHITE);
         graphics2D.drawLine(oldX, oldY, currentX, currentY);
 
