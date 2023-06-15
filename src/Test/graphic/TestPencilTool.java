@@ -39,28 +39,28 @@ public class TestPencilTool {
     @Test
     public void testPencilLineSquare() {
         BufferedImage expectedImage = LoadImage.loadImage("src/Test/graphic/ImageTest/pencilTool/TestLineSquare.png");
-        this.toolbox.getActiveTool().execute(40, 90, 200, 200, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON1_DOWN_MASK, 30, true, null);
+        this.toolbox.getActiveTool().execute(40, 90, 200, 200, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON1_DOWN_MASK, 30, true, true, null);
         assertEquals(ImageComparator.areImagesSimilar(this.canva.getBufferedImage(), expectedImage), true);
     }
 
     @Test
     public void testPencilLineRound() {
         BufferedImage expectedImage = LoadImage.loadImage("src/Test/graphic/ImageTest/pencilTool/TestLineRound.png");
-        this.toolbox.getActiveTool().execute(40, 90, 200, 200, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON1_DOWN_MASK, 30, false, null);
+        this.toolbox.getActiveTool().execute(40, 90, 200, 200, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON1_DOWN_MASK, 30, false, true, null);
         assertEquals(ImageComparator.areImagesSimilar(this.canva.getBufferedImage(), expectedImage), true);
     }
 
     @Test
     public void testPencilPointSquare() {
         BufferedImage expectedImage = LoadImage.loadImage("src/Test/graphic/ImageTest/pencilTool/TestPointSquare.png");
-        this.toolbox.getActiveTool().execute(40, 40, 40, 40, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON1_DOWN_MASK, 30, true, null);
+        this.toolbox.getActiveTool().execute(40, 40, 40, 40, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON1_DOWN_MASK, 30, true, true, null);
         assertEquals(ImageComparator.areImagesSimilar(this.canva.getBufferedImage(), expectedImage), true);
     }
 
     @Test
     public void testPencilPointRound() {
         BufferedImage expectedImage = LoadImage.loadImage("src/Test/graphic/ImageTest/pencilTool/TestPointRound.png");
-        this.toolbox.getActiveTool().execute(40, 40, 40, 40, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON1_DOWN_MASK, 30, false, null);
+        this.toolbox.getActiveTool().execute(40, 40, 40, 40, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON1_DOWN_MASK, 30, false, true, null);
         assertEquals(ImageComparator.areImagesSimilar(this.canva.getBufferedImage(), expectedImage), true);
     }
 
@@ -68,23 +68,23 @@ public class TestPencilTool {
     public void testChangePrimaryColor() {
         BufferedImage expectedImage = LoadImage.loadImage("src/Test/graphic/ImageTest/pencilTool/TestChangePrimaryColor.png");
         this.colorController.setPrimaryColor(Color.BLUE);
-        this.toolbox.getActiveTool().execute(40, 40, 40, 40, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON1_DOWN_MASK, 30, false, null);
+        this.toolbox.getActiveTool().execute(40, 40, 40, 40, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON1_DOWN_MASK, 30, false, true, null);
         this.colorController.setPrimaryColor(Color.RED);
-        this.toolbox.getActiveTool().execute(24, 83, 100, 223, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON1_DOWN_MASK, 30, false, null);
+        this.toolbox.getActiveTool().execute(24, 83, 100, 223, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON1_DOWN_MASK, 30, false, true, null);
         assertEquals(ImageComparator.areImagesSimilar(this.canva.getBufferedImage(), expectedImage), true);
     }
 
     @Test
     public void testChangeSecondaryColor() {
         BufferedImage expectedImage = LoadImage.loadImage("src/Test/graphic/ImageTest/pencilTool/TestChangeSecondaryColor.png");
-        this.toolbox.getActiveTool().execute(40, 40, 40, 40, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON3_DOWN_MASK, 30, false, null);
+        this.toolbox.getActiveTool().execute(40, 40, 40, 40, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON3_DOWN_MASK, 30, false, true, null);
 
         this.colorController.setSecondaryColor(Color.PINK);
         this.colorController.setIsPrimaryColor(false);
-        this.toolbox.getActiveTool().execute(80, 80, 80, 80, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON3_DOWN_MASK, 30, false, null);
+        this.toolbox.getActiveTool().execute(80, 80, 80, 80, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON3_DOWN_MASK, 30, false, true, null);
 
         this.colorController.setSecondaryColor(Color.RED);
-        this.toolbox.getActiveTool().execute(24, 83, 100, 223, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON3_DOWN_MASK, 30, false, null);
+        this.toolbox.getActiveTool().execute(24, 83, 100, 223, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON3_DOWN_MASK, 30, false, true, null);
         assertEquals(ImageComparator.areImagesSimilar(this.canva.getBufferedImage(), expectedImage), true);
     }
 }

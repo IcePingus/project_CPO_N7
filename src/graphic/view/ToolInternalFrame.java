@@ -1,6 +1,5 @@
 package graphic.view;
 
-import graphic.controller.CanvaController;
 import graphic.controller.ColorController;
 import graphic.model.ShapeTypes;
 import graphic.model.color.ColorModel;
@@ -9,8 +8,6 @@ import graphic.model.tools.*;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,11 +22,13 @@ public class ToolInternalFrame extends JInternalFrame implements ActionListener,
     private JRadioButton circlePencilShapeButton;
     private ButtonGroup shapePencilButtonGroup;
 
+    private JLabel shapeLabel;
     private JRadioButton rectangleShapeButton;
     private JRadioButton circleShapeButton;
     private JRadioButton lineShapeButton;
     private ButtonGroup shapeButtonGroup;
 
+    private JLabel fillModeLabel;
     private JRadioButton strokeButton;
     private JRadioButton fillButton;
     private ButtonGroup fillButtonGroup;
@@ -44,7 +43,7 @@ public class ToolInternalFrame extends JInternalFrame implements ActionListener,
 
     private JTextField sizeLabel;
 
-    public ToolInternalFrame(Toolbox toolbox, ColorController colorController, ColorModel colorModel, CanvaController canvaController) {
+    public ToolInternalFrame(Toolbox toolbox, ColorController colorController, ColorModel colorModel) {
         super("Tools");
         this.setMaximizable(false);
         this.setIconifiable(true);
@@ -93,10 +92,10 @@ public class ToolInternalFrame extends JInternalFrame implements ActionListener,
         this.squareShapePanel.setLayout(new GridLayout(1, 2));
 
         this.shapePanel = new JPanel();
-        this.shapePanel.setLayout(new GridLayout(1, 3));
+        this.shapePanel.setLayout(new GridLayout(4, 1));
 
         this.fillOptionPanel = new JPanel();
-        this.fillOptionPanel.setLayout(new GridLayout(1, 2));
+        this.fillOptionPanel.setLayout(new GridLayout(3, 1));
 
         this.sizeLabel = new JTextField("5");
         this.sizeLabel.addActionListener(this);
@@ -149,6 +148,8 @@ public class ToolInternalFrame extends JInternalFrame implements ActionListener,
         this.squareShapePanel.add(this.squarePencilShapeButton);
         this.squareShapePanel.add(this.circlePencilShapeButton);
 
+        this.shapeLabel = new JLabel("Shape :");
+
         this.rectangleShapeButton = new JRadioButton("Rectangle");
         this.rectangleShapeButton.setSelected(true);
         this.rectangleShapeButton.addActionListener(this);
@@ -162,9 +163,12 @@ public class ToolInternalFrame extends JInternalFrame implements ActionListener,
         this.shapeButtonGroup.add(this.circleShapeButton);
         this.shapeButtonGroup.add(this.lineShapeButton);
 
+        this.shapePanel.add(this.shapeLabel);
         this.shapePanel.add(this.rectangleShapeButton);
         this.shapePanel.add(this.circleShapeButton);
         this.shapePanel.add(this.lineShapeButton);
+
+        this.fillModeLabel = new JLabel("Fill mode :");
 
         this.strokeButton = new JRadioButton("Stroke");
         this.strokeButton.setSelected(true);
@@ -176,6 +180,7 @@ public class ToolInternalFrame extends JInternalFrame implements ActionListener,
         this.fillButtonGroup.add(this.strokeButton);
         this.fillButtonGroup.add(this.fillButton);
 
+        this.fillOptionPanel.add(this.fillModeLabel);
         this.fillOptionPanel.add(this.strokeButton);
         this.fillOptionPanel.add(this.fillButton);
 
@@ -227,18 +232,18 @@ public class ToolInternalFrame extends JInternalFrame implements ActionListener,
                         this.toolOptionsPanel.setLayout(new GridLayout(1, 1));
                         this.toolOptionsPanel.removeAll();
                         this.toolOptionsPanel.add(this.squareShapePanel);
-                        this.setSize(148, 333);
+                        this.setSize(148, 335);
                     } else if (this.toolbox.getActiveTool().getIsResizable() && !this.toolbox.getActiveTool().getIsSquareRoundShape()) {
                         this.toolOptionsPanel.setLayout(new GridLayout(1, 1));
                         this.toolOptionsPanel.removeAll();
                         this.toolOptionsPanel.add(this.sliderPanel);
-                        this.setSize(148, 333);
+                        this.setSize(148, 335);
                     } else {
                         this.toolOptionsPanel.setLayout(new GridLayout(2, 1));
                         this.toolOptionsPanel.removeAll();
                         this.toolOptionsPanel.add(this.sliderPanel);
                         this.toolOptionsPanel.add(this.squareShapePanel);
-                        this.setSize(148, 360);
+                        this.setSize(148, 363);
                     }
 
                     if (this.toolbox.getActiveTool().getHasShapeSelection()) {
@@ -247,7 +252,7 @@ public class ToolInternalFrame extends JInternalFrame implements ActionListener,
                         this.toolOptionsPanel.removeAll();
                         this.toolOptionsPanel.add(this.shapePanel);
                         this.toolOptionsPanel.add(this.fillOptionPanel);
-                        this.setSize(148, 360);
+                        this.setSize(148, 508);
                     }
                 }
             }

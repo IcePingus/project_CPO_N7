@@ -46,7 +46,7 @@ public class TestBucketTool {
         BufferedImage expectedImage = LoadImage.loadImage("src/Test/graphic/ImageTest/bucketTool/TestFillCanva.png");
         this.toolbox.setActiveTool(1);
         this.colorModel.setPrimaryColor(Color.MAGENTA);
-        this.toolbox.getActiveTool().execute(40, 40, 40, 40, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON1_DOWN_MASK, 30, false, null);
+        this.toolbox.getActiveTool().execute(40, 40, 40, 40, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON1_DOWN_MASK, 30, false, true, null);
         assertEquals(true, ImageComparator.areImagesSimilar(this.canva.getBufferedImage(), expectedImage));
     }
 
@@ -57,7 +57,7 @@ public class TestBucketTool {
         this.canva.getG2().drawRect(200, 200, 20, 20);
         this.toolbox.setActiveTool(1);
         this.colorModel.setPrimaryColor(Color.ORANGE);
-        this.toolbox.getActiveTool().execute(210, 210, 210, 210, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON1_DOWN_MASK, 30, false, null);
+        this.toolbox.getActiveTool().execute(210, 210, 210, 210, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON1_DOWN_MASK, 30, false, true, null);
         assertEquals(true, ImageComparator.areImagesSimilar(this.canva.getBufferedImage(), expectedImage));
     }
 
@@ -68,7 +68,7 @@ public class TestBucketTool {
         this.colorModel.setIsPrimaryColor(false);
         this.colorModel.setSecondaryColor(Color.YELLOW);
         this.colorModel.setPrimaryColor(Color.ORANGE);
-        this.toolbox.getActiveTool().execute(10, 10, 10, 210, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON1_DOWN_MASK, 30, false, null);
+        this.toolbox.getActiveTool().execute(10, 10, 10, 210, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON1_DOWN_MASK, 30, false, true, null);
         assertEquals(true, ImageComparator.areImagesSimilar(this.canva.getBufferedImage(), expectedImage));
     }
 }

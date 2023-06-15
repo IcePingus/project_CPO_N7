@@ -40,7 +40,7 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
         this.canva = new Canva(toolbox);
         this.canvaController = new CanvaController(this.canva);
 
-        ToolInternalFrame toolInternalFrame = new ToolInternalFrame(toolbox, colorController, colorModel, canvaController);
+        ToolInternalFrame toolInternalFrame = new ToolInternalFrame(toolbox, colorController, colorModel);
         toolInternalFrame.setVisible(true);
         this.add(toolInternalFrame);
         this.setSize(this.getToolkit().getScreenSize());
