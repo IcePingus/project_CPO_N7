@@ -155,7 +155,7 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
         inputMap.put(undoKeyStroke, "undo");
         actionMap.put("undo", new AbstractAction() {
             public void actionPerformed(ActionEvent actionEvent) {
-                canva.undo();
+                canvaController.undo();
             }
         });
 
@@ -164,7 +164,7 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
         actionMap.put("redo", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                canva.redo();
+                canvaController.redo();
             }
         });
 
@@ -244,9 +244,9 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
         } else if (e.getSource() == this.quit) {
             this.canvaController.quit(this.frame);
         } else if (e.getSource() == this.undo) {
-            this.canva.undo();
+            this.canvaController.undo();
         } else if (e.getSource() == this.redo) {
-            this.canva.redo();
+            this.canvaController.redo();
         } else if (e.getSource() == this.paste) {
             this.canvaController.clipboardToBufferedImage();
         } else if (e.getSource() == this.resize) {

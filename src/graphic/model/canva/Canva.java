@@ -64,28 +64,20 @@ public class Canva extends JComponent {
         return newImage;
     }
 
-    public void undo() {
-        if (this.imageStates.size() > 1 && this.currentIndex > 0) {
-            this.currentIndex--;
-            this.g2 = (Graphics2D) this.imageStates.get(this.currentIndex).getGraphics();
-            this.repaint();
-        }
-    }
-
-    public void redo() {
-        if (this.currentIndex < this.imageStates.size() - 1) {
-            this.currentIndex++;
-            this.g2 = (Graphics2D) this.imageStates.get(this.currentIndex).getGraphics();
-            this.repaint();
-        }
-    }
-
     public BufferedImage getBufferedImage() {
         return this.imageStates.get(currentIndex);
     }
 
+    public int getCurrentIndex() {
+        return currentIndex;
+    }
+
     public Graphics2D getG2() {
         return this.g2;
+    }
+
+    public List<BufferedImage> getImageStates() {
+        return imageStates;
     }
 
     public void setBufferedImage(BufferedImage bufferedImage) {
@@ -106,13 +98,17 @@ public class Canva extends JComponent {
         this.g2 = g2;
     }
 
+    public void setCurrentIndex(int currentIndex) {
+        this.currentIndex = currentIndex;
+    }
+
     public void setToolbox(Toolbox toolbox) {
         this.toolbox = toolbox;
     }
 
     protected void paintComponent(Graphics g) {
         if (this.imageStates.size() == 0 || this.imageStates.get(this.currentIndex) == null) {
-            this.imageStates.add(this.currentIndex, new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_RGB));
+            this.imageStates.add(this.currentIndex, new BufferedImage((int) (this.getWidth() / 1.5), (int) (this.getHeight() / 1.5), BufferedImage.TYPE_INT_RGB));
             this.g2 =(Graphics2D) this.imageStates.get(this.currentIndex).getGraphics();
 
             this.g2.setPaint(Color.WHITE);
