@@ -18,15 +18,15 @@ public class TestImageComparator {
 
     @Before
     public void setup() {
-        this.image1 = new BufferedImage(64, 64, BufferedImage.TYPE_INT_RGB);
+        this.image1 = new BufferedImage(64, 64, BufferedImage.TYPE_INT_ARGB);
         Graphics2D graphics1 = (Graphics2D) image1.getGraphics();
         graphics1.drawLine(10, 10, 20, 20);
 
-        this.image2 = new BufferedImage(64, 64, BufferedImage.TYPE_INT_RGB);
+        this.image2 = new BufferedImage(64, 64, BufferedImage.TYPE_INT_ARGB);
         Graphics2D graphics2 = (Graphics2D) image2.getGraphics();
         graphics2.drawLine(10, 10, 20, 20);
 
-        this.image3 = new BufferedImage(64, 64, BufferedImage.TYPE_INT_RGB);
+        this.image3 = new BufferedImage(64, 64, BufferedImage.TYPE_INT_ARGB);
         Graphics2D graphics3 = (Graphics2D) image3.getGraphics();
         graphics3.drawLine(20, 20, 60, 60);
     }

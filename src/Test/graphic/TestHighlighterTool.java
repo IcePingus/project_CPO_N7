@@ -35,8 +35,8 @@ public class TestHighlighterTool {
         this.toolbox.addTool(highlighterTool);
         this.toolbox.setActiveTool(1);
         this.tif = new ToolInternalFrame(this.toolbox, this.colorController, this.colorModel);
-        this.canva = new Canva(this.toolbox);
-        this.canva.setBufferedImage(new BufferedImage(500, 500, BufferedImage.TYPE_INT_RGB));
+        this.canva = new Canva(this.toolbox, null, null);
+        this.canva.setBufferedImage(new BufferedImage(500, 500, BufferedImage.TYPE_INT_ARGB));
         this.canva.setG2((Graphics2D) this.canva.getBufferedImage().getGraphics());
         this.canva.getG2().setPaint(Color.WHITE);
         this.canva.getG2().fillRect(0, 0, 500, 500);
