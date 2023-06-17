@@ -213,12 +213,21 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
         inputMap.put(resizeKeyStroke, "resize");
         actionMap.put("resize", new AbstractAction() {
             public void actionPerformed(ActionEvent actionEvent) {
+                resizeDialog.setInputs(false);
                 resizeDialog.setLocation(getSize().width / 3, getSize().height / 3);
                 resizeDialog.setVisible(true);
             }
         });
 
-        //CROP KEY
+        KeyStroke cropKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_C, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
+        inputMap.put(cropKeyStroke, "crop");
+        actionMap.put("crop", new AbstractAction() {
+            public void actionPerformed(ActionEvent actionEvent) {
+                resizeDialog.setInputs(true);
+                resizeDialog.setLocation(getSize().width / 3, getSize().height / 3);
+                resizeDialog.setVisible(true);
+            }
+        });
 
         KeyStroke leftHorizontalFlipKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
         inputMap.put(leftHorizontalFlipKeyStroke, "horizontalFlip");

@@ -114,6 +114,7 @@ public class BucketTool implements ToolCommand {
             color = secondaryColor;
         }
         if (color != null && color.getRGB() != bufferedImage.getRGB(oldX, oldY)) {
+            System.out.println(bufferedImage.getRGB(oldX, oldY));
             fill(oldX, oldY, bufferedImage, bufferedImage.getRGB(oldX, oldY), color.getRGB());
         }
     }
@@ -155,8 +156,8 @@ public class BucketTool implements ToolCommand {
                 continue;
             }
 
-            Color currentColor = new Color(bufferedImage.getRGB(x, y));
-            if (currentColor.getRGB() != oldColorRGB) {
+            int currentColor = bufferedImage.getRGB(x, y);
+            if (currentColor != oldColorRGB) {
                 continue;
             }
 

@@ -41,7 +41,7 @@ public class ColorSchemeInternalFrame extends JInternalFrame implements ChangeLi
     public ColorSchemeInternalFrame(ColorController colorController) {
         super("Color Scheme");
         this.setMaximizable(false);
-        this.setIconifiable(true);
+        this.setIconifiable(false);
         this.setResizable(false);
         this.setClosable(false);
         this.setSize(549, 150);

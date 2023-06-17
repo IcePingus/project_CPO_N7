@@ -56,12 +56,13 @@ public class ToolInternalFrame extends JInternalFrame implements ActionListener,
     public ToolInternalFrame(Toolbox toolbox, ColorController colorController, ColorModel colorModel) {
         super("Tools");
         this.setMaximizable(false);
-        this.setIconifiable(true);
+        this.setIconifiable(false);
         this.setResizable(false);
         this.setClosable(false);
         this.setSize(148, 360);
         this.setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
         this.setVisible(true);
+        this.setFrameIcon(new ImageIcon(getClass().getResource("/assets/images/toolFrameLogo.png")));
 
         this.setLayout(new BorderLayout());
 

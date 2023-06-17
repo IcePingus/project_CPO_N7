@@ -98,7 +98,7 @@ public class RubberTool implements ToolCommand {
      */
     @Override
     public void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click, int size, boolean square, boolean isFirstPoint, JComponent canva) {
-        graphics2D.setPaint(Color.WHITE);
+        graphics2D.setComposite(AlphaComposite.Clear);
         graphics2D.drawLine(oldX, oldY, currentX, currentY);
 
         if (square) {
