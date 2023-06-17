@@ -28,7 +28,7 @@ public class Canva extends JComponent {
     private Graphics g;
     private int currentX, currentY, oldX, oldY;
     private boolean isFirstPoint;
-    private double zoom = 1;
+    private double zoom;
     private int zoomPointX;
     private int zoomPointY;
 
@@ -239,6 +239,10 @@ public class Canva extends JComponent {
      */
     public List<BufferedImage> getImageStates() {
         return imageStates;
+    }
+
+    public double getZoom() {
+        return this.zoom;
     }
 
     /**
