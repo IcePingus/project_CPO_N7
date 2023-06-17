@@ -22,7 +22,7 @@ public class EraseSVG implements SVGCommand {
 
     @Override
     public String getName() {
-        return null;
+        return eltName;
     }
 
     @Override

@@ -8,12 +8,11 @@ import java.util.Map;
  * The type Clear svg.
  */
 public class ClearSVG implements SVGCommand {
+
     /**
      * Instantiates a new Clear svg.
-     *
-     * @param instruction the instruction of clear
      */
-    public ClearSVG(Map<String, Object> instruction) {
+    public ClearSVG() {
     }
 
     @Override

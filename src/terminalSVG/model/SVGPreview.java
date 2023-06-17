@@ -16,6 +16,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
+
 /**
  * The SVGPreview class represents the preview of an SVG image.
  * It provides methods for managing shapes, translating elements, updating the SVG document,
@@ -28,6 +29,7 @@ public class SVGPreview extends Observable {
     private SVGDocument svgDocument; // Document SVG
     private Map<String, DrawShapeAction> shapeList;
     private Color defaultColor;
+    
     /**
      * Constructs an SVGPreview object.
      * Initializes the SVG document, graphics context, and shape list.
@@ -200,6 +202,16 @@ public class SVGPreview extends Observable {
         Source input = new DOMSource(svgDocument);
         transformer.transform(input, output);
     }
+    
+    public Map<String, DrawShapeAction> getShapeList() {
+		return shapeList;
+	}
+
+	public void setShapeList(Map<String, DrawShapeAction> shapeList) {
+		this.shapeList = shapeList;
+	}
+
+	public SVGDocument getSvgDocument() {
     /**
      * Returns the SVG document of the SVG preview.
      *
