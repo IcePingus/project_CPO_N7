@@ -8,6 +8,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * The ResizeDialog class represents a dialog window for resizing the canvas.
+ *
+ * @author Team 3
+ */
 public class ResizeDialog extends JDialog implements ActionListener {
 
     private JPanel contentPane;
@@ -43,6 +48,11 @@ public class ResizeDialog extends JDialog implements ActionListener {
     private CropTypes horizontalAlign = CropTypes.MIDDLE;
     private CropTypes verticalAlign = CropTypes.MIDDLE;
 
+    /**
+     * Constructs a ResizeDialog with the specified CanvaController.
+     *
+     * @param canvaController the CanvaController object
+     */
     public ResizeDialog(CanvaController canvaController) {
         super();
         this.setResizable(false);
@@ -123,6 +133,11 @@ public class ResizeDialog extends JDialog implements ActionListener {
         this.canvaController = canvaController;
     }
 
+    /**
+     * Performs an action based on the event triggered.
+     *
+     * @param e the ActionEvent object representing the event
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == this.confirmButton) {
@@ -171,6 +186,9 @@ public class ResizeDialog extends JDialog implements ActionListener {
         }
     }
 
+    /**
+     * Sets the initial input values based on the CanvaController's canvas width and height.
+     */
     public void setInputs(boolean isCropping) {
         this.isCropping = isCropping;
         this.contentPane = new JPanel(new GridLayout(isCropping ? 4 : 3, 1));

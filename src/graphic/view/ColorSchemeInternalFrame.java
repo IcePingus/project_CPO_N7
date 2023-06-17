@@ -16,6 +16,12 @@ import java.awt.event.ActionListener;
 import java.util.Observable;
 import java.util.Observer;
 
+/**
+ * The ColorSchemeInternalFrame class represents an internal frame for color scheme selection in a graphics application.
+ * The selected colors are stored in the ColorController.
+ *
+ * @author Team 3
+ */
 public class ColorSchemeInternalFrame extends JInternalFrame implements ChangeListener, ActionListener, DocumentListener, Observer {
 
     private JButton primaryButton;
@@ -27,6 +33,11 @@ public class ColorSchemeInternalFrame extends JInternalFrame implements ChangeLi
     private Runnable runnableInsert;
     private JTextField hexColor;
 
+    /**
+     * Constructs a new ColorSchemeInternalFrame object with the specified ColorController.
+     *
+     * @param colorController the ColorController for storing selected colors
+     */
     public ColorSchemeInternalFrame(ColorController colorController) {
         super("Color Scheme");
         this.setMaximizable(false);
@@ -87,9 +98,7 @@ public class ColorSchemeInternalFrame extends JInternalFrame implements ChangeLi
         this.colorChooser.getSelectionModel().addChangeListener(this);
 
         AbstractColorChooserPanel[] oldPanels = this.colorChooser.getChooserPanels();
-        for (
-                int i = 0;
-                i < oldPanels.length; i++) {
+        for (int i = 0; i < oldPanels.length; i++) {
             String clsName = oldPanels[i].getClass().getName();
             if (clsName.equals("javax.swing.colorchooser.ColorChooserPanel")) {
                 this.colorChooser.removeChooserPanel(oldPanels[i]);
@@ -177,8 +186,9 @@ public class ColorSchemeInternalFrame extends JInternalFrame implements ChangeLi
                                 Integer.valueOf(hexColor.getText().substring(4, 6), 16));
                         if (colorController.getIsPrimaryColor()) {
                             colorController.setPrimaryColor(color);
-                        } else
+                        } else {
                             colorController.setSecondaryColor(color);
+                        }
                     }
                 }
             };

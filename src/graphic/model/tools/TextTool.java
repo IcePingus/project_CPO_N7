@@ -8,6 +8,12 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.util.Observable;
 
+/**
+ * The TextTool class represents a text tool in a graphics application.
+ * It implements the ToolCommand, FocusListener, and KeyListener interfaces and provides functionality for adding text to the canvas.
+ *
+ * @author Team 3
+ */
 public class TextTool implements ToolCommand, FocusListener, KeyListener {
     private final String name;
     private final Icon image;
@@ -24,6 +30,9 @@ public class TextTool implements ToolCommand, FocusListener, KeyListener {
     private JTextField jtextField;
     private String text;
 
+    /**
+     * Constructs a new TextTool object with default values.
+     */
     public TextTool() {
         this.name = "Text";
         this.image = new ImageIcon(getClass().getResource("/assets/images/text.png"));
@@ -126,6 +135,9 @@ public class TextTool implements ToolCommand, FocusListener, KeyListener {
         }
     }
 
+    /**
+     * Places the text on the canvas at the current text field position.
+     */
     public void placeText() {
         this.graphics2D.setFont(this.jtextField.getFont());
         this.graphics2D.setPaint(this.jtextField.getForeground());
@@ -164,6 +176,11 @@ public class TextTool implements ToolCommand, FocusListener, KeyListener {
     public void keyReleased(KeyEvent e) {
     }
 
+    /**
+     * Returns the JTextField used for text input.
+     *
+     * @return the JTextField used for text input
+     */
     public JTextField getJtextField() {
         return jtextField;
     }

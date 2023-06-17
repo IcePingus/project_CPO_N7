@@ -13,6 +13,13 @@ import java.awt.image.WritableRaster;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The Canva class represents a canvas component that allows drawing shapes and images.
+ * It extends the JComponent class and provides methods for managing image states,
+ * handling user input events, and rendering graphics on the canvas.
+ *
+ * @author Team 3
+ */
 public class Canva extends JComponent {
 
     private List<BufferedImage> imageStates;
@@ -36,19 +43,30 @@ public class Canva extends JComponent {
 
     private Toolbox toolbox;
 
-
+    /**
+     * Constructs a new Canva object with the specified toolbox.
+     *
+     * @param toolbox the toolbox associated with the canvas
+     * @param canvaSizeLabel label for the current size of the canva
+     * @param zoomLabel label for the current zoom
+     */
     public Canva(Toolbox toolbox, JLabel canvaSizeLabel, JLabel zoomLabel) {
+        // Initialize variables
         this.toolbox = toolbox;
         this.imageStates = new ArrayList<>();
         this.currentIndex = 0;
         this.zoom = 1.0;
         this.isFirstPoint = true;
+
+        // Configure component
         this.setDoubleBuffered(false);
         this.requestFocusInWindow();
         this.canvaSizeLabel = canvaSizeLabel;
+
+        // Add mouse listener
         this.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
-                // save coord x,y when mouse is pressed
+                // Save coordinates when mouse is pressed
                 double doubleOldX = e.getX() / zoom + (getBufferedImage().getWidth() - getWidth() / zoom) / 2;
                 oldX = (int) doubleOldX;
                 double doubleOldY = e.getY() / zoom + (getBufferedImage().getHeight() - getHeight() / zoom) / 2;
@@ -59,6 +77,7 @@ public class Canva extends JComponent {
 
                 BufferedImage newImage = nextBufferedImage();
 
+                // Execute active tool
                 toolbox.getActiveTool().execute(oldX, oldY, currentX, currentY, newImage, g2, e.getModifiersEx(), toolbox.getToolSize(), toolbox.getIsSquareShape(), isFirstPoint, Canva.this);
 
                 repaint();
@@ -121,8 +140,9 @@ public class Canva extends JComponent {
                 repaint();
             }
         });
-        this.addMouseMotionListener(new MouseMotionAdapter() {
 
+        // Add mouse motion listener
+        this.addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
                 double doubleCurrentX = e.getX() / zoom + (getBufferedImage().getWidth() - getWidth() / zoom) / 2;
@@ -131,6 +151,7 @@ public class Canva extends JComponent {
                 currentY = (int) doubleCurrentY;
 
                 if (g2 != null) {
+                    // Execute active tool
                     toolbox.getActiveTool().execute(oldX, oldY, currentX, currentY, imageStates.get(currentIndex), g2, e.getModifiersEx(), toolbox.getToolSize(), toolbox.getIsSquareShape(), isFirstPoint, Canva.this);
                     if (isFirstPoint) isFirstPoint = false;
                     oldX = currentX;
@@ -139,6 +160,8 @@ public class Canva extends JComponent {
                 repaint();
             }
         });
+
+        // Add mouse wheel listener
         this.addMouseWheelListener(e -> {
             zoomPointX = getWidth() / 2;
             zoomPointY = getHeight() / 2;
@@ -158,6 +181,12 @@ public class Canva extends JComponent {
         });
     }
 
+    /**
+     * Creates a copy of the specified BufferedImage.
+     *
+     * @param source the BufferedImage to copy
+     * @return the copied BufferedImage
+     */
     private BufferedImage copyBufferedImage(BufferedImage source) {
         ColorModel cm = source.getColorModel();
         boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
@@ -165,28 +194,58 @@ public class Canva extends JComponent {
         return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
     }
 
+    /**
+     * Creates a new BufferedImage based on the current state and sets it as the active image.
+     *
+     * @return the new BufferedImage
+     */
     public BufferedImage nextBufferedImage() {
         BufferedImage newImage = copyBufferedImage(this.imageStates.get(this.currentIndex));
         this.setBufferedImage(newImage);
         return newImage;
     }
 
+    /**
+     * Returns the current BufferedImage.
+     *
+     * @return the current BufferedImage
+     */
     public BufferedImage getBufferedImage() {
         return this.imageStates.get(currentIndex);
     }
 
+    /**
+     * Returns the current index of the buffered image.
+     *
+     * @return the current index
+     */
     public int getCurrentIndex() {
         return currentIndex;
     }
 
+    /**
+     * Returns the Graphics2D object associated with the canvas.
+     *
+     * @return the Graphics2D object
+     */
     public Graphics2D getG2() {
         return this.g2;
     }
 
+    /**
+     * Returns the list of image states.
+     *
+     * @return the list of image states
+     */
     public List<BufferedImage> getImageStates() {
         return imageStates;
     }
 
+    /**
+     * Sets the specified buffered image as the current image state and updates the graphics object.
+     *
+     * @param bufferedImage the new buffered image
+     */
     public void setBufferedImage(BufferedImage bufferedImage) {
         if (this.imageStates.size() == 0) {
             this.imageStates.add(bufferedImage);
@@ -202,15 +261,30 @@ public class Canva extends JComponent {
         }
     }
 
+    /**
+     * Sets the specified Graphics2D object as the current graphics object.
+     *
+     * @param g2 the Graphics2D object
+     */
     public void setG2(Graphics2D g2) {
         this.g2 = g2;
     }
 
+    /**
+     * Sets the current index of the buffered image.
+     *
+     * @param currentIndex the current index
+     */
     public void setCurrentIndex(int currentIndex) {
         this.currentIndex = currentIndex;
         this.canvaSizeLabel.setText(this.getBufferedImage().getWidth() + "x" + this.getBufferedImage().getHeight());
     }
 
+    /**
+     * Overrides the paintComponent method to handle the painting of the canvas.
+     *
+     * @param g the Graphics object
+     */
     protected void paintComponent(Graphics g) {
         this.g = g;
         if (this.imageStates.size() == 0 || this.imageStates.get(this.currentIndex) == null) {
@@ -289,6 +363,17 @@ public class Canva extends JComponent {
         }
     }
 
+    /**
+     * Repaints the component with the specified shape type, coordinates, color, and shape filling.
+     *
+     * @param shapeType      the type of shape
+     * @param startX         the starting X-coordinate
+     * @param startY         the starting Y-coordinate
+     * @param endX           the ending X-coordinate
+     * @param endY           the ending Y-coordinate
+     * @param color          the color of the shape
+     * @param isFilledShape  indicates if the shape should be filled
+     */
     public void repaintComponent(ShapeTypes shapeType, int startX, int startY, int endX, int endY, Color color, boolean isFilledShape) {
         this.shapeType = shapeType;
         this.startX = startX;

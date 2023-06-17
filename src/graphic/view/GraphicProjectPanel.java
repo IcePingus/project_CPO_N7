@@ -10,6 +10,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+/**
+ * The GraphicProjectPanel class represents a panel that contains various components for a graphic project.
+ *
+ * @author Team 3
+ */
 public class GraphicProjectPanel extends JDesktopPane implements ActionListener {
 
     private Canva canva;
@@ -30,6 +35,11 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
 
     ResizeDialog resizeDialog;
 
+    /**
+     * Constructs a `GraphicProjectPanel` view with the specified JFrame.
+     *
+     * @param frame the JFrame object to which the panel belongs
+     */
     public GraphicProjectPanel(JFrame frame) {
         this.setLayout(new BorderLayout());
         this.frame = frame;
@@ -150,6 +160,9 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
         this.enableKeyboardInputs();
     }
 
+    /**
+     * Enables keyboard inputs for specific actions.
+     */
     private void enableKeyboardInputs() {
         InputMap inputMap = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         ActionMap actionMap = getActionMap();
@@ -256,6 +269,11 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
         });
     }
 
+    /**
+     * Performs an action based on the event triggered.
+     *
+     * @param e the ActionEvent object representing the event
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == this.saveImage) {

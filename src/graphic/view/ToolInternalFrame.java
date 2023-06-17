@@ -12,16 +12,19 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * The ToolInternalFrame class represents an internal frame that contains the tools and options for drawing.
+ *
+ * @author Team 3
+ */
 public class ToolInternalFrame extends JInternalFrame implements ActionListener, ChangeListener {
 
     private final Toolbox toolbox;
     private int activeTool;
     private JSlider sliderSize;
-
     private JRadioButton squarePencilShapeButton;
     private JRadioButton circlePencilShapeButton;
     private ButtonGroup shapePencilButtonGroup;
-
     private JLabel shapeLabel;
     private JRadioButton rectangleShapeButton;
     private JRadioButton circleShapeButton;
@@ -38,11 +41,18 @@ public class ToolInternalFrame extends JInternalFrame implements ActionListener,
 
     private JPanel sliderPanel;
     private JPanel squareShapePanel;
-    private  JPanel shapePanel;
-    private  JPanel fillOptionPanel;
+    private JPanel shapePanel;
+    private JPanel fillOptionPanel;
 
     private JTextField sizeLabel;
 
+    /**
+     * Constructs a ToolInternalFrame with the specified toolbox, color controller, and color model.
+     *
+     * @param toolbox          the Toolbox object representing the collection of tools
+     * @param colorController  the ColorController object for handling color changes
+     * @param colorModel       the ColorModel object representing the color model
+     */
     public ToolInternalFrame(Toolbox toolbox, ColorController colorController, ColorModel colorModel) {
         super("Tools");
         this.setMaximizable(false);
@@ -192,6 +202,10 @@ public class ToolInternalFrame extends JInternalFrame implements ActionListener,
         this.toolOptionsPanel.add(this.squareShapePanel);
     }
 
+    /**
+     * Handles the action events triggered by buttons and text field.
+     * @param e the ActionEvent object representing the event
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == this.squarePencilShapeButton || e.getSource() == this.circlePencilShapeButton) {
@@ -209,7 +223,7 @@ public class ToolInternalFrame extends JInternalFrame implements ActionListener,
         } else if (e.getSource() == this.sizeLabel) {
             if (Integer.parseInt(this.sizeLabel.getText()) <= 0 || Integer.parseInt(this.sizeLabel.getText()) > 1000) {
                 JOptionPane.showMessageDialog(null,
-                        "Please enter number bigger than 0 and smaller than 1000", "Tool size",
+                        "Please enter a number between 1 and 1000", "Tool size",
                         JOptionPane.WARNING_MESSAGE);
             } else {
                 this.sliderSize.setValue(Integer.parseInt(this.sizeLabel.getText()));
@@ -260,9 +274,15 @@ public class ToolInternalFrame extends JInternalFrame implements ActionListener,
         }
     }
 
+    /**
+     * Handles the state change events triggered by the slider.
+     * @param e the ChangeEvent object representing the event
+     */
     @Override
     public void stateChanged(ChangeEvent e) {
-        this.sizeLabel.setText(this.sliderSize.getValue() + "");
-        this.toolbox.setToolSize(this.sliderSize.getValue());
+        if (e.getSource() == this.sliderSize) {
+            this.sizeLabel.setText(Integer.toString(this.sliderSize.getValue()));
+            this.toolbox.setToolSize(this.sliderSize.getValue());
+        }
     }
 }
