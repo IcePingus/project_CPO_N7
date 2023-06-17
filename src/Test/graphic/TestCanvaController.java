@@ -23,7 +23,7 @@ public class TestCanvaController {
     @Before
     public void setup() {
         this.canva = new Canva(null, new JLabel(), new JLabel());
-        this.canva.setBufferedImage(new BufferedImage(64, 64, BufferedImage.TYPE_INT_ARGB));
+        this.canva.setBufferedImage(new BufferedImage(64, 64, BufferedImage.TYPE_INT_RGB));
         this.canva.setG2((Graphics2D) this.canva.getBufferedImage().getGraphics());
         this.canva.getG2().setPaint(Color.BLACK);
         this.canva.getG2().fillRect(0, 0, 64, 64);

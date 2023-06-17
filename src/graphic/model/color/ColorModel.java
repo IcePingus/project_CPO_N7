@@ -9,6 +9,17 @@ public class ColorModel extends Observable {
     private Color secondaryColor = Color.WHITE;
     private boolean isPrimaryColor = true;
 
+    public Color getPrimaryColor() {
+        return this.primaryColor;
+    }
+    public Color getSecondaryColor() {
+        return this.secondaryColor;
+    }
+
+    public boolean getIsPrimaryColor() {
+        return this.isPrimaryColor;
+    }
+
     public void setPrimaryColor(Color color) {
         this.primaryColor = color;
         this.setChanged();
@@ -19,17 +30,6 @@ public class ColorModel extends Observable {
         this.secondaryColor = color;
         this.setChanged();
         this.notifyObservers();
-    }
-
-    public Color getPrimaryColor() {
-        return this.primaryColor;
-    }
-    public Color getSecondaryColor() {
-        return this.secondaryColor;
-    }
-
-    public boolean getIsPrimaryColor() {
-        return this.isPrimaryColor;
     }
 
     public boolean setIsPrimaryColor(boolean isPrimaryColor) {

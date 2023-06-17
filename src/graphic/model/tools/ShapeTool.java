@@ -31,7 +31,7 @@ public class ShapeTool implements ToolCommand {
     public ShapeTool() {
         this.name = "Shape";
         this.image = new ImageIcon(getClass().getResource("/assets/images/shape.png"));
-        this.isResizable = false;
+        this.isResizable = true;
         this.isSquareRoundShape = false;
         this.hasShapeSelection = true;
         this.shapeType = ShapeTypes.RECTANGLE;
