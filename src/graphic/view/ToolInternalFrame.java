@@ -248,10 +248,11 @@ public class ToolInternalFrame extends JInternalFrame implements ActionListener,
 
                     if (this.toolbox.getActiveTool().getHasShapeSelection()) {
                         this.toolOptionsPanel.setVisible(true);
-                        this.toolOptionsPanel.setLayout(new GridLayout(2, 1));
+                        this.toolOptionsPanel.setLayout(new GridLayout(3, 1));
                         this.toolOptionsPanel.removeAll();
                         this.toolOptionsPanel.add(this.shapePanel);
                         this.toolOptionsPanel.add(this.fillOptionPanel);
+                        this.toolOptionsPanel.add(this.sliderPanel);
                         this.setSize(148, 508);
                     }
                 }

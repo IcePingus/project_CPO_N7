@@ -34,8 +34,11 @@ public class Canva extends JComponent {
     private JLabel canvaSizeLabel;
     private boolean isShapeFilled = false;
 
+    private Toolbox toolbox;
+
 
     public Canva(Toolbox toolbox, JLabel canvaSizeLabel, JLabel zoomLabel) {
+        this.toolbox = toolbox;
         this.imageStates = new ArrayList<>();
         this.currentIndex = 0;
         this.zoom = 1.0;
@@ -70,7 +73,16 @@ public class Canva extends JComponent {
                             if (isShapeFilled) {
                                 g2.fillRect(startX, startY, endX, endY);
                             } else {
-                                g2.drawRect(startX, startY, endX, endY);
+                                if (toolbox.getToolSize() > endX || toolbox.getToolSize() > endY) {
+                                    g2.fillRect(startX, startY, endX, endY);
+                                } else {
+                                    for (int i = 0; i < toolbox.getToolSize(); i++) {
+                                        g2.fillRect(startX, startY, toolbox.getToolSize(), endY);
+                                        g2.fillRect(startX, startY, endX, toolbox.getToolSize());
+                                        g2.fillRect(startX + endX - toolbox.getToolSize(), startY, toolbox.getToolSize(), endY);
+                                        g2.fillRect(startX, startY + endY - toolbox.getToolSize(), endX, toolbox.getToolSize());
+                                    }
+                                }
                             }
                         }
                         case OVAL -> {
@@ -80,11 +92,33 @@ public class Canva extends JComponent {
                                 g2.drawOval(startX, startY, endX, endY);
                             }
                         }
-                        case LINE -> g2.drawLine(startX, startY, endX, endY);
+                        case LINE -> {
+                            int distanceX = Math.abs(endX - startX);
+                            int distanceY = Math.abs(endY - startY);
+                            int directionX = startX < endX ? 1 : -1;
+                            int directionY = startY < endY ? 1 : -1;
+                            int erreur = distanceX - distanceY;
+                            int erreur2;
+
+                            while (startX != endX || startY != endY) {
+                                g2.fillOval(startX - toolbox.getToolSize() / 2, startY - toolbox.getToolSize() / 2, toolbox.getToolSize(), toolbox.getToolSize());
+
+                                erreur2 = 2 * erreur;
+                                if (erreur2 > -distanceY) {
+                                    erreur -= distanceY;
+                                    startX += directionX;
+                                }
+                                if (erreur2 < distanceX) {
+                                    erreur += distanceX;
+                                    startY += directionY;
+                                }
+                            }
+                        }
                     }
                     paintComponent(g);
                     shapeType = null;
                 }
+                repaint();
             }
         });
         this.addMouseMotionListener(new MouseMotionAdapter() {
@@ -180,7 +214,7 @@ public class Canva extends JComponent {
     protected void paintComponent(Graphics g) {
         this.g = g;
         if (this.imageStates.size() == 0 || this.imageStates.get(this.currentIndex) == null) {
-            this.imageStates.add(this.currentIndex, new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_RGB));
+            this.imageStates.add(this.currentIndex, new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_ARGB));
             this.zoom = 0.75;
             this.zoomPointX = getWidth() / 2;
             this.zoomPointY = getHeight() / 2;
@@ -206,7 +240,16 @@ public class Canva extends JComponent {
                     if (isShapeFilled) {
                         g.fillRect(startX, startY, endX, endY);
                     } else {
-                        g.drawRect(startX, startY, endX, endY);
+                        if (this.toolbox.getToolSize() > endX || this.toolbox.getToolSize() > endY) {
+                            g.fillRect(startX, startY, endX, endY);
+                        } else {
+                            for (int i = 0; i < this.toolbox.getToolSize(); i++) {
+                                g.fillRect(startX, startY, toolbox.getToolSize(), endY);
+                                g.fillRect(startX, startY, endX, toolbox.getToolSize());
+                                g.fillRect(startX + endX - toolbox.getToolSize(), startY, toolbox.getToolSize(), endY);
+                                g.fillRect(startX, startY + endY - toolbox.getToolSize(), endX, toolbox.getToolSize());
+                            }
+                        }
                     }
                 }
                 case OVAL -> {
@@ -216,7 +259,32 @@ public class Canva extends JComponent {
                         g.drawOval(startX, startY, endX, endY);
                     }
                 }
-                case LINE -> g.drawLine(startX, startY, endX, endY);
+                case LINE -> {
+                    int startX2 = startX;
+                    int startY2 = startY;
+                    int endX2 = endX;
+                    int endY2 = endY;
+                    int distanceX = Math.abs(endX2 - startX2);
+                    int distanceY = Math.abs(endY2 - startY2);
+                    int directionX = startX2 < endX2 ? 1 : -1;
+                    int directionY = startY2 < endY2 ? 1 : -1;
+                    int erreur = distanceX - distanceY;
+                    int erreur2;
+
+                    while (startX2 != endX2 || startY2 != endY2) {
+                        g.fillOval(startX2 - toolbox.getToolSize() / 2, startY2 - toolbox.getToolSize() / 2, toolbox.getToolSize(), toolbox.getToolSize());
+
+                        erreur2 = 2 * erreur;
+                        if (erreur2 > -distanceY) {
+                            erreur -= distanceY;
+                            startX2 += directionX;
+                        }
+                        if (erreur2 < distanceX) {
+                            erreur += distanceX;
+                            startY2 += directionY;
+                        }
+                    }
+                }
             }
         }
     }
