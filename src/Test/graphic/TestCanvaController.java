@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -21,9 +22,12 @@ public class TestCanvaController {
 
     @Before
     public void setup() {
-        this.canva = new Canva(null);
-        this.canva.setBufferedImage(new BufferedImage(64, 64, BufferedImage.TYPE_INT_RGB));
+        this.canva = new Canva(null, new JLabel(), new JLabel());
+        this.canva.setBufferedImage(new BufferedImage(64, 64, BufferedImage.TYPE_INT_ARGB));
         this.canva.setG2((Graphics2D) this.canva.getBufferedImage().getGraphics());
+        this.canva.getG2().setPaint(Color.BLACK);
+        this.canva.getG2().fillRect(0, 0, 64, 64);
+        this.canva.getG2().setPaint(Color.WHITE);
         this.canva.getG2().drawLine(10, 10, 20, 20);
         this.canva.getG2().setPaint(Color.BLUE);
         this.canva.getG2().drawLine(20, 20, 40, 20);

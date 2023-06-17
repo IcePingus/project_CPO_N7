@@ -33,11 +33,27 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
         this.setLayout(new BorderLayout());
         this.frame = frame;
 
+        setLayout(new BorderLayout());
+
+        JToolBar toolbar = new JToolBar();
+        toolbar.setFloatable(false);
+        toolbar.setBorderPainted(false);
+
+        JLabel canvaSizeLabel = new JLabel("");
+        toolbar.add(canvaSizeLabel);
+
+        JLabel zoomLabel = new JLabel(" - Zoom : 1x");
+        toolbar.add(zoomLabel);
+
+        add(toolbar, BorderLayout.SOUTH);
+
+        setBackground(Color.LIGHT_GRAY);
+
         Toolbox toolbox = new Toolbox();
         ColorModel colorModel = new ColorModel();
         ColorController colorController = new ColorController(colorModel);
 
-        this.canva = new Canva(toolbox);
+        this.canva = new Canva(toolbox, canvaSizeLabel, zoomLabel);
         this.canvaController = new CanvaController(this.canva);
 
         ToolInternalFrame toolInternalFrame = new ToolInternalFrame(toolbox, colorController, colorModel);

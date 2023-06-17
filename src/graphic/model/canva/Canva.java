@@ -31,16 +31,18 @@ public class Canva extends JComponent {
     private int endX;
     private int endY;
     private Color color;
+    private JLabel canvaSizeLabel;
     private boolean isShapeFilled = false;
 
 
-    public Canva(Toolbox toolbox) {
+    public Canva(Toolbox toolbox, JLabel canvaSizeLabel, JLabel zoomLabel) {
         this.imageStates = new ArrayList<>();
         this.currentIndex = 0;
         this.zoom = 1.0;
         this.isFirstPoint = true;
         this.setDoubleBuffered(false);
         this.requestFocusInWindow();
+        this.canvaSizeLabel = canvaSizeLabel;
         this.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
                 // save coord x,y when mouse is pressed
@@ -111,9 +113,13 @@ public class Canva extends JComponent {
             } else {
                 zoom -= (double) getHeight() / 8000;
             }
-            if (zoom < 0.1) {
-                zoom = 0.1;
+            if (zoom > 24.75) {
+                zoom = 24.75;
             }
+            if (zoom < 0.25) {
+                zoom = 0.25;
+            }
+            zoomLabel.setText(" - Zoom : " + Math.round((zoom + 0.25) * 100.0) / 100.0 + "x");
             repaint();
         });
     }
@@ -156,6 +162,7 @@ public class Canva extends JComponent {
             if (this.imageStates.size() > this.currentIndex + 1) {
                 this.imageStates.subList(this.currentIndex + 1, this.imageStates.size()).clear();
             }
+            this.canvaSizeLabel.setText(this.getBufferedImage().getWidth() + "x" + this.getBufferedImage().getHeight());
             this.g2 = (Graphics2D) bufferedImage.getGraphics();
             this.repaint();
         }
@@ -167,6 +174,7 @@ public class Canva extends JComponent {
 
     public void setCurrentIndex(int currentIndex) {
         this.currentIndex = currentIndex;
+        this.canvaSizeLabel.setText(this.getBufferedImage().getWidth() + "x" + this.getBufferedImage().getHeight());
     }
 
     protected void paintComponent(Graphics g) {
@@ -177,6 +185,7 @@ public class Canva extends JComponent {
             this.zoomPointX = getWidth() / 2;
             this.zoomPointY = getHeight() / 2;
             this.g2 = (Graphics2D) this.imageStates.get(this.currentIndex).getGraphics();
+            this.canvaSizeLabel.setText(this.getBufferedImage().getWidth() + "x" + this.getBufferedImage().getHeight());
 
             this.g2.setPaint(Color.WHITE);
             this.g2.fillRect(0, 0, this.getWidth(), this.getHeight());
