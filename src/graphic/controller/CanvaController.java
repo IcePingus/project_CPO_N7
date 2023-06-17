@@ -3,6 +3,7 @@ package graphic.controller;
 import com.nitido.utils.toaster.Toaster;
 import graphic.exception.BadFormatException;
 import graphic.exception.ClipboardVoidException;
+import graphic.model.CropTypes;
 import graphic.model.canva.Canva;
 import graphic.view.SelectionPanel;
 
@@ -19,7 +20,6 @@ import java.awt.image.BufferedImage;
 import java.awt.image.ColorConvertOp;
 import java.io.File;
 import java.io.IOException;
-import java.util.Observable;
 
 public class CanvaController {
 
@@ -129,6 +129,27 @@ public class CanvaController {
         this.canva.setBufferedImage(resizedImage);
     }
 
+    public void cropCanva(int width, int height, CropTypes horizontalAlign, CropTypes verticalAlign) {
+        BufferedImage resizedImage = new BufferedImage(width, height, this.canva.getBufferedImage().getType());
+        this.canva.setG2(resizedImage.createGraphics());
+        this.canva.getG2().setColor(Color.WHITE);
+        this.canva.getG2().fillRect(0, 0, width, height);
+        int x = 0;
+        int y = 0;
+        switch (horizontalAlign) {
+            case LEFT -> x = 0;
+            case MIDDLE -> x = (width - this.canva.getBufferedImage().getWidth()) / 2;
+            case RIGHT -> x = (width - this.canva.getBufferedImage().getWidth());
+        }
+        switch (verticalAlign) {
+            case TOP -> y = 0;
+            case MIDDLE -> y = (height - this.canva.getBufferedImage().getHeight()) / 2;
+            case BOTTOM -> y = height - this.canva.getBufferedImage().getHeight();
+        }
+        this.canva.getG2().drawImage(this.canva.getBufferedImage(), x, y, this.canva.getBufferedImage().getWidth(), this.canva.getBufferedImage().getHeight(), null);
+        this.canva.setBufferedImage(resizedImage);
+    }
+
     public void chooseImportPath(JFrame frame) {
         String filename = File.separator + "tmp";
         JFileChooser fileChooser = new JFileChooser(new File(filename));
@@ -138,11 +159,7 @@ public class CanvaController {
         fileChooser.setFileFilter(new FileFilter() {
             @Override
             public boolean accept(File file) {
-                if (file.getName().endsWith(".png") || file.getName().endsWith(".jpg") || file.isDirectory()) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return(file.getName().endsWith(".png") || file.getName().endsWith(".jpg") || file.isDirectory());
             }
 
             @Override

@@ -22,6 +22,7 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
     private JMenuItem importImage;
     private JMenuItem bwTransform;
     private JMenuItem resize;
+    private JMenuItem crop;
     private JMenuItem clear;
     private JMenuItem flipHorizontalImage;
     private JMenuItem flipVerticalImage;
@@ -84,6 +85,7 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
 
         JMenu menuImage = new JMenu("Image");
         this.resize = new JMenuItem("Resize");
+        this.crop = new JMenuItem("Crop");
         this.flipHorizontalImage = new JMenuItem("Horizontal flip");
         this.flipVerticalImage = new JMenuItem("Vertical flip");
         this.clear = new JMenuItem("Clear image");
@@ -98,6 +100,7 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
         this.redo.addActionListener(this);
         this.paste.addActionListener(this);
         this.resize.addActionListener(this);
+        this.crop.addActionListener(this);
         this.flipHorizontalImage.addActionListener(this);
         this.flipVerticalImage.addActionListener(this);
         this.clear.addActionListener(this);
@@ -110,6 +113,7 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
         menuEdit.add(this.redo);
         menuEdit.add(this.paste);
         menuImage.add(this.resize);
+        menuImage.add(this.crop);
         menuImage.add(this.flipHorizontalImage);
         menuImage.add(this.flipVerticalImage);
         menuImage.add(this.clear);
@@ -201,6 +205,8 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
             }
         });
 
+        //CROP KEY
+
         KeyStroke leftHorizontalFlipKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
         inputMap.put(leftHorizontalFlipKeyStroke, "horizontalFlip");
         actionMap.put("horizontalFlip", new AbstractAction() {
@@ -265,7 +271,11 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
         } else if (e.getSource() == this.paste) {
             this.canvaController.clipboardToBufferedImage();
         } else if (e.getSource() == this.resize) {
-            this.resizeDialog.setInputs();
+            this.resizeDialog.setInputs(false);
+            this.resizeDialog.setLocation(this.getSize().width / 3, this.getSize().height / 3);
+            this.resizeDialog.setVisible(true);
+        } else if (e.getSource() == this.crop) {
+            this.resizeDialog.setInputs(true);
             this.resizeDialog.setLocation(this.getSize().width / 3, this.getSize().height / 3);
             this.resizeDialog.setVisible(true);
         } else if (e.getSource() == this.flipHorizontalImage) {
