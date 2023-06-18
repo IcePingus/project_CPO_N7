@@ -47,7 +47,7 @@ public class TestImageComparator {
     }
 
     @Test(expected = nullImageException.class)
-    public void testImageNullException() {
+    public void testNullImageException() {
         ImageComparator.areImagesSimilar(this.image4, this.image3);
         ImageComparator.areImagesSimilar(this.image3, this.image4);
         ImageComparator.areImagesSimilar(this.image4, this.image4);
