@@ -1,6 +1,7 @@
 package graphic.model.canva;
 
 import graphic.model.ShapeTypes;
+import graphic.model.tools.MoveTool;
 import graphic.model.tools.Toolbox;
 
 import javax.swing.*;
@@ -78,6 +79,9 @@ public class Canva extends JComponent {
                 BufferedImage newImage = nextBufferedImage();
 
                 // Execute active tool
+                if (toolbox.getActiveTool() instanceof MoveTool) {
+                    setCursor(new Cursor(Cursor.HAND_CURSOR));
+                }
                 toolbox.getActiveTool().execute(oldX, oldY, currentX, currentY, newImage, g2, e.getModifiersEx(), toolbox.getToolSize(), toolbox.getIsSquareShape(), isFirstPoint, Canva.this);
 
                 repaint();
@@ -85,6 +89,9 @@ public class Canva extends JComponent {
 
             @Override
             public void mouseReleased(MouseEvent e) {
+                if (toolbox.getActiveTool() instanceof MoveTool) {
+                    setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+                }
                 if (shapeType != null) {
                     g2.setColor(color);
                     switch (shapeType) {
@@ -241,6 +248,11 @@ public class Canva extends JComponent {
         return imageStates;
     }
 
+    /**
+     * Gets the zoom of the canva.
+     *
+     * @return the zoom.
+     */
     public double getZoom() {
         return this.zoom;
     }
