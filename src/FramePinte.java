@@ -18,6 +18,7 @@ public class FramePinte extends JFrame {
         this.setExtendedState(MAXIMIZED_BOTH);
         this.setVisible(true);
         try {
+            this.setIconImage(javax.imageio.ImageIO.read(new File("src/assets/images/logo.png")));
             final Image backgroundImage = javax.imageio.ImageIO.read(new File("src/assets/images/background.png"));
             this.setLayout(new BorderLayout());
             this.setContentPane(new JPanel(new BorderLayout()) {

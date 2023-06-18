@@ -83,6 +83,8 @@ public class ToolInternalFrame extends JInternalFrame implements ActionListener,
         this.toolbox.addObserver(shapeTool);
         this.toolbox.addTool(shapeTool);
 
+        this.toolbox.addTool(new MoveTool());
+
         for (int i = 0; i < this.toolbox.getTools().size(); i++) {
             this.toolsPanel.add(this.toolbox.getToolsButtons().get(i));
             this.toolbox.getToolsButtons().get(i).setName(this.toolbox.getTools().get(i).getName());
