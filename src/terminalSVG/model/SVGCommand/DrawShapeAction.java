@@ -8,6 +8,8 @@ import java.util.Map;
 
 /**
  * The type Draw shape action.
+ *
+ * @author Team 3
  */
 public abstract class DrawShapeAction implements SVGCommand {
 
@@ -48,11 +50,13 @@ public abstract class DrawShapeAction implements SVGCommand {
     public String getName() {
         return name;
     }
+
     @Override
     public abstract String getHelp();
+
     @Override
     public void execute(SVGPreview svgPreview, String shapeName) {
-        svgPreview.addElement(shapeName,this);
+        svgPreview.addElement(shapeName, this);
     }
 
     /**

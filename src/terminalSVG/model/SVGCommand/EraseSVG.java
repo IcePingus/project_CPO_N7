@@ -6,6 +6,8 @@ import java.util.Map;
 
 /**
  * The type Erase svg.
+ *
+ * @author Team 3
  */
 public class EraseSVG implements SVGCommand {
 
@@ -22,7 +24,7 @@ public class EraseSVG implements SVGCommand {
 
     @Override
     public String getName() {
-        return null;
+        return eltName;
     }
 
     @Override

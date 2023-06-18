@@ -9,6 +9,8 @@ import java.util.Map;
 
 /**
  * The type Polygon svg.
+ *
+ * @author Team 3
  */
 public class PolygonSVG extends DrawShapeAction {
     private List<Point> points;

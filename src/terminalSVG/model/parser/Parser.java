@@ -4,14 +4,16 @@ import java.awt.Color;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
+
 /**
- The Parser class provides static methods for parsing input commands in SVG terminal.
- It supports parsing both element-specific commands and general commands using reflection.
- The class contains two nested classes, ElementCommandParser and GeneralCommandParser,
- which implement the CommandParser interface for parsing specific types of commands.
+ * The Parser class provides static methods for parsing input commands in SVG terminal.
+ * It supports parsing both element-specific commands and general commands using reflection.
+ *
+ * @author Team 3
  */
 public class Parser {
     private static Map<String, CommandParser> commandParsers = new HashMap<>();
+
     /**
      * Parses the input command and returns a map containing the parsed command.
      *
@@ -43,6 +45,7 @@ public class Parser {
             throw new IllegalArgumentException("La commande n'est pas prise en charge : " + command);
         }
     }
+
     /**
      * A command parser for element-specific commands.
      */
@@ -94,6 +97,7 @@ public class Parser {
 
         }
     }
+
     /**
      * A command parser for general commands.
      */
@@ -135,6 +139,7 @@ public class Parser {
             return instruction;
         }
     }
+
     /**
      * Converts a color name to a Color object.
      *

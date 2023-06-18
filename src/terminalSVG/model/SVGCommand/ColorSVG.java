@@ -8,6 +8,8 @@ import java.util.Map;
 
 /**
  * The type Color svg.
+ *
+ * @author Team 3
  */
 public class ColorSVG implements SVGCommand {
 
@@ -49,10 +51,9 @@ public class ColorSVG implements SVGCommand {
             throw new IllegalArgumentException("Préciser une nouvelle couleur");
         }
         try {
-            instruction.put("strokeColor",Parser.convertStringToColor(elements[1].trim()));
-        } catch (IllegalArgumentException e){
+            instruction.put("strokeColor", Parser.convertStringToColor(elements[1].trim()));
+        } catch (IllegalArgumentException e) {
             throw e;
         }
-
     }
 }

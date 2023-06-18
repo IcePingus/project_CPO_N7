@@ -3,6 +3,8 @@ package terminalSVG.model.SVGCommand;
 import terminalSVG.model.SVGPreview;
 /**
  * The SVGCommand interface represents a command for manipulating SVG elements.
+ *
+ * @author Team 3
  */
 public interface SVGCommand {
     /**

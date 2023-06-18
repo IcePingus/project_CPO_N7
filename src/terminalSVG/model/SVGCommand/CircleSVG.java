@@ -8,6 +8,8 @@ import java.util.Map;
 
 /**
  * The type Circle svg.
+ *
+ * @author Team 3
  */
 public class CircleSVG extends DrawShapeAction {
     private Point center;
@@ -28,7 +30,7 @@ public class CircleSVG extends DrawShapeAction {
     /**
      * Instantiates a new Circle svg.
      *
-     * @param name       the name of the circle
+     * @param name    the name of the circle
      * @param coords  the coordinates of the center of the circle
      * @param isFill  is the circle filled or not
      * @param cStroke the c stroke
@@ -40,6 +42,7 @@ public class CircleSVG extends DrawShapeAction {
         this.center = new Point(coords.get(0), coords.get(1));
         this.radius = coords.get(2);
     }
+
     public void draw(SVGPreview svgPreview) {
         // Dessiner le cercle avec le SVGGraphics2D
         svgPreview.getSVGGraphics().setColor(getStrokeColor());
@@ -57,12 +60,13 @@ public class CircleSVG extends DrawShapeAction {
             svgPreview.getSVGGraphics().fillOval(x, y, diametre, diametre);
         }
     }
+
     @Override
     public void translate(Double dx, Double dy) {
-        if(dx == null){
+        if (dx == null) {
             dx = 0.0;
         }
-        if(dy == null){
+        if (dy == null) {
             dy = 0.0;
         }
         this.center.translater(dx, dy);

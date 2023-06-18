@@ -16,9 +16,12 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 /**
- * The `ControllerTerminalPanel` class represents a JPanel that serves as the controller for the SVG terminal application.
+ * The ControllerTerminalPanel class represents a JPanel that serves as the controller for the SVG terminal application.
  * It handles user input, command parsing, and execution of commands on the SVGPreview.
+ *
+ * @author Team 3
  */
 public class ControllerTerminalPanel extends JPanel implements ActionListener {
     private History history;
@@ -27,10 +30,11 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
     private SVGPreview svgPreview;
     private final List<String> setterCommandList;
     private final List<String> modifierCommandList;
+
     /**
-     * Constructs a new instance of the `ControllerTerminalPanel` class with the specified history and SVGPreview.
+     * Constructs a new instance of the ControllerTerminalPanel class with the specified history and SVGPreview.
      *
-     * @param h The history object to store the executed commands.
+     * @param h    The history object to store the executed commands.
      * @param svgp The SVGPreview object to render the SVG commands.
      */
     public ControllerTerminalPanel(History h, SVGPreview svgp) {
@@ -107,7 +111,7 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
             this.history.addCommand(new Command(commandText));
             try {
                 // Appel de la méthode parse de la classe Parsing
-                executeCommand(Parser.parse(commandText,this.setterCommandList,this.modifierCommandList));
+                executeCommand(Parser.parse(commandText, this.setterCommandList, this.modifierCommandList));
             } catch (IllegalArgumentException e) {
                 // Gérer l'exception IllegalArgumentException
                 this.history.addCommand(new Command("[Erreur] : " + e.getMessage()));
@@ -155,7 +159,7 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
             if (svgCommand == null) {
                 throw new IllegalArgumentException("ERROR");
             }
-            svgCommand.execute(this.svgPreview,elementName);
+            svgCommand.execute(this.svgPreview, elementName);
         } catch (NoSuchMethodException e) {
             throw new RuntimeException(e);
         } catch (InvocationTargetException e) {
@@ -166,6 +170,7 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
             throw new RuntimeException(e);
         }
     }
+
     /**
      * Utility method to extract a string value from the map with a default value.
      *
@@ -177,6 +182,7 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
     private String getString(Map<String, Object> map, String key) {
         return map.containsKey(key) ? (String) map.get(key) : "";
     }
+
     /**
      * Utility method to extract a list of double values from the map with a default value.
      *
@@ -187,17 +193,19 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
     private List<Double> getList(Map<String, Object> map, String key) {
         return map.containsKey(key) ? (List<Double>) map.get(key) : null;
     }
+
     /**
      * Utility method to extract a color value from the map with a default value.
      *
-     * @param map The map containing the values.
-     * @param key The key to retrieve the value.
+     * @param map          The map containing the values.
+     * @param key          The key to retrieve the value.
      * @param defaultValue The default color value.
      * @return The extracted color value or the default value if the key is not found.
      */
     private Color getColor(Map<String, Object> map, String key, Color defaultValue) {
         return map.containsKey(key) ? (Color) map.get(key) : defaultValue;
     }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         prepareCommand();

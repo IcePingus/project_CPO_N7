@@ -4,12 +4,16 @@ import terminalSVG.model.SVGPreview;
 
 import javax.xml.transform.TransformerException;
 import java.util.Map;
+
 /**
  * This class represents an SVG command for saving an SVG file.
+ *
+ * @author Team 3
  */
 public class SaveSVG implements SVGCommand {
 
     private String eltName;
+
     /**
      * Constructs a SaveSVG object with the specified instruction map.
      *
@@ -18,6 +22,7 @@ public class SaveSVG implements SVGCommand {
     public SaveSVG(Map<String, Object> instruction) {
         this.eltName = (String) instruction.get("elementName");
     }
+
     /**
      * Gets the name of the command.
      *
@@ -27,6 +32,7 @@ public class SaveSVG implements SVGCommand {
     public String getName() {
         return null;
     }
+
     /**
      * Gets the help information for the command.
      *
@@ -36,6 +42,7 @@ public class SaveSVG implements SVGCommand {
     public String getHelp() {
         return null;
     }
+
     /**
      * Executes the save command on the SVGPreview object.
      *
@@ -50,6 +57,7 @@ public class SaveSVG implements SVGCommand {
             throw new RuntimeException(e);
         }
     }
+
     /**
      * Parses the command and populates the instruction map with the provided elements.
      *
@@ -67,5 +75,4 @@ public class SaveSVG implements SVGCommand {
             instruction.put("elementName", "canva.svg");
         }
     }
-
 }

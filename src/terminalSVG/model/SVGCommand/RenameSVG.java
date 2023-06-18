@@ -3,12 +3,16 @@ package terminalSVG.model.SVGCommand;
 import terminalSVG.model.SVGPreview;
 
 import java.util.Map;
+
 /**
  * This class represents an SVG command for renaming an element.
+ *
+ * @author Team 3
  */
 public class RenameSVG implements SVGCommand {
 
     private String newName;
+
     /**
      * Constructs a RenameSVG object with the specified instruction map.
      *
@@ -17,6 +21,7 @@ public class RenameSVG implements SVGCommand {
     public RenameSVG(Map<String, Object> instruction) {
         this.newName = (String) instruction.get("elementNewName");
     }
+
     /**
      * Gets the name of the command.
      *
@@ -26,6 +31,7 @@ public class RenameSVG implements SVGCommand {
     public String getName() {
         return null;
     }
+
     /**
      * Gets the help information for the command.
      *
@@ -35,6 +41,7 @@ public class RenameSVG implements SVGCommand {
     public String getHelp() {
         return null;
     }
+
     /**
      * Executes the rename command on the SVGPreview object.
      *
@@ -45,6 +52,7 @@ public class RenameSVG implements SVGCommand {
     public void execute(SVGPreview svgPreview, String shapeName) {
         svgPreview.renameElement(shapeName, this.newName);
     }
+
     /**
      * Parses the command and populates the instruction map with the provided elements.
      *

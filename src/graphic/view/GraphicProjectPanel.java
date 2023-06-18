@@ -36,7 +36,7 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
     ResizeDialog resizeDialog;
 
     /**
-     * Constructs a `GraphicProjectPanel` view with the specified JFrame.
+     * Constructs a GraphicProjectPanel view with the specified JFrame.
      *
      * @param frame the JFrame object to which the panel belongs
      */

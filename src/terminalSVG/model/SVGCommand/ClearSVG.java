@@ -6,20 +6,22 @@ import java.util.Map;
 
 /**
  * The type Clear svg.
+ *
+ * @author Team 3
  */
 public class ClearSVG implements SVGCommand {
+
     /**
      * Instantiates a new Clear svg.
-     *
-     * @param instruction the instruction of clear
      */
-    public ClearSVG(Map<String, Object> instruction) {
+    public ClearSVG() {
     }
 
     @Override
     public String getName() {
         return null;
     }
+
     @Override
     public String getHelp() {
         return null;
@@ -38,7 +40,7 @@ public class ClearSVG implements SVGCommand {
      * @throws IllegalArgumentException the illegal argument exception
      */
     public static void parseCommand(Map<String, Object> instruction, String[] elements) throws IllegalArgumentException {
-       if(!(elements.length == 1)){
+        if (!(elements.length == 1)) {
             throw new IllegalArgumentException("Ne pas préciser d'arguments");
         }
     }
