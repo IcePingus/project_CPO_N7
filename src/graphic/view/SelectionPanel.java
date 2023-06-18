@@ -5,6 +5,11 @@ import terminalSVG.view.TerminalProjectPanel;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * The SelectionPanel class represents a panel for selecting between graphic mode and terminal mode.
+ *
+ * @aythor Team 3
+ */
 public class SelectionPanel extends JPanel {
 
     private JButton graphicModeButton;
@@ -14,6 +19,11 @@ public class SelectionPanel extends JPanel {
     private TerminalProjectPanel terminalProjectPanel;
     private JFrame frame;
 
+    /**
+     * Constructs a `SelectionPanel` object with the specified JFrame.
+     *
+     * @param frame the JFrame object representing the parent frame
+     */
     public SelectionPanel(JFrame frame) {
         this.setLayout(new GridBagLayout());
         this.frame = frame;
@@ -61,6 +71,10 @@ public class SelectionPanel extends JPanel {
         this.add(this.terminalModeButton, gbc);
     }
 
+    /**
+     * Event handler for the graphic mode button click.
+     * Switches the content pane of the frame to the graphic project panel.
+     */
     private void onGraphicModeButtonClick() {
         if (this.graphicProjectPanel == null) {
             this.graphicProjectPanel = new GraphicProjectPanel(this.frame);
@@ -70,6 +84,10 @@ public class SelectionPanel extends JPanel {
         this.frame.repaint();
     }
 
+    /**
+     * Event handler for the terminal mode button click.
+     * Switches the content pane of the frame to the terminal project panel.
+     */
     private void onTerminalModeButtonClick() {
         if (this.terminalProjectPanel == null) {
             this.terminalProjectPanel = new TerminalProjectPanel(this.frame);

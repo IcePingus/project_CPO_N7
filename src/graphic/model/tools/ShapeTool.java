@@ -10,6 +10,12 @@ import java.awt.event.InputEvent;
 import java.awt.image.BufferedImage;
 import java.util.Observable;
 
+/**
+ * The ShapeTool class represents a shape tool in a graphics application.
+ * It implements the ToolCommand interface and provides functionality for drawing shapes on the canvas.
+ *
+ * @author Team 3
+ */
 public class ShapeTool implements ToolCommand {
 
     private final String name;
@@ -28,6 +34,10 @@ public class ShapeTool implements ToolCommand {
 
     private Color color;
 
+    /**
+     * Constructs a ShapeTool object.
+     * It initializes the name, image, and sets the tool properties.
+     */
     public ShapeTool() {
         this.name = "Shape";
         this.image = new ImageIcon(getClass().getResource("/assets/images/shape.png"));
@@ -40,31 +50,72 @@ public class ShapeTool implements ToolCommand {
         this.secondaryColor = Color.WHITE;
     }
 
+    /**
+     * Returns the name of the shape tool.
+     *
+     * @return the name of the tool
+     */
     @Override
     public String getName() {
         return this.name;
     }
 
+    /**
+     * Returns the image icon representing the shape tool.
+     *
+     * @return the image icon of the tool
+     */
     @Override
     public Icon getImage() {
         return this.image;
     }
 
+    /**
+     * Returns whether the shape tool is resizable.
+     *
+     * @return true if the tool is resizable, false otherwise
+     */
     @Override
     public boolean getIsResizable() {
         return this.isResizable;
     }
 
+    /**
+     * Returns whether the shape tool is square or round in shape.
+     *
+     * @return true if the tool is square or round in shape, false otherwise
+     */
     @Override
     public boolean getIsSquareRoundShape() {
         return this.isSquareRoundShape;
     }
 
+    /**
+     * Returns whether the shape tool requires shape selection.
+     *
+     * @return true if the tool requires shape selection, false otherwise
+     */
     @Override
     public boolean getHasShapeSelection() {
         return this.hasShapeSelection;
     }
 
+    /**
+     * Executes the shape tool operation.
+     * It draws shapes on the canvas based on the current tool properties.
+     *
+     * @param oldX          the x-coordinate of the initial point
+     * @param oldY          the y-coordinate of the initial point
+     * @param currentX      the current x-coordinate
+     * @param currentY      the current y-coordinate
+     * @param bufferedImage the buffered image
+     * @param graphics2D    the graphics context
+     * @param click         the click event
+     * @param size          the tool size
+     * @param square        the flag indicating whether the shape should be square
+     * @param isFirstPoint  the flag indicating whether it is the first point
+     * @param canva         the canvas component
+     */
     @Override
     public void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click, int size, boolean square, boolean isFirstPoint, JComponent canva) {
         if (isFirstPoint) {
@@ -92,6 +143,12 @@ public class ShapeTool implements ToolCommand {
         }
     }
 
+    /**
+     * Updates the shape tool based on changes in the observed object.
+     *
+     * @param o   the observed object
+     * @param arg the argument passed by the observed object
+     */
     @Override
     public void update(Observable o, Object arg) {
         if (o instanceof ColorModel) {

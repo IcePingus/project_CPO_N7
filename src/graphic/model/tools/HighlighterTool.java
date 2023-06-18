@@ -8,6 +8,12 @@ import java.awt.event.InputEvent;
 import java.awt.image.BufferedImage;
 import java.util.Observable;
 
+/**
+ * The HighlighterTool class represents a highlighter tool in a graphics application.
+ * It implements the ToolCommand interface and provides functionality for highlighting with a translucent color.
+ *
+ * @author Team 3
+ */
 public class HighlighterTool implements ToolCommand {
 
     private final String name;
@@ -18,6 +24,11 @@ public class HighlighterTool implements ToolCommand {
     private Color primaryColor;
     private Color secondaryColor;
 
+    /**
+     * Constructs a HighlighterTool object with default settings.
+     * It initializes the name, image, and sets the tool properties.
+     * The primary color and secondary color are initially set to black and white, respectively.
+     */
     public HighlighterTool() {
         this.name = "Highlighter";
         this.image = new ImageIcon(getClass().getResource("/assets/images/highlighter.png"));
@@ -28,31 +39,72 @@ public class HighlighterTool implements ToolCommand {
         this.secondaryColor = Color.WHITE;
     }
 
+    /**
+     * Returns the name of the highlighter tool.
+     *
+     * @return the name of the tool
+     */
     @Override
     public String getName() {
         return this.name;
     }
 
+    /**
+     * Returns the image icon representing the highlighter tool.
+     *
+     * @return the image icon of the tool
+     */
     @Override
     public Icon getImage() {
         return this.image;
     }
 
+    /**
+     * Returns whether the highlighter tool is resizable.
+     *
+     * @return true if the tool is resizable, false otherwise
+     */
     @Override
     public boolean getIsResizable() {
         return this.isResizable;
     }
 
+    /**
+     * Returns whether the highlighter tool is square or round in shape.
+     *
+     * @return true if the tool is square or round in shape, false otherwise
+     */
     @Override
     public boolean getIsSquareRoundShape() {
         return this.isSquareRoundShape;
     }
 
+    /**
+     * Returns whether the highlighter tool requires shape selection.
+     *
+     * @return true if the tool requires shape selection, false otherwise
+     */
     @Override
     public boolean getHasShapeSelection() {
         return this.hasShapeSelection;
     }
 
+    /**
+     * Executes the highlighter tool operation.
+     * It draws a translucent line with the selected color based on the click event and the colors set in the color model.
+     *
+     * @param oldX          the x-coordinate of the initial point
+     * @param oldY          the y-coordinate of the initial point
+     * @param currentX      the current x-coordinate
+     * @param currentY      the current y-coordinate
+     * @param bufferedImage the buffered image
+     * @param graphics2D    the graphics context
+     * @param click         the click event
+     * @param size          the tool size
+     * @param square        the flag indicating whether the shape should be square
+     * @param isFirstPoint  the flag indicating whether it is the first point
+     * @param canva         the canvas component
+     */
     @Override
     public void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click, int size, boolean square, boolean isFirstPoint, JComponent canva) {
         Color color = null;
@@ -65,17 +117,23 @@ public class HighlighterTool implements ToolCommand {
             graphics2D.setPaint(color);
             graphics2D.drawLine(oldX, oldY, currentX, currentY);
             for (int i = 1; i < size; i++) {
-                graphics2D.drawLine(oldX+i, oldY+i, currentX+i, currentY+i);
-                graphics2D.drawLine(oldX-i, oldY-i, currentX-i, currentY-i);
+                graphics2D.drawLine(oldX + i, oldY + i, currentX + i, currentY + i);
+                graphics2D.drawLine(oldX - i, oldY - i, currentX - i, currentY - i);
             }
         }
     }
 
-        @Override
-        public void update(Observable o, Object arg) {
-            if (o instanceof ColorModel) {
-                this.primaryColor = ((ColorModel) o).getPrimaryColor();
-                this.secondaryColor = ((ColorModel) o).getSecondaryColor();
-            }
+    /**
+     * Updates the highlighter tool based on changes in the color model.
+     *
+     * @param o   the observed object
+     * @param arg the argument passed by the observed object
+     */
+    @Override
+    public void update(Observable o, Object arg) {
+        if (o instanceof ColorModel) {
+            this.primaryColor = ((ColorModel) o).getPrimaryColor();
+            this.secondaryColor = ((ColorModel) o).getSecondaryColor();
         }
     }
+}

@@ -21,22 +21,50 @@ import java.awt.image.ColorConvertOp;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * The CanvaController class is responsible for controlling the actions and behavior of the Canva.
+ *
+ * @author Team 3
+ */
 public class CanvaController {
 
+    /**
+     * The Canva instance associated with the controller.
+     */
     private final Canva canva;
 
+    /**
+     * Constructs a CanvaController with the specified Canva.
+     *
+     * @param canva the Canva instance to associate with the controller
+     */
     public CanvaController(Canva canva) {
         this.canva = canva;
     }
 
+    /**
+     * Returns the width of the Canva.
+     *
+     * @return the width of the Canva
+     */
     public int getCanvaWidth() {
         return this.canva.getBufferedImage().getWidth();
     }
 
+    /**
+     * Returns the height of the Canva.
+     *
+     * @return the height of the Canva
+     */
     public int getCanvaHeight() {
         return this.canva.getBufferedImage().getHeight();
     }
 
+    /**
+     * Exports the Canva image to the specified file path.
+     *
+     * @param path the file path to export the Canva image to
+     */
     public void export(String path) {
         Toaster toasterManager = new Toaster();
         try {
@@ -48,7 +76,13 @@ public class CanvaController {
         }
     }
 
-    public void chooseExportPath() {
+    /**
+     * Prompts the user to choose the export path and exports the Canva image.
+     * Displays a toaster message if the chosen file format is not supported.
+     *
+     * @throws BadFormatException if the chosen file format is not supported
+     */
+    public void chooseExportPath() throws BadFormatException {
         Toaster toasterManager = new Toaster();
         JFileChooser jfc = new JFileChooser();
         int retVal = jfc.showSaveDialog(null);
@@ -67,6 +101,9 @@ public class CanvaController {
         }
     }
 
+    /**
+     * Flips the Canva image horizontally.
+     */
     public void flipImageHorizontal() {
         BufferedImage newImage = this.canva.getBufferedImage();
         AffineTransform affineTransform = AffineTransform.getScaleInstance(-1, 1);
@@ -75,6 +112,9 @@ public class CanvaController {
         this.canva.setBufferedImage(op.filter(newImage, null));
     }
 
+    /**
+     * Flips the Canva image vertically.
+     */
     public void flipImageVertical() {
         BufferedImage newImage = this.canva.getBufferedImage();
         AffineTransform affineTransform = AffineTransform.getScaleInstance(1, -1);
@@ -83,6 +123,11 @@ public class CanvaController {
         this.canva.setBufferedImage(op.filter(newImage, null));
     }
 
+    /**
+     * Quits the application. Prompts the user to save the image before quitting.
+     *
+     * @param frame the JFrame instance associated with the application
+     */
     public void quit(JFrame frame) {
         String[] options = new String[]{"Yes and save the image", "Yes without saving", "No"};
         int resultOptionPane = JOptionPane.showOptionDialog(null, "Do you really want to quit ?", "Exit",
@@ -99,6 +144,9 @@ public class CanvaController {
         }
     }
 
+    /**
+     * Undoes the previous action on the Canva.
+     */
     public void undo() {
         if (this.canva.getImageStates().size() > 1 && this.canva.getCurrentIndex() > 0) {
             this.canva.setCurrentIndex(this.canva.getCurrentIndex() - 1);
@@ -107,6 +155,9 @@ public class CanvaController {
         }
     }
 
+    /**
+     * Redoes the previously undone action on the Canva.
+     */
     public void redo() {
         if (this.canva.getCurrentIndex() < this.canva.getImageStates().size() - 1) {
             this.canva.setCurrentIndex(this.canva.getCurrentIndex() + 1);
@@ -115,6 +166,9 @@ public class CanvaController {
         }
     }
 
+    /**
+     * Applies the black and white transformation to the Canva image.
+     */
     public void blackAndWhiteTransform() {
         BufferedImage newImage = this.canva.nextBufferedImage();
         ColorConvertOp op = new ColorConvertOp(ColorSpace.getInstance(ColorSpace.CS_GRAY), null);
@@ -122,6 +176,12 @@ public class CanvaController {
         this.canva.repaint();
     }
 
+    /**
+     * Resizes the Canva to the specified width and height.
+     *
+     * @param width  the new width of the Canva
+     * @param height the new height of the Canva
+     */
     public void resizeCanva(int width, int height) {
         BufferedImage resizedImage = new BufferedImage(width, height, this.canva.getBufferedImage().getType());
         this.canva.setG2(resizedImage.createGraphics());
@@ -129,6 +189,14 @@ public class CanvaController {
         this.canva.setBufferedImage(resizedImage);
     }
 
+    /**
+     * Crops the Canva to the specified width and height and with the position of crop.
+     *
+     * @param width  the new width of the Canva
+     * @param height the new height of the Canva
+     * @param horizontalAlign crop in the horizontal side
+     * @param verticalAlign crop in the vertical side
+     */
     public void cropCanva(int width, int height, CropTypes horizontalAlign, CropTypes verticalAlign) {
         BufferedImage resizedImage = new BufferedImage(width, height, this.canva.getBufferedImage().getType());
         this.canva.setG2(resizedImage.createGraphics());
@@ -150,6 +218,11 @@ public class CanvaController {
         this.canva.setBufferedImage(resizedImage);
     }
 
+    /**
+     * Prompts the user to choose an image file to import and imports it into the Canva.
+     *
+     * @param frame the JFrame instance associated with the application
+     */
     public void chooseImportPath(JFrame frame) {
         String filename = File.separator + "tmp";
         JFileChooser fileChooser = new JFileChooser(new File(filename));
@@ -172,6 +245,11 @@ public class CanvaController {
         importFile(fileChooser.getSelectedFile());
     }
 
+    /**
+     * Imports the specified file into the Canva.
+     *
+     * @param file the file to import
+     */
     public void importFile(File file) {
         try {
             this.canva.setBufferedImage(ImageIO.read(file));
@@ -180,6 +258,9 @@ public class CanvaController {
         }
     }
 
+    /**
+     * Clears the Canva, setting it to a blank state.
+     */
     public void clear() {
         this.canva.nextBufferedImage();
         this.canva.getG2().setPaint(Color.WHITE);
@@ -187,11 +268,22 @@ public class CanvaController {
         this.canva.repaint();
     }
 
+    /**
+     * Pastes the specified image onto the Canva.
+     *
+     * @param clipboardImage the image to paste
+     */
     public void pasteImage(BufferedImage clipboardImage) {
         this.canva.getG2().drawImage(clipboardImage, 0, 0, null);
     }
 
-    public void clipboardToBufferedImage() {
+    /**
+     * Copies the image from the clipboard to the Canva.
+     * Resizes the Canva if necessary to accommodate the clipboard image.
+     *
+     * @throws ClipboardVoidException if the clipboard does not contain an image
+     */
+    public void clipboardToBufferedImage() throws ClipboardVoidException {
         try {
             Transferable transferable = Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null);
 
@@ -213,5 +305,4 @@ public class CanvaController {
             e.printStackTrace();
         }
     }
-
 }
