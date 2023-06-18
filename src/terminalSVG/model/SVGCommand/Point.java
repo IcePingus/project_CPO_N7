@@ -1,7 +1,5 @@
 package terminalSVG.model.SVGCommand;
 
-import java.awt.Color;
-
 /**
  * The type Point.
  */

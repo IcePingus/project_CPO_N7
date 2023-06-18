@@ -6,12 +6,16 @@ import terminalSVG.model.SVGPreview;
 import javax.swing.*;
 import java.util.Observable;
 import java.util.Observer;
+
 /**
  * The panel that displays the preview of SVG code.
  * It observes the SVGPreview model and updates the displayed SVG code accordingly.
+ *
+ * @author Team 3
  */
 public class ViewSVGCodePreviewPanel extends JScrollPane implements Observer {
     private JTextArea svgCode;
+
     /**
      * Creates a new instance of ViewSVGCodePreviewPanel.
      * Initializes the JTextArea for displaying the SVG code.
@@ -29,6 +33,7 @@ public class ViewSVGCodePreviewPanel extends JScrollPane implements Observer {
         this.setViewportView(this.svgCode);
         this.setLayout(new ScrollPaneLayout());
     }
+
     /**
      * Updates the view with the latest SVG code from the SVGPreview model.
      *

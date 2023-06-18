@@ -1,12 +1,13 @@
 package terminalSVG.model;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 /**
  * The Command class represents a command with its content.
+ *
+ * @author Team 3
  */
 public class Command {
     private String content;
+
     /**
      * Constructs a Command object with the specified content.
      *
@@ -15,6 +16,7 @@ public class Command {
     public Command(String vcontent) {
         this.content = vcontent;
     }
+
     /**
      * Returns the content of the command.
      *

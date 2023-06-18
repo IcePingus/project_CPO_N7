@@ -20,7 +20,7 @@ public class SelectionPanel extends JPanel {
     private JFrame frame;
 
     /**
-     * Constructs a `SelectionPanel` object with the specified JFrame.
+     * Constructs a SelectionPanel object with the specified JFrame.
      *
      * @param frame the JFrame object representing the parent frame
      */

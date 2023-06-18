@@ -8,6 +8,8 @@ import java.util.Map;
 
 /**
  * The command Recolor svg.
+ *
+ * @author Team 3
  */
 public class RecolorSVG implements SVGCommand {
 
@@ -74,5 +76,4 @@ public class RecolorSVG implements SVGCommand {
         }
         instruction.put("elementName", elements[1].trim());
     }
-
 }

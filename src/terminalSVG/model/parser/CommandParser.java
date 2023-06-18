@@ -1,10 +1,13 @@
 package terminalSVG.model.parser;
 
 import java.util.Map;
-/**The CommandParser interface defines a contract for parsing commands represented by an array of elements.
+
+/**
+ * The CommandParser interface defines a contract for parsing commands represented by an array of elements.
  * The parseCommand method takes an array of elements representing the command and
- * returns a map containing the parsed command. It throws an IllegalArgumentException
- * if the command is invalid or contains errors.
+ * returns a map containing the parsed command.
+ *
+ * @author Team 3
  */
 public interface CommandParser {
     /**

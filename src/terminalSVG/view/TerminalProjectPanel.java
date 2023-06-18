@@ -11,13 +11,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+
 /**
  * The panel that represents the Terminal project.
  * It contains various sub-panels and manages their interactions and layout.
+ *
+ * @author Team 3
  */
 public class TerminalProjectPanel extends JPanel implements ActionListener {
     private JFrame frame;
     private JMenuItem quit;
+
     /**
      * Creates a new instance of the TerminalProjectPanel.
      *
@@ -125,13 +129,14 @@ public class TerminalProjectPanel extends JPanel implements ActionListener {
         this.setLayout(new BorderLayout());
         this.add(pinteCLIMainPanel, BorderLayout.CENTER);
     }
+
     /**
      * Exits the application.
      *
      * @param frame The main JFrame of the application.
      */
     public void exit(JFrame frame) {
-        String[] options = new String[] {"Yes", "No"};
+        String[] options = new String[]{"Yes", "No"};
         int resultOptionPane = JOptionPane.showOptionDialog(null, "Do you really want to quit?", "Exit",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
                 null, options, options[0]);

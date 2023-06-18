@@ -3,12 +3,15 @@ package terminalSVG.model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
+
 /**
  * The History class represents the history of commands.
- * It extends the Observable class to notify observers of changes.
+ *
+ * @author Team 3
  */
 public class History extends Observable {
     private List<Command> commands;
+
     /**
      * Constructs a History object with the specified list of commands.
      *
@@ -18,6 +21,7 @@ public class History extends Observable {
         this.commands = new ArrayList<>();
         if (vcommands != null) this.commands.addAll(vcommands);
     }
+
     /**
      * Adds a command to the history.
      * Notifies observers of the change.
@@ -29,6 +33,7 @@ public class History extends Observable {
         this.setChanged();
         this.notifyObservers();
     }
+
     /**
      * Returns the list of commands in the history.
      *

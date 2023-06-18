@@ -9,6 +9,8 @@ import java.util.Map;
 
 /**
  * The command to create a Rectangle.
+ *
+ * @author Team 3
  */
 public class RectangleSVG extends DrawShapeAction {
     private Point point;
@@ -31,7 +33,7 @@ public class RectangleSVG extends DrawShapeAction {
     public RectangleSVG(String name, List<Double> coords, boolean isFill, Color strokeColor, Color fillColor) {
         super(name, isFill, strokeColor, fillColor);
         assert coords.size() == COORDS_LIST_SIZE;
-        this.point = new Point(coords.get(0),coords.get(1));
+        this.point = new Point(coords.get(0), coords.get(1));
         this.sideLength1 = coords.get(2);
         this.sideLength2 = coords.get(3);
     }
@@ -56,13 +58,13 @@ public class RectangleSVG extends DrawShapeAction {
 
     @Override
     public void translate(Double dx, Double dy) {
-        if(dx == null){
+        if (dx == null) {
             dx = 0.0;
         }
-        if(dy == null){
+        if (dy == null) {
             dy = 0.0;
         }
-        this.point.translater(dx,dy);
+        this.point.translater(dx, dy);
     }
 
     @Override

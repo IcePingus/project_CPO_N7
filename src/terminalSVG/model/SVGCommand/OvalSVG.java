@@ -8,6 +8,8 @@ import java.util.Map;
 
 /**
  * The type Oval svg.
+ *
+ * @author Team 3
  */
 public class OvalSVG extends DrawShapeAction {
 
@@ -32,7 +34,7 @@ public class OvalSVG extends DrawShapeAction {
     public OvalSVG(String name, List<Double> coords, boolean isFill, Color strokeColor, Color fillColor) {
         super(name, isFill, strokeColor, fillColor);
         assert coords.size() == COORDS_LIST_SIZE;
-        this.center = new Point(coords.get(0),coords.get(1));
+        this.center = new Point(coords.get(0), coords.get(1));
         this.width = coords.get(2);
         this.height = coords.get(3);
     }
@@ -42,12 +44,12 @@ public class OvalSVG extends DrawShapeAction {
         svgPreview.getSVGGraphics().setColor(getStrokeColor());
 
         // Dessiner le contour du cercle
-        svgPreview.getSVGGraphics().drawOval((int)center.getX(), (int)center.getY(), (int)width, (int)height);
+        svgPreview.getSVGGraphics().drawOval((int) center.getX(), (int) center.getY(), (int) width, (int) height);
 
         if (isFill) {
             // Remplir le cercle
             svgPreview.getSVGGraphics().setColor(this.fillColor);
-            svgPreview.getSVGGraphics().fillOval((int)center.getX(), (int)center.getY(), (int)width, (int)height);
+            svgPreview.getSVGGraphics().fillOval((int) center.getX(), (int) center.getY(), (int) width, (int) height);
         }
     }
 

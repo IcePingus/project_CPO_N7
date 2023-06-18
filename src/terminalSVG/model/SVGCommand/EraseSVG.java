@@ -6,6 +6,8 @@ import java.util.Map;
 
 /**
  * The type Erase svg.
+ *
+ * @author Team 3
  */
 public class EraseSVG implements SVGCommand {
 

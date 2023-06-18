@@ -1,4 +1,5 @@
 package terminalSVG.model;
+
 import org.apache.batik.svggen.SVGGeneratorContext;
 import org.apache.batik.svggen.SVGGraphics2D;
 import org.w3c.dom.DOMImplementation;
@@ -6,6 +7,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.svg.SVGDocument;
 import terminalSVG.model.SVGCommand.DrawShapeAction;
+
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
@@ -21,7 +23,8 @@ import java.util.Observable;
  * The SVGPreview class represents the preview of an SVG image.
  * It provides methods for managing shapes, translating elements, updating the SVG document,
  * generating SVG code, and saving the SVG file.
- * It extends the Observable class to notify observers of changes.
+ *
+ * @author Team 3
  */
 public class SVGPreview extends Observable {
     private SVGGraphics2D svgGraphics; // Contexte graphique pour dessiner des éléments SVG
@@ -29,7 +32,7 @@ public class SVGPreview extends Observable {
     private SVGDocument svgDocument; // Document SVG
     private Map<String, DrawShapeAction> shapeList;
     private Color defaultColor;
-    
+
     /**
      * Constructs an SVGPreview object.
      * Initializes the SVG document, graphics context, and shape list.
@@ -41,21 +44,29 @@ public class SVGPreview extends Observable {
         this.svgGraphics = new SVGGraphics2D(svgGeneratorContext, true);
         this.shapeList = new Hashtable<>();
     }
+
+    /**
+     * Create the SVG document.
+     *
+     * @return the SVG document.
+     */
     private SVGDocument createSVGDocument() {
         DOMImplementation domImpl = org.apache.batik.anim.dom.SVGDOMImplementation.getDOMImplementation();
         String svgNS = org.apache.batik.anim.dom.SVGDOMImplementation.SVG_NAMESPACE_URI;
         return (SVGDocument) domImpl.createDocument(svgNS, "svg", null);
     }
+
     /**
      * Adds a shape to the SVG preview.
      *
      * @param shapeName The name of the shape.
      * @param shape     The shape to be added.
      */
-    public void addElement(String shapeName,DrawShapeAction shape) {
-        this.shapeList.put(shapeName,shape);
+    public void addElement(String shapeName, DrawShapeAction shape) {
+        this.shapeList.put(shapeName, shape);
         buildShapes();
     }
+
     /**
      * Deletes a shape from the SVG preview.
      *
@@ -63,12 +74,13 @@ public class SVGPreview extends Observable {
      * @throws IllegalArgumentException if the shape does not exist.
      */
     public void delElement(String shapeName) throws IllegalArgumentException {
-        if(!this.shapeList.containsKey(shapeName)){
+        if (!this.shapeList.containsKey(shapeName)) {
             throw new IllegalArgumentException("Aucun élement SVG ne correspond à votre requête");
         }
         this.shapeList.remove(shapeName);
         buildShapes();
     }
+
     /**
      * Translates a shape in the SVG preview.
      *
@@ -77,17 +89,21 @@ public class SVGPreview extends Observable {
      * @param dy        The translation distance in the y-axis.
      * @throws IllegalArgumentException if the shape does not exist.
      */
-    public void translateElement(String shapeName, Double dx, Double dy)  {
-        if(!this.shapeList.containsKey(shapeName)){
+    public void translateElement(String shapeName, Double dx, Double dy) {
+        if (!this.shapeList.containsKey(shapeName)) {
             throw new IllegalArgumentException("Aucun élement SVG ne correspond à votre requête");
         }
         DrawShapeAction shape = shapeList.get(shapeName);
-        shape.translate(dx,dy);
+        shape.translate(dx, dy);
         buildShapes();
     }
 
-    public void resizeElement(String shapeName,  Map<String, Object> sizes)  {
-        if(!this.shapeList.containsKey(shapeName)){
+    /**
+     * @param shapeName The name of the shape to be resized.
+     * @param sizes     The new sizes of the shapes.
+     */
+    public void resizeElement(String shapeName, Map<String, Object> sizes) {
+        if (!this.shapeList.containsKey(shapeName)) {
             throw new IllegalArgumentException("Aucun élement SVG ne correspond à votre requête");
         }
         DrawShapeAction shape = shapeList.get(shapeName);
@@ -99,7 +115,7 @@ public class SVGPreview extends Observable {
      * Builds the shapes in the SVG document.
      * Clears the SVG document, draws each shape, and updates the document.
      */
-    public void buildShapes(){
+    public void buildShapes() {
         clearSVGDocument();
         for (Map.Entry<String, DrawShapeAction> shape : shapeList.entrySet()) {
             shape.getValue().draw(this);
@@ -107,18 +123,20 @@ public class SVGPreview extends Observable {
         }
         updateSVGDocument("END");
     }
+
     /**
      * Clears the list of shapes.
      *
      * @throws IllegalArgumentException if the canvas is empty.
      */
     public void clearShapeList() throws IllegalArgumentException {
-        if(this.shapeList.isEmpty()) {
+        if (this.shapeList.isEmpty()) {
             throw new IllegalArgumentException("Le canva est vide");
         }
         this.shapeList.clear();
         buildShapes();
     }
+
     /**
      * Updates the SVG document with a comment.
      *
@@ -133,6 +151,7 @@ public class SVGPreview extends Observable {
         this.setChanged();
         this.notifyObservers();
     }
+
     /**
      * Clears the SVG document.
      */
@@ -142,6 +161,7 @@ public class SVGPreview extends Observable {
             root.removeChild(root.getFirstChild());
         }
     }
+
     /**
      * Renames a shape in the SVG preview.
      *
@@ -150,14 +170,15 @@ public class SVGPreview extends Observable {
      * @throws IllegalArgumentException if the shape does not exist.
      */
     public void renameElement(String shapeName, String newName) throws IllegalArgumentException {
-        if(!this.shapeList.containsKey(shapeName)){
+        if (!this.shapeList.containsKey(shapeName)) {
             throw new IllegalArgumentException("Aucun élement SVG ne correspond à votre requête");
         }
         shapeList.get(shapeName).setName(newName);
-        addElement(newName,shapeList.get(shapeName));
+        addElement(newName, shapeList.get(shapeName));
         delElement(shapeName);
         buildShapes();
     }
+
     /**
      * Sets the canvas size of the SVG preview.
      *
@@ -168,6 +189,7 @@ public class SVGPreview extends Observable {
         svgGraphics.setSVGCanvasSize(new Dimension(width, height));
         this.updateSVGDocument("Changement de taille");
     }
+
     /**
      * Generates the SVG code for the SVG preview.
      *
@@ -188,6 +210,7 @@ public class SVGPreview extends Observable {
         }
         return null;
     }
+
     /**
      * Saves the SVG preview as an SVG file.
      *
@@ -202,16 +225,16 @@ public class SVGPreview extends Observable {
         Source input = new DOMSource(svgDocument);
         transformer.transform(input, output);
     }
-    
+
+    /**
+     * Returns the Shape List of the SVG preview.
+     *
+     * @return The Shape List.
+     */
     public Map<String, DrawShapeAction> getShapeList() {
-		return shapeList;
-	}
+        return shapeList;
+    }
 
-	public void setShapeList(Map<String, DrawShapeAction> shapeList) {
-		this.shapeList = shapeList;
-	}
-
-	public SVGDocument getSvgDocument() {
     /**
      * Returns the SVG document of the SVG preview.
      *
@@ -220,6 +243,7 @@ public class SVGPreview extends Observable {
     public SVGDocument getSvgDocument() {
         return this.svgDocument;
     }
+
     /**
      * Returns the SVG graphics context of the SVG preview.
      *
@@ -228,6 +252,7 @@ public class SVGPreview extends Observable {
     public SVGGraphics2D getSVGGraphics() {
         return this.svgGraphics;
     }
+
     /**
      * Returns the default color for shapes in the SVG preview.
      *
@@ -236,6 +261,7 @@ public class SVGPreview extends Observable {
     public Color getDefaultColor() {
         return defaultColor;
     }
+
     /**
      * Sets the default color for shapes in the SVG preview.
      *
@@ -244,6 +270,7 @@ public class SVGPreview extends Observable {
     public void setDefaultColor(Color defaultColor) {
         this.defaultColor = defaultColor;
     }
+
     /**
      * Sets a new stroke and fill color for a shape in the SVG preview.
      *
@@ -257,6 +284,7 @@ public class SVGPreview extends Observable {
         shape.setFillColor(fcolor);
         this.buildShapes();
     }
+
     /**
      * Returns the shape in the SVG preview with the given name.
      *
@@ -265,7 +293,8 @@ public class SVGPreview extends Observable {
      * @throws IllegalArgumentException if the shape does not exist.
      */
     public DrawShapeAction getShapeByName(String name) {
-        if (!(this.shapeList.containsKey(name))) throw new IllegalArgumentException("Aucun élement SVG ne correspond à votre requête");
+        if (!(this.shapeList.containsKey(name)))
+            throw new IllegalArgumentException("Aucun élement SVG ne correspond à votre requête");
         return this.shapeList.get(name);
     }
 }
