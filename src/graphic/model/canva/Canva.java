@@ -1,6 +1,7 @@
 package graphic.model.canva;
 
 import graphic.model.ShapeTypes;
+import graphic.model.ToolContext;
 import graphic.model.tools.MoveTool;
 import graphic.model.tools.Toolbox;
 
@@ -44,6 +45,8 @@ public class Canva extends JComponent {
 
     private Toolbox toolbox;
 
+    private ToolContext context;
+
     /**
      * Constructs a new Canva object with the specified toolbox.
      *
@@ -58,6 +61,7 @@ public class Canva extends JComponent {
         this.currentIndex = 0;
         this.zoom = 1.0;
         this.isFirstPoint = true;
+        this.context = new ToolContext();
 
         // Configurer le composant
         this.setDoubleBuffered(false);
@@ -83,7 +87,16 @@ public class Canva extends JComponent {
                     setCursor(new Cursor(Cursor.HAND_CURSOR));
                 }
                 // Execute l'outil actif
-                toolbox.getActiveTool().execute(oldX, oldY, currentX, currentY, newImage, g2, e.getModifiersEx(), toolbox.getToolSize(), toolbox.getIsSquareShape(), isFirstPoint, Canva.this);
+                context.setOldX(oldX);
+                context.setOldY(oldY);
+                context.setCurrentX(currentX);
+                context.setCurrentY(currentY);
+                context.setClick(e.getModifiersEx());
+                context.setSize(toolbox.getToolSize());
+                context.setSquare(toolbox.getIsSquareShape());
+                context.setFirstPoint(isFirstPoint);
+                context.setCanva(Canva.this);
+                toolbox.getActiveTool().execute(context);
 
                 repaint();
             }
@@ -161,7 +174,16 @@ public class Canva extends JComponent {
 
                 if (g2 != null) {
                     // Execute l'outil actif
-                    toolbox.getActiveTool().execute(oldX, oldY, currentX, currentY, imageStates.get(currentIndex), g2, e.getModifiersEx(), toolbox.getToolSize(), toolbox.getIsSquareShape(), isFirstPoint, Canva.this);
+                    context.setOldX(oldX);
+                    context.setOldY(oldY);
+                    context.setCurrentX(currentX);
+                    context.setCurrentY(currentY);
+                    context.setClick(e.getModifiersEx());
+                    context.setSize(toolbox.getToolSize());
+                    context.setSquare(toolbox.getIsSquareShape());
+                    context.setFirstPoint(isFirstPoint);
+                    context.setCanva(Canva.this);
+                    toolbox.getActiveTool().execute(context);
                     if (isFirstPoint) isFirstPoint = false;
                     oldX = currentX;
                     oldY = currentY;

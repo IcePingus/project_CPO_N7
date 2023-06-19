@@ -1,6 +1,7 @@
 package graphic.model.tools;
 
 import graphic.model.ShapeTypes;
+import graphic.model.ToolContext;
 import graphic.model.canva.Canva;
 import graphic.model.color.ColorModel;
 
@@ -104,29 +105,19 @@ public class ShapeTool implements ToolCommand {
      * Executes the shape tool operation.
      * It draws shapes on the canvas based on the current tool properties.
      *
-     * @param oldX          the x-coordinate of the initial point
-     * @param oldY          the y-coordinate of the initial point
-     * @param currentX      the current x-coordinate
-     * @param currentY      the current y-coordinate
-     * @param bufferedImage the buffered image
-     * @param graphics2D    the graphics context
-     * @param click         the click event
-     * @param size          the tool size
-     * @param square        the flag indicating whether the shape should be square
-     * @param isFirstPoint  the flag indicating whether it is the first point
-     * @param canva         the canvas component
+     * @param context          the application context
      */
     @Override
-    public void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click, int size, boolean square, boolean isFirstPoint, JComponent canva) {
-        if (isFirstPoint) {
+    public void execute(ToolContext context) {
+        if (context.isFirstPoint()) {
             // Sauvegarder le point de début lors de la création de la forme
-            this.oldX = oldX;
-            this.oldY = oldY;
+            this.oldX = context.getOldX();
+            this.oldY = context.getOldY();
 
             // Récupérer la couleur en fonction du type de clic
-            if (click == InputEvent.BUTTON1_DOWN_MASK) {
+            if (context.getClick() == InputEvent.BUTTON1_DOWN_MASK) {
                 this.color = this.primaryColor;
-            } else if (click == InputEvent.BUTTON3_DOWN_MASK) {
+            } else if (context.getClick() == InputEvent.BUTTON3_DOWN_MASK) {
                 this.color = this.secondaryColor;
             }
         }
@@ -134,18 +125,18 @@ public class ShapeTool implements ToolCommand {
         if (this.color != null) {
             // Définir le point de début et la largeur et hauteur de la forme
             // Le point de début doit être le point le plus en haut à gauche
-            int startX = Math.min(this.oldX, currentX);
-            int startY = Math.min(this.oldY, currentY);
-            int width = Math.abs(this.oldX - currentX);
-            int height = Math.abs(this.oldY - currentY);
+            int startX = Math.min(this.oldX, context.getCurrentX());
+            int startY = Math.min(this.oldY, context.getCurrentY());
+            int width = Math.abs(this.oldX - context.getCurrentX());
+            int height = Math.abs(this.oldY - context.getCurrentY());
 
             // Définir la création de forme et ses attributs sur la toile
             if (this.shapeType == ShapeTypes.LINE) {
                 // Ligne ne fonctionne pas avec point de début et largeur et hauteur, donc on passe le point de début et
                 // le point de fin en paramètres
-                ((Canva) canva).repaintComponent(this.shapeType, this.oldX, this.oldY, currentX, currentY, color, this.isFilledShape);
+                context.getCanva().repaintComponent(this.shapeType, this.oldX, this.oldY, context.getCurrentX(), context.getCurrentY(), color, this.isFilledShape);
             } else {
-                ((Canva) canva).repaintComponent(this.shapeType, startX, startY, width, height, color, this.isFilledShape);
+                context.getCanva().repaintComponent(this.shapeType, startX, startY, width, height, color, this.isFilledShape);
             }
         }
     }

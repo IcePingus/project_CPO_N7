@@ -1,5 +1,6 @@
 package graphic.model.tools;
 
+import graphic.model.ToolContext;
 import graphic.model.color.ColorModel;
 
 import javax.swing.*;
@@ -72,15 +73,15 @@ public class TextTool implements ToolCommand, FocusListener, KeyListener {
     }
 
     @Override
-    public void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click, int size, boolean square, boolean isFirstClick, JComponent canva) {
-        this.jComponent = canva;
+    public void execute(ToolContext context) {
+        this.jComponent = context.getCanva();
         this.graphics2D = graphics2D;
         // Récupérer la couleur en fonction du type de clic
         Color color = null;
-        if (click == InputEvent.BUTTON1_DOWN_MASK) {
+        if (context.getClick() == InputEvent.BUTTON1_DOWN_MASK) {
             this.isPrimaryColor = true;
             color = primaryColor;
-        } else if (click == InputEvent.BUTTON3_DOWN_MASK) {
+        } else if (context.getClick() == InputEvent.BUTTON3_DOWN_MASK) {
             this.isPrimaryColor = false;
             color = secondaryColor;
         }

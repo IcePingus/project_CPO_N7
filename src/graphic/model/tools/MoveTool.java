@@ -1,5 +1,7 @@
 package graphic.model.tools;
 
+import graphic.model.ToolContext;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -78,23 +80,13 @@ public class MoveTool implements ToolCommand {
     /**
      * Executes the tool command with the given parameters.
      *
-     * @param oldX the previous x-coordinate
-     * @param oldY the previous y-coordinate
-     * @param currentX the current x-coordinate
-     * @param currentY the current y-coordinate
-     * @param bufferedImage the buffered image
-     * @param graphics2D the graphics context
-     * @param click the number of clicks
-     * @param size the size of the shape
-     * @param square specifies whether the shape is square
-     * @param isFirstPoint specifies whether it is the first point of the shape
-     * @param jComponent the Swing component
+     * @param context the application context
      */
     @Override
-    public void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click, int size, boolean square, boolean isFirstPoint, JComponent jComponent) {
+    public void execute(ToolContext context) {
         // La différence entre la position actuelle et l'ancienne position
-        int mouseDeltaX = currentX - oldX;
-        int mouseDeltaY = currentY - oldY;
+        int mouseDeltaX = context.getCurrentX() - context.getOldX();
+        int mouseDeltaY = context.getCurrentY() - context.getOldY();
 
         // Modification de la différence en fonction de la sensibilité
         int sensitivity = 5;
@@ -102,11 +94,11 @@ public class MoveTool implements ToolCommand {
         double deltaY = (double) mouseDeltaY / sensitivity;
 
         // Modifier des positions du composant
-        int newX = jComponent.getLocation().x + (int) deltaX;
-        int newY = jComponent.getLocation().y + (int) deltaY;
+        int newX = context.getCanva().getLocation().x + (int) deltaX;
+        int newY = context.getCanva().getLocation().y + (int) deltaY;
 
-        jComponent.setLocation(newX, newY);
-        jComponent.repaint();
+        context.getCanva().setLocation(newX, newY);
+        context.getCanva().repaint();
     }
 
     @Override

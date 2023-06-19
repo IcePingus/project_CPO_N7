@@ -1,5 +1,6 @@
 package graphic.model.tools;
 
+import graphic.model.ToolContext;
 import graphic.model.color.ColorModel;
 
 import javax.swing.*;
@@ -94,64 +95,54 @@ public class PencilTool implements ToolCommand {
      * It draws a line with the selected color based on the click event and the colors set in the color model.
      * The line can be drawn with a square or round shape depending on the tool size.
      *
-     * @param oldX          the x-coordinate of the initial point
-     * @param oldY          the y-coordinate of the initial point
-     * @param currentX      the current x-coordinate
-     * @param currentY      the current y-coordinate
-     * @param bufferedImage the buffered image
-     * @param graphics2D    the graphics context
-     * @param click         the click event
-     * @param size          the tool size
-     * @param square        the flag indicating whether the shape should be square
-     * @param isFirstPoint  the flag indicating whether it is the first point
-     * @param canva         the canvas component
+     * @param context          the application context
      */
     @Override
-    public void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click, int size, boolean square, boolean isFirstPoint, JComponent canva) {
+    public void execute(ToolContext context) {
         // Récupérer la couleur en fonction du type de clic
         Color color = null;
-        if (click == InputEvent.BUTTON1_DOWN_MASK) {
+        if (context.getClick() == InputEvent.BUTTON1_DOWN_MASK) {
             color = primaryColor;
-        } else if (click == InputEvent.BUTTON3_DOWN_MASK) {
+        } else if (context.getClick() == InputEvent.BUTTON3_DOWN_MASK) {
             color = secondaryColor;
         }
         if (color != null) {
             // Définir la couleur avec laquelle dessiner
-            graphics2D.setPaint(color);
+            context.getCanva().getG2().setPaint(color);
 
             // Dessiner le point actuel en fonction de la taille
-            if (square) {
-                graphics2D.fillRect(oldX - size / 2, oldY - size / 2, size, size);
+            if (context.isSquare()) {
+                context.getCanva().getG2().fillRect(context.getOldX() - context.getSize() / 2, context.getOldY() - context.getSize() / 2, context.getSize(), context.getSize());
             } else {
-                graphics2D.fillOval(oldX - size / 2, oldY - size / 2, size, size);
+                context.getCanva().getG2().fillOval(context.getOldX() - context.getSize() / 2, context.getOldY() - context.getSize() / 2, context.getSize(), context.getSize());
             }
 
             // Définir la distance à parcourir pour chaque dimension, la direction et l'erreur (algorithme de Bresenham)
-            int distanceX = Math.abs(currentX - oldX);
-            int distanceY = Math.abs(currentY - oldY);
-            int directionX = oldX < currentX ? 1 : -1;
-            int directionY = oldY < currentY ? 1 : -1;
+            int distanceX = Math.abs(context.getCurrentX() - context.getOldX());
+            int distanceY = Math.abs(context.getCurrentY() - context.getOldY());
+            int directionX = context.getOldX() < context.getCurrentX() ? 1 : -1;
+            int directionY = context.getOldY() < context.getCurrentY() ? 1 : -1;
             int erreur = distanceX - distanceY;
             int erreur2;
 
             // Parcourir les points entre le dernier point enregistré et le point actuel et gommer les points en fonction de la taille
-            while (oldX != currentX || oldY != currentY) {
+            while (context.getOldX() != context.getCurrentX() || context.getOldY() != context.getCurrentY()) {
 
-                if (square) {
-                    graphics2D.fillRect(oldX - size / 2, oldY - size / 2, size, size);
+                if (context.isSquare()) {
+                    context.getCanva().getG2().fillRect(context.getOldX() - context.getSize() / 2, context.getOldY() - context.getSize() / 2, context.getSize(), context.getSize());
                 } else {
-                    graphics2D.fillOval(oldX - size / 2, oldY - size / 2, size, size);
+                    context.getCanva().getG2().fillOval(context.getOldX() - context.getSize() / 2, context.getOldY() - context.getSize() / 2, context.getSize(), context.getSize());
                 }
 
                 // Calculer l'erreur lors du parcours des points pour bien suivre le chemin
                 erreur2 = 2 * erreur;
                 if (erreur2 > -distanceY) {
                     erreur -= distanceY;
-                    oldX += directionX;
+                    context.setOldX(context.getOldX() + directionX);
                 }
                 if (erreur2 < distanceX) {
                     erreur += distanceX;
-                    oldY += directionY;
+                    context.setOldY(context.getOldY() + directionY);
                 }
             }
         }

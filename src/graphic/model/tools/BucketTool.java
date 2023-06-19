@@ -1,5 +1,6 @@
 package graphic.model.tools;
 
+import graphic.model.ToolContext;
 import graphic.model.color.ColorModel;
 
 import javax.swing.*;
@@ -93,32 +94,22 @@ public class BucketTool implements ToolCommand {
      * Executes the bucket tool operation.
      * It fills the region with the selected color based on the click event and the colors set in the color model.
      *
-     * @param oldX          the x-coordinate of the initial point
-     * @param oldY          the y-coordinate of the initial point
-     * @param currentX      the current x-coordinate
-     * @param currentY      the current y-coordinate
-     * @param bufferedImage the buffered image
-     * @param graphics2D    the graphics context
-     * @param click         the click event
-     * @param size          the tool size
-     * @param square        the flag indicating whether the shape should be square
-     * @param isFirstPoint  the flag indicating whether it is the first point
-     * @param canva         the canvas component
+     * @param context          the application context
      */
     @Override
-    public void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click, int size, boolean square, boolean isFirstPoint, JComponent canva) {
+    public void execute(ToolContext context) {
         // Récupérer la couleur en fonction du type de clic
         Color color = null;
-        if (click == InputEvent.BUTTON1_DOWN_MASK) {
+        if (context.getClick() == InputEvent.BUTTON1_DOWN_MASK) {
             color = primaryColor;
-        } else if (click == InputEvent.BUTTON3_DOWN_MASK) {
+        } else if (context.getClick() == InputEvent.BUTTON3_DOWN_MASK) {
             color = secondaryColor;
         }
         try {
             /* Exécuter la méthode fill si la couleur n'est pas nulle et que la couleur du pixel cliqué est différente
                de la couleur à définir */
-            if (color != null && color.getRGB() != bufferedImage.getRGB(oldX, oldY)) {
-                fill(oldX, oldY, bufferedImage, bufferedImage.getRGB(oldX, oldY), color.getRGB());
+            if (color != null && color.getRGB() != context.getCanva().getBufferedImage().getRGB(context.getOldX(), context.getOldY())) {
+                fill(context.getOldX(), context.getOldY(), context.getCanva().getBufferedImage(), context.getCanva().getBufferedImage().getRGB(context.getOldX(), context.getOldY()), color.getRGB());
             }
         } catch (Exception e) {
             // !(Salut Bucket !)
@@ -150,6 +141,7 @@ public class BucketTool implements ToolCommand {
      * @param newColorRGB   the RGB value of the new color
      */
     private void fill(int startX, int startY, BufferedImage bufferedImage, int oldColorRGB, int newColorRGB) {
+
 
         // Instancier la liste de pixel à traiter et y ajouter le pixel cliqué
         Queue<Point> queue = new LinkedList<>();
