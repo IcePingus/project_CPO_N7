@@ -1,4 +1,4 @@
-package Test.terminal;
+package test.terminal;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -15,7 +15,6 @@ import org.junit.Test;
 import terminalSVG.model.SVGPreview;
 import terminalSVG.model.SVGCommand.CircleSVG;
 import terminalSVG.model.SVGCommand.ClearSVG;
-import terminalSVG.model.SVGCommand.DrawShapeAction;
 import terminalSVG.model.SVGCommand.EraseSVG;
 import terminalSVG.model.SVGCommand.RenameSVG;
 

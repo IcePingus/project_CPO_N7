@@ -75,7 +75,7 @@ public class TextTool implements ToolCommand, FocusListener, KeyListener {
     @Override
     public void execute(ToolContext context) {
         this.jComponent = context.getCanva();
-        this.graphics2D = graphics2D;
+        this.graphics2D = context.getCanva().getG2();
         // Récupérer la couleur en fonction du type de clic
         Color color = null;
         if (context.getClick() == InputEvent.BUTTON1_DOWN_MASK) {
@@ -86,9 +86,9 @@ public class TextTool implements ToolCommand, FocusListener, KeyListener {
             color = secondaryColor;
         }
         if (color != null) {
-            this.currentX = currentX;
-            this.currentY = currentY;
-            this.size = size;
+            this.currentX = context.getCurrentX();
+            this.currentY = context.getCurrentY();
+            this.size = context.getSize();
             // Déclencher l'évènement focusLost si la JTextField n'est pas null
             if (this.jtextField != null) {
                 focusLost(new FocusEvent(this.jComponent, 0));

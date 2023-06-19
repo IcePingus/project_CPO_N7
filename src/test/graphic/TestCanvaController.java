@@ -1,4 +1,4 @@
-package Test.graphic;
+package test.graphic;
 
 import graphic.controller.CanvaController;
 import graphic.model.canva.Canva;
@@ -46,28 +46,28 @@ public class TestCanvaController {
 
     @Test
     public void testFlipVertical() {
-        BufferedImage expectedImage = LoadImage.loadImage("src/Test/graphic/ImageTest/canvaController/TestFlipVertical.png");
+        BufferedImage expectedImage = LoadImage.loadImage("src/test/graphic/imageTest/canvaController/TestFlipVertical.png");
         this.canvaController.flipImageVertical();
         assertEquals(true, ImageComparator.areImagesSimilar(this.canva.getBufferedImage(), expectedImage));
     }
 
     @Test
     public void testFlipHorizontal() {
-        BufferedImage expectedImage = LoadImage.loadImage("src/Test/graphic/ImageTest/canvaController/TestFlipHorizontal.png");
+        BufferedImage expectedImage = LoadImage.loadImage("src/test/graphic/imageTest/canvaController/TestFlipHorizontal.png");
         this.canvaController.flipImageHorizontal();
         assertEquals(true, ImageComparator.areImagesSimilar(this.canva.getBufferedImage(), expectedImage));
     }
 
     @Test
     public void testBlackAndWhite() {
-        BufferedImage expectedImage = LoadImage.loadImage("src/Test/graphic/ImageTest/canvaController/TestBlackWhite.png");
+        BufferedImage expectedImage = LoadImage.loadImage("src/test/graphic/imageTest/canvaController/TestBlackWhite.png");
         this.canvaController.blackAndWhiteTransform();
         assertEquals(true, ImageComparator.areImagesSimilar(this.canva.getBufferedImage(), expectedImage));
     }
 
     @Test
     public void testResize() {
-        BufferedImage expectedImage = LoadImage.loadImage("src/Test/graphic/ImageTest/canvaController/TestResize.png");
+        BufferedImage expectedImage = LoadImage.loadImage("src/test/graphic/imageTest/canvaController/TestResize.png");
         this.canvaController.resizeCanva(128, 64);
         assertEquals(ImageComparator.areImagesSimilar(this.canva.getBufferedImage(), expectedImage), true);
         assertEquals(128, this.canvaController.getCanvaWidth());
@@ -75,12 +75,12 @@ public class TestCanvaController {
 
     @Test
     public void exportTest() {
-        File file = new File("src/Test/graphic/ImageTest/canvaController/TestExport.png");
+        File file = new File("src/test/graphic/imageTest/canvaController/TestExport.png");
         if (file != null) {
             file.delete();
         }
-        this.canvaController.export("src/Test/graphic/ImageTest/canvaController/TestExport.png");
-        assertNotNull(LoadImage.loadImage("src/Test/graphic/ImageTest/canvaController/TestExport.png"));
+        this.canvaController.export("src/test/graphic/imageTest/canvaController/TestExport.png");
+        assertNotNull(LoadImage.loadImage("src/test/graphic/imageTest/canvaController/TestExport.png"));
         if (file != null) {
             file.delete();
         }
@@ -88,32 +88,32 @@ public class TestCanvaController {
 
     @Test
     public void testImport() {
-        BufferedImage expectedImage = LoadImage.loadImage("src/Test/graphic/ImageTest/canvaController/TestImportImage.png");
-        this.canvaController.importFile(new File("src/Test/graphic/ImageTest/canvaController/TestImportImage.png"));
+        BufferedImage expectedImage = LoadImage.loadImage("src/test/graphic/imageTest/canvaController/TestImportImage.png");
+        this.canvaController.importFile(new File("src/test/graphic/imageTest/canvaController/TestImportImage.png"));
         assertEquals(true, ImageComparator.areImagesSimilar(this.canva.getBufferedImage(), expectedImage));
     }
 
     @Test
     public void testPaste() throws IOException {
-        BufferedImage expectedImage = LoadImage.loadImage("src/Test/graphic/ImageTest/canvaController/TestPasteImage.png");
-        this.canvaController.pasteImage(ImageIO.read(new File("src/Test/graphic/ImageTest/canvaController/PasteImage.png")));
+        BufferedImage expectedImage = LoadImage.loadImage("src/test/graphic/imageTest/canvaController/TestPasteImage.png");
+        this.canvaController.pasteImage(ImageIO.read(new File("src/test/graphic/imageTest/canvaController/PasteImage.png")));
         assertEquals(true, ImageComparator.areImagesSimilar(this.canva.getBufferedImage(), expectedImage));
     }
 
     @Test
     public void testUndo() {
-        BufferedImage expectedImage = LoadImage.loadImage("src/Test/graphic/ImageTest/canvaController/TestPasteImage.png");
-        this.canva.setBufferedImage(LoadImage.loadImage("src/Test/graphic/ImageTest/canvaController/TestPasteImage.png"));
-        this.canva.setBufferedImage(LoadImage.loadImage("src/Test/graphic/ImageTest/canvaController/TestResize.png"));
+        BufferedImage expectedImage = LoadImage.loadImage("src/test/graphic/imageTest/canvaController/TestPasteImage.png");
+        this.canva.setBufferedImage(LoadImage.loadImage("src/test/graphic/imageTest/canvaController/TestPasteImage.png"));
+        this.canva.setBufferedImage(LoadImage.loadImage("src/test/graphic/imageTest/canvaController/TestResize.png"));
         this.canvaController.undo();
         assertEquals(true, ImageComparator.areImagesSimilar(this.canva.getBufferedImage(), expectedImage));
     }
 
     @Test
     public void testRedo() {
-        BufferedImage expectedImage = LoadImage.loadImage("src/Test/graphic/ImageTest/canvaController/TestResize.png");
-        this.canva.setBufferedImage(LoadImage.loadImage("src/Test/graphic/ImageTest/canvaController/TestPasteImage.png"));
-        this.canva.setBufferedImage(LoadImage.loadImage("src/Test/graphic/ImageTest/canvaController/TestResize.png"));
+        BufferedImage expectedImage = LoadImage.loadImage("src/test/graphic/imageTest/canvaController/TestResize.png");
+        this.canva.setBufferedImage(LoadImage.loadImage("src/test/graphic/imageTest/canvaController/TestPasteImage.png"));
+        this.canva.setBufferedImage(LoadImage.loadImage("src/test/graphic/imageTest/canvaController/TestResize.png"));
         this.canvaController.undo();
         this.canvaController.redo();
         assertEquals(true, ImageComparator.areImagesSimilar(this.canva.getBufferedImage(), expectedImage));

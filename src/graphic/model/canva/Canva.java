@@ -50,9 +50,9 @@ public class Canva extends JComponent {
     /**
      * Constructs a new Canva object with the specified toolbox.
      *
-     * @param toolbox the toolbox associated with the canvas
+     * @param toolbox        the toolbox associated with the canvas
      * @param canvaSizeLabel label for the current size of the canva
-     * @param zoomLabel label for the current zoom
+     * @param zoomLabel      label for the current zoom
      */
     public Canva(Toolbox toolbox, JLabel canvaSizeLabel, JLabel zoomLabel) {
         // Initialiser les variables
@@ -107,6 +107,7 @@ public class Canva extends JComponent {
                 if (toolbox.getActiveTool() instanceof MoveTool) {
                     setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
                 }
+                // Si une forme est dessinée, la construire sur la buffered image (voir paintComponent(Graphics g) pour plus de détails).
                 if (shapeType != null) {
                     g2.setColor(color);
                     switch (shapeType) {
@@ -117,12 +118,10 @@ public class Canva extends JComponent {
                                 if (toolbox.getToolSize() > endX || toolbox.getToolSize() > endY) {
                                     g2.fillRect(startX, startY, endX, endY);
                                 } else {
-                                    for (int i = 0; i < toolbox.getToolSize(); i++) {
-                                        g2.fillRect(startX, startY, toolbox.getToolSize(), endY);
-                                        g2.fillRect(startX, startY, endX, toolbox.getToolSize());
-                                        g2.fillRect(startX + endX - toolbox.getToolSize(), startY, toolbox.getToolSize(), endY);
-                                        g2.fillRect(startX, startY + endY - toolbox.getToolSize(), endX, toolbox.getToolSize());
-                                    }
+                                    g2.fillRect(startX, startY, toolbox.getToolSize(), endY);
+                                    g2.fillRect(startX, startY, endX, toolbox.getToolSize());
+                                    g2.fillRect(startX + endX - toolbox.getToolSize(), startY, toolbox.getToolSize(), endY);
+                                    g2.fillRect(startX, startY + endY - toolbox.getToolSize(), endX, toolbox.getToolSize());
                                 }
                             }
                         }
@@ -348,22 +347,28 @@ public class Canva extends JComponent {
         // Dessiner la bufferedImage sur la toile
         g.drawImage(this.imageStates.get(this.currentIndex), ((this.getWidth() - this.imageStates.get(this.currentIndex).getWidth()) / 2), ((this.getHeight() - this.imageStates.get(this.currentIndex).getHeight()) / 2), null);
 
+        // Si une forme est en train d'être dessinée, la dessiner sur le panel
         if (!isFirstPoint && shapeType != null) {
+            // Couleur de dessin
             this.g.setColor(this.color);
+            // Choisir la forme à dessiner en fonction de son type
             switch (shapeType) {
                 case RECTANGLE -> {
                     if (isShapeFilled) {
+                        // Forme remplie si l'option est activée
                         g.fillRect(startX, startY, endX, endY);
                     } else {
                         if (this.toolbox.getToolSize() > endX || this.toolbox.getToolSize() > endY) {
+                            /* Forme remplie si l'option bordure est activée, mais que la taille du trait est plus
+                               grande que la distance entre le point de départ et de fin */
                             g.fillRect(startX, startY, endX, endY);
                         } else {
-                            for (int i = 0; i < this.toolbox.getToolSize(); i++) {
-                                g.fillRect(startX, startY, toolbox.getToolSize(), endY);
-                                g.fillRect(startX, startY, endX, toolbox.getToolSize());
-                                g.fillRect(startX + endX - toolbox.getToolSize(), startY, toolbox.getToolSize(), endY);
-                                g.fillRect(startX, startY + endY - toolbox.getToolSize(), endX, toolbox.getToolSize());
-                            }
+                            /* Forme remplie si l'option bordure est activée, mais que la taille du trait est plus
+                               grande que la distance entre le point de départ et de fin */
+                            g.fillRect(startX, startY, toolbox.getToolSize(), endY);
+                            g.fillRect(startX, startY, endX, toolbox.getToolSize());
+                            g.fillRect(startX + endX - toolbox.getToolSize(), startY, toolbox.getToolSize(), endY);
+                            g.fillRect(startX, startY + endY - toolbox.getToolSize(), endX, toolbox.getToolSize());
                         }
                     }
                 }
@@ -375,6 +380,7 @@ public class Canva extends JComponent {
                     }
                 }
                 case LINE -> {
+                    // Utiliser l'algorithme Bresenham pour calculer tous les points de la ligne et faire un cercle de la taille de l'outil pour remplir la ligne
                     int startX2 = startX;
                     int startY2 = startY;
                     int endX2 = endX;
@@ -407,13 +413,13 @@ public class Canva extends JComponent {
     /**
      * Repaints the component with the specified shape type, coordinates, color, and shape filling.
      *
-     * @param shapeType      the type of shape
-     * @param startX         the starting X-coordinate
-     * @param startY         the starting Y-coordinate
-     * @param endX           the ending X-coordinate
-     * @param endY           the ending Y-coordinate
-     * @param color          the color of the shape
-     * @param isFilledShape  indicates if the shape should be filled
+     * @param shapeType     the type of shape
+     * @param startX        the starting X-coordinate
+     * @param startY        the starting Y-coordinate
+     * @param endX          the ending X-coordinate
+     * @param endY          the ending Y-coordinate
+     * @param color         the color of the shape
+     * @param isFilledShape indicates if the shape should be filled
      */
     public void repaintComponent(ShapeTypes shapeType, int startX, int startY, int endX, int endY, Color color, boolean isFilledShape) {
         this.shapeType = shapeType;

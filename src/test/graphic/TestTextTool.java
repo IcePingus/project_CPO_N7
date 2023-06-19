@@ -1,6 +1,7 @@
-package Test.graphic;
+package test.graphic;
 
 import graphic.controller.ColorController;
+import graphic.model.ToolContext;
 import graphic.model.canva.Canva;
 import graphic.model.color.ColorModel;
 import graphic.model.tools.TextTool;
@@ -23,6 +24,7 @@ public class TestTextTool {
     private Toolbox toolbox;
     private TextTool textTool;
     private ToolInternalFrame tif;
+    private ToolContext tc;
 
     @Before
     public void setup() {
@@ -41,12 +43,20 @@ public class TestTextTool {
         this.canva.getG2().setPaint(Color.WHITE);
         this.canva.getG2().fillRect(0, 0, 500, 500);
         this.canva.repaint();
+        this.tc = new ToolContext();
+        this.tc.setCanva(this.canva);
+        this.tc.setClick(MouseEvent.BUTTON1_DOWN_MASK);
     }
 
     @Test
     public void testWrite() {
-        BufferedImage expectedImage = LoadImage.loadImage("src/Test/graphic/ImageTest/textTool/TestWrite.png");
-        this.toolbox.getActiveTool().execute(40, 40, 40, 40, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON1_DOWN_MASK, 40, false, true, this.canva);
+        BufferedImage expectedImage = LoadImage.loadImage("src/test/graphic/imageTest/textTool/TestWrite.png");
+        this.tc.setOldX(40);
+        this.tc.setOldY(40);
+        this.tc.setCurrentX(40);
+        this.tc.setCurrentY(40);
+        this.tc.setSize(40);
+        this.toolbox.getActiveTool().execute(this.tc);
         KeyEvent keyPressEventS = new KeyEvent(this.textTool.getJtextField(), KeyEvent.KEY_PRESSED, System.currentTimeMillis(), 0, KeyEvent.VK_S, 'S');
         KeyEvent keyPressEventA = new KeyEvent(this.textTool.getJtextField(), KeyEvent.KEY_PRESSED, System.currentTimeMillis(), 0, KeyEvent.VK_A, 'A');
         KeyEvent keyPressEventL = new KeyEvent(this.textTool.getJtextField(), KeyEvent.KEY_PRESSED, System.currentTimeMillis(), 0, KeyEvent.VK_L, 'L');
@@ -80,8 +90,13 @@ public class TestTextTool {
     @Test
     public void testPrimaryColor() {
         this.colorModel.setPrimaryColor(Color.BLUE);
-        BufferedImage expectedImage = LoadImage.loadImage("src/Test/graphic/ImageTest/textTool/TestPrimaryColor.png");
-        this.toolbox.getActiveTool().execute(40, 40, 40, 40, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON1_DOWN_MASK, 40, false, true, this.canva);
+        BufferedImage expectedImage = LoadImage.loadImage("src/test/graphic/imageTest/textTool/TestPrimaryColor.png");
+        this.tc.setOldX(40);
+        this.tc.setOldY(40);
+        this.tc.setCurrentX(40);
+        this.tc.setCurrentY(40);
+        this.tc.setSize(40);
+        this.toolbox.getActiveTool().execute(this.tc);
         KeyEvent keyPressEventS = new KeyEvent(this.textTool.getJtextField(), KeyEvent.KEY_PRESSED, System.currentTimeMillis(), 0, KeyEvent.VK_S, 'S');
         this.textTool.keyTyped(keyPressEventS);
         this.textTool.keyTyped(keyPressEventS);
@@ -96,8 +111,14 @@ public class TestTextTool {
     public void testSecondaryColor() {
         this.colorModel.setSecondaryColor(Color.ORANGE);
         this.colorModel.setPrimaryColor(Color.BLUE);
-        BufferedImage expectedImage = LoadImage.loadImage("src/Test/graphic/ImageTest/textTool/TestSecondaryColor.png");
-        this.toolbox.getActiveTool().execute(40, 40, 40, 40, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON3_DOWN_MASK, 40, false, true, this.canva);
+        BufferedImage expectedImage = LoadImage.loadImage("src/test/graphic/imageTest/textTool/TestSecondaryColor.png");
+        this.tc.setOldX(40);
+        this.tc.setOldY(40);
+        this.tc.setCurrentX(40);
+        this.tc.setCurrentY(40);
+        this.tc.setSize(40);
+        this.tc.setClick(MouseEvent.BUTTON3_DOWN_MASK);
+        this.toolbox.getActiveTool().execute(this.tc);
         KeyEvent keyPressEventS = new KeyEvent(this.textTool.getJtextField(), KeyEvent.KEY_PRESSED, System.currentTimeMillis(), 0, KeyEvent.VK_S, 'S');
         this.textTool.keyTyped(keyPressEventS);
         this.textTool.keyTyped(keyPressEventS);

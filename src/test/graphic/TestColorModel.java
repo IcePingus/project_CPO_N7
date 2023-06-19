@@ -1,4 +1,4 @@
-package Test.graphic;
+package test.graphic;
 
 import graphic.model.color.ColorModel;
 import org.junit.Before;

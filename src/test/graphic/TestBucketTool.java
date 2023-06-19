@@ -1,6 +1,7 @@
-package Test.graphic;
+package test.graphic;
 
 import graphic.controller.ColorController;
+import graphic.model.ToolContext;
 import graphic.model.canva.Canva;
 import graphic.model.color.ColorModel;
 import graphic.model.tools.BucketTool;
@@ -22,6 +23,7 @@ public class TestBucketTool {
     private ColorModel colorModel;
     private Toolbox toolbox;
     private ToolInternalFrame tif;
+    private ToolContext tc;
 
     @Before
     public void setup() {
@@ -39,36 +41,52 @@ public class TestBucketTool {
         this.canva.getG2().setPaint(Color.WHITE);
         this.canva.getG2().fillRect(0, 0, 500, 500);
         this.canva.repaint();
+        this.tc = new ToolContext();
+        this.tc.setCanva(this.canva);
+        this.tc.setClick(MouseEvent.BUTTON1_DOWN_MASK);
     }
 
     @Test
     public void testFillCanva() {
-        BufferedImage expectedImage = LoadImage.loadImage("src/Test/graphic/ImageTest/bucketTool/TestFillCanva.png");
+        BufferedImage expectedImage = LoadImage.loadImage("src/test/graphic/imageTest/bucketTool/TestFillCanva.png");
         this.toolbox.setActiveTool(1);
         this.colorModel.setPrimaryColor(Color.MAGENTA);
-        this.toolbox.getActiveTool().execute(40, 40, 40, 40, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON1_DOWN_MASK, 30, false, true, null);
+        this.toolbox.getActiveTool().execute(this.tc);
+        this.tc.setOldX(40);
+        this.tc.setOldY(40);
+        this.tc.setCurrentX(40);
+        this.tc.setCurrentY(40);
         assertEquals(true, ImageComparator.areImagesSimilar(this.canva.getBufferedImage(), expectedImage));
     }
 
     @Test
     public void testFillShape() {
-        BufferedImage expectedImage = LoadImage.loadImage("src/Test/graphic/ImageTest/bucketTool/TestFillShape.png");
+        BufferedImage expectedImage = LoadImage.loadImage("src/test/graphic/imageTest/bucketTool/TestFillShape.png");
         this.canva.getG2().setPaint(Color.BLACK);
         this.canva.getG2().drawRect(200, 200, 20, 20);
         this.toolbox.setActiveTool(1);
         this.colorModel.setPrimaryColor(Color.ORANGE);
-        this.toolbox.getActiveTool().execute(210, 210, 210, 210, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON1_DOWN_MASK, 30, false, true, null);
+        this.tc.setOldX(210);
+        this.tc.setOldY(210);
+        this.tc.setCurrentX(210);
+        this.tc.setCurrentY(210);
+        this.toolbox.getActiveTool().execute(this.tc);
         assertEquals(true, ImageComparator.areImagesSimilar(this.canva.getBufferedImage(), expectedImage));
     }
 
     @Test
     public void testFillSecondaryColor() throws IOException {
-        BufferedImage expectedImage = LoadImage.loadImage("src/Test/graphic/ImageTest/bucketTool/TestFillSecondaryColor.png");
+        BufferedImage expectedImage = LoadImage.loadImage("src/test/graphic/imageTest/bucketTool/TestFillSecondaryColor.png");
         this.toolbox.setActiveTool(1);
         this.colorModel.setIsPrimaryColor(false);
-        this.colorModel.setSecondaryColor(Color.YELLOW);
-        this.colorModel.setPrimaryColor(Color.ORANGE);
-        this.toolbox.getActiveTool().execute(10, 10, 10, 210, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON1_DOWN_MASK, 30, false, true, null);
+        this.colorModel.setSecondaryColor(Color.ORANGE);
+        this.colorModel.setPrimaryColor(Color.YELLOW);
+        this.tc.setOldX(210);
+        this.tc.setOldY(210);
+        this.tc.setCurrentX(210);
+        this.tc.setCurrentY(210);
+        this.tc.setClick(MouseEvent.BUTTON3_DOWN_MASK);
+        this.toolbox.getActiveTool().execute(this.tc);
         assertEquals(true, ImageComparator.areImagesSimilar(this.canva.getBufferedImage(), expectedImage));
     }
 }

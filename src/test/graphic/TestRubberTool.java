@@ -1,5 +1,6 @@
-package Test.graphic;
+package test.graphic;
 
+import graphic.model.ToolContext;
 import graphic.model.canva.Canva;
 import graphic.model.tools.RubberTool;
 import graphic.model.tools.Toolbox;
@@ -16,6 +17,7 @@ import static junit.framework.TestCase.assertEquals;
 public class TestRubberTool {
     private Canva canva;
     private Toolbox toolbox;
+    private ToolContext tc;
 
     @Before
     public void setup() {
@@ -28,33 +30,59 @@ public class TestRubberTool {
         this.canva.repaint();
         this.toolbox.addTool(new RubberTool());
         this.toolbox.setActiveTool(1);
+        this.tc = new ToolContext();
+        this.tc.setCanva(this.canva);
     }
 
     @Test
     public void testEraseLineSquare() throws IOException {
-        BufferedImage expectedImage = LoadImage.loadImage("src/Test/graphic/ImageTest/rubberTool/TestLineSquare.png");
-        this.toolbox.getActiveTool().execute(40, 90, 200, 200, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON1_DOWN_MASK, 30, true, true, null);
+        this.tc.setOldX(40);
+        this.tc.setOldY(90);
+        this.tc.setCurrentX(200);
+        this.tc.setCurrentY(200);
+        this.tc.setSize(30);
+        this.tc.setSquare(true);
+        BufferedImage expectedImage = LoadImage.loadImage("src/test/graphic/imageTest/rubberTool/TestLineSquare.png");
+        this.toolbox.getActiveTool().execute(this.tc);
         assertEquals(true, ImageComparator.areImagesSimilar(this.canva.getBufferedImage(), expectedImage));
     }
 
     @Test
     public void testEraseLineRound() {
-        BufferedImage expectedImage = LoadImage.loadImage("src/Test/graphic/ImageTest/rubberTool/TestLineRound.png");
-        this.toolbox.getActiveTool().execute(40, 90, 200, 200, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON1_DOWN_MASK, 30, false, true, null);
+        this.tc.setOldX(40);
+        this.tc.setOldY(90);
+        this.tc.setCurrentX(200);
+        this.tc.setCurrentY(200);
+        this.tc.setSize(30);
+        this.tc.setSquare(false);
+        BufferedImage expectedImage = LoadImage.loadImage("src/test/graphic/imageTest/rubberTool/TestLineRound.png");
+        this.toolbox.getActiveTool().execute(this.tc);
         assertEquals(true, ImageComparator.areImagesSimilar(this.canva.getBufferedImage(), expectedImage));
     }
 
     @Test
     public void testErasePointSquare() {
-        BufferedImage expectedImage = LoadImage.loadImage("src/Test/graphic/ImageTest/rubberTool/TestErasePointSquare.png");
-        this.toolbox.getActiveTool().execute(90, 90, 90, 90, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON1_DOWN_MASK, 30, true, true, null);
+        this.tc.setOldX(90);
+        this.tc.setOldY(90);
+        this.tc.setCurrentX(90);
+        this.tc.setCurrentY(90);
+        this.tc.setSize(30);
+        this.tc.setSquare(true);
+        BufferedImage expectedImage = LoadImage.loadImage("src/test/graphic/imageTest/rubberTool/TestErasePointSquare.png");
+        this.toolbox.getActiveTool().execute(this.tc);
         assertEquals(true, ImageComparator.areImagesSimilar(this.canva.getBufferedImage(), expectedImage));
     }
 
     @Test
     public void testErasePointRound() {
-        BufferedImage expectedImage = LoadImage.loadImage("src/Test/graphic/ImageTest/rubberTool/TestErasePointRound.png");
-        this.toolbox.getActiveTool().execute(90, 90, 90, 90, this.canva.getBufferedImage(), this.canva.getG2(), MouseEvent.BUTTON1_DOWN_MASK, 30, false, true, null);
+        this.tc.setOldX(90);
+        this.tc.setOldY(90);
+        this.tc.setCurrentX(90);
+        this.tc.setCurrentY(90);
+        this.tc.setSize(30);
+        this.tc.setSquare(false);
+        BufferedImage expectedImage = LoadImage.loadImage("src/test/graphic/imageTest/rubberTool/TestErasePointRound.png");
+        this.toolbox.getActiveTool().execute(this.tc);
         assertEquals(true, ImageComparator.areImagesSimilar(this.canva.getBufferedImage(), expectedImage));
     }
 }

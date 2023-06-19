@@ -1,4 +1,4 @@
-package Test.graphic;
+package test.graphic;
 
 import graphic.exception.nullImageException;
 

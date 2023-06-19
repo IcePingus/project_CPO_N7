@@ -1,4 +1,4 @@
-package Test.graphic;
+package test.graphic;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -15,7 +15,7 @@ public class TestLoadImage {
 
     @Before
     public void setup() {
-        this.image1 = LoadImage.loadImage("src/Test/graphic/ImageTest/textTool/testWrite.png");
+        this.image1 = LoadImage.loadImage("src/test/graphic/imageTest/textTool/TestWrite.png");
     }
 
     @Test

@@ -1,4 +1,4 @@
-package Test.terminal;
+package test.terminal;
 
 import static org.junit.Assert.assertEquals;
 
@@ -6,17 +6,10 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.batik.dom.GenericDOMImplementation;
-import org.apache.batik.svggen.SVGGeneratorContext;
-import org.apache.batik.svggen.SVGGraphics2D;
 import org.junit.Before;
 import org.junit.Test;
-import org.w3c.dom.DOMImplementation;
-import org.w3c.dom.Document;
-import org.w3c.dom.svg.SVGDocument;
 
 import terminalSVG.model.SVGPreview;
-import terminalSVG.model.SVGCommand.CircleSVG;
 import terminalSVG.model.SVGCommand.SquareSVG;
 
 
