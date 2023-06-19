@@ -5,7 +5,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
