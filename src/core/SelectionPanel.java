@@ -1,9 +1,12 @@
-package graphic.view;
+package core;
 
+import graphic.view.GraphicProjectPanel;
 import terminalSVG.view.TerminalProjectPanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * The SelectionPanel class represents a panel for selecting between graphic mode and terminal mode.
@@ -27,12 +30,14 @@ public class SelectionPanel extends JPanel {
     public SelectionPanel(JFrame frame) {
         this.setLayout(new GridBagLayout());
         this.frame = frame;
+        // Utilisé pour mettre en forme les éléments plus précisément qu'avec un layout
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(frame.getWidth() / 120, 100, 70, (int) (frame.getWidth() / 1.5));
         this.setOpaque(false);
 
+        // Bouton pour lancer un projet graphique
         this.graphicModeButton = new JButton("Créer une image png");
         this.graphicModeButton.setMargin(new Insets(10, 150, 10, 150));
         this.graphicModeButton.setBackground(Color.BLACK);
@@ -51,6 +56,7 @@ public class SelectionPanel extends JPanel {
         this.graphicModeButton.setFocusPainted(false);
         this.graphicModeButton.addActionListener(e -> this.onGraphicModeButtonClick());
 
+        // Bouton pour lancer un projet en ligne de commande
         this.terminalModeButton = new JButton("Créer une image svg");
         this.terminalModeButton.setMargin(new Insets(10, 150, 10, 150));
         this.terminalModeButton.setBackground(Color.BLACK);
@@ -95,5 +101,18 @@ public class SelectionPanel extends JPanel {
         this.frame.setContentPane(this.terminalProjectPanel);
         this.frame.validate();
         this.frame.repaint();
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        // Définir l'image de fond de l'application
+        final Image backgroundImage;
+        try {
+            backgroundImage = javax.imageio.ImageIO.read(new File("src/assets/images/background.png"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        g.drawImage(backgroundImage, 0, 0, this.getWidth(), this.getHeight(), null);
     }
 }

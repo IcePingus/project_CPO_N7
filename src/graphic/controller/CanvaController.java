@@ -5,7 +5,7 @@ import graphic.exception.BadFormatException;
 import graphic.exception.ClipboardVoidException;
 import graphic.model.CropTypes;
 import graphic.model.canva.Canva;
-import graphic.view.SelectionPanel;
+import core.SelectionPanel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

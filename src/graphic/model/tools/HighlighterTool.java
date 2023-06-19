@@ -19,8 +19,8 @@ public class HighlighterTool implements ToolCommand {
     private final String name;
     private final Icon image;
     private final boolean isResizable;
-    private final boolean isSquareRoundShape;
-    private final boolean hasShapeSelection;
+    private boolean isSquareRoundShape;
+    private boolean hasShapeSelection;
     private Color primaryColor;
     private Color secondaryColor;
 
@@ -32,9 +32,8 @@ public class HighlighterTool implements ToolCommand {
     public HighlighterTool() {
         this.name = "Highlighter";
         this.image = new ImageIcon(getClass().getResource("/assets/images/highlighter.png"));
+        // Options par défaut
         this.isResizable = true;
-        this.isSquareRoundShape = false;
-        this.hasShapeSelection = false;
         this.primaryColor = Color.BLACK;
         this.secondaryColor = Color.WHITE;
     }
@@ -107,6 +106,7 @@ public class HighlighterTool implements ToolCommand {
      */
     @Override
     public void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click, int size, boolean square, boolean isFirstPoint, JComponent canva) {
+        // Récupérer la couleur et appliquer le niveau de transparence en fonction du type de clic
         Color color = null;
         if (click == InputEvent.BUTTON1_DOWN_MASK) {
             color = new Color(primaryColor.getRed(), primaryColor.getGreen(), primaryColor.getBlue(), 17);
@@ -116,6 +116,7 @@ public class HighlighterTool implements ToolCommand {
         if (color != null) {
             graphics2D.setPaint(color);
             graphics2D.drawLine(oldX, oldY, currentX, currentY);
+            // Dessine des lignes sur la toile en fonction de la taille de l'outil
             for (int i = 1; i < size; i++) {
                 graphics2D.drawLine(oldX + i, oldY + i, currentX + i, currentY + i);
                 graphics2D.drawLine(oldX - i, oldY - i, currentX - i, currentY - i);

@@ -98,15 +98,17 @@ public class RubberTool implements ToolCommand {
      */
     @Override
     public void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click, int size, boolean square, boolean isFirstPoint, JComponent canva) {
+        // Définir la méthode de dessin à supprimer la couleur
         graphics2D.setComposite(AlphaComposite.Clear);
-        graphics2D.drawLine(oldX, oldY, currentX, currentY);
 
+        // Gommer le point actuel en fonction de la taille
         if (square) {
             graphics2D.fillRect(oldX - size / 2, oldY - size / 2, size, size);
         } else {
             graphics2D.fillOval(oldX - size / 2, oldY - size / 2, size, size);
         }
 
+        // Définir la distance à parcourir pour chaque dimension, la direction et l'erreur (algorithme de Bresenham)
         int distanceX = Math.abs(currentX - oldX);
         int distanceY = Math.abs(currentY - oldY);
         int directionX = oldX < currentX ? 1 : -1;
@@ -114,6 +116,7 @@ public class RubberTool implements ToolCommand {
         int erreur = distanceX - distanceY;
         int erreur2;
 
+        // Parcourir les points entre le dernier point enregistré et le point actuel et gommer les points en fonction de la taille
         while (oldX != currentX || oldY != currentY) {
 
             if (square) {
@@ -122,6 +125,7 @@ public class RubberTool implements ToolCommand {
                 graphics2D.fillOval(oldX - size / 2, oldY - size / 2, size, size);
             }
 
+            // Calculer l'erreur lors du parcours des points pour bien suivre le chemin
             erreur2 = 2 * erreur;
             if (erreur2 > -distanceY) {
                 erreur -= distanceY;

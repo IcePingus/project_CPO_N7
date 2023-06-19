@@ -108,13 +108,19 @@ public class PickerTool implements ToolCommand {
      */
     @Override
     public void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click, int size, boolean square, boolean isFirstPoint, JComponent canva) {
-        Color color = new Color(bufferedImage.getRGB(currentX, currentY));
-        if (click == InputEvent.BUTTON1_DOWN_MASK) {
-            this.colorController.setPrimaryColor(color);
-            this.colorController.setIsPrimaryColor(true);
-        } else if (click == InputEvent.BUTTON3_DOWN_MASK) {
-            this.colorController.setIsPrimaryColor(false);
-            this.colorController.setSecondaryColor(color);
+        try {
+            // Récupérer la couleur du point cliqué
+            Color color = new Color(bufferedImage.getRGB(currentX, currentY));
+            // Définir la couleur en fonction du type de clic
+            if (click == InputEvent.BUTTON1_DOWN_MASK) {
+                this.colorController.setPrimaryColor(color);
+                this.colorController.setIsPrimaryColor(true);
+            } else if (click == InputEvent.BUTTON3_DOWN_MASK) {
+                this.colorController.setIsPrimaryColor(false);
+                this.colorController.setSecondaryColor(color);
+            }
+        } catch (Exception e) {
+            System.out.println("Au revoir Pipette !");
         }
     }
 

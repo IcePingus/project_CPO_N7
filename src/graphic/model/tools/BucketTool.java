@@ -107,15 +107,22 @@ public class BucketTool implements ToolCommand {
      */
     @Override
     public void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click, int size, boolean square, boolean isFirstPoint, JComponent canva) {
+        // Récupérer la couleur en fonction du type de clic
         Color color = null;
         if (click == InputEvent.BUTTON1_DOWN_MASK) {
             color = primaryColor;
         } else if (click == InputEvent.BUTTON3_DOWN_MASK) {
             color = secondaryColor;
         }
-        if (color != null && color.getRGB() != bufferedImage.getRGB(oldX, oldY)) {
-            System.out.println(bufferedImage.getRGB(oldX, oldY));
-            fill(oldX, oldY, bufferedImage, bufferedImage.getRGB(oldX, oldY), color.getRGB());
+        try {
+            /* Exécuter la méthode fill si la couleur n'est pas nulle et que la couleur du pixel cliqué est différente
+               de la couleur à définir */
+            if (color != null && color.getRGB() != bufferedImage.getRGB(oldX, oldY)) {
+                fill(oldX, oldY, bufferedImage, bufferedImage.getRGB(oldX, oldY), color.getRGB());
+            }
+        } catch (Exception e) {
+            // !(Salut Bucket !)
+            System.out.println("Au revoir Bucket !");
         }
     }
 
@@ -144,25 +151,33 @@ public class BucketTool implements ToolCommand {
      */
     private void fill(int startX, int startY, BufferedImage bufferedImage, int oldColorRGB, int newColorRGB) {
 
+        // Instancier la liste de pixel à traiter et y ajouter le pixel cliqué
         Queue<Point> queue = new LinkedList<>();
         queue.add(new Point(startX, startY));
 
+        // Tant que la liste n'est pas vide
         while (!queue.isEmpty()) {
+            // Récupérer le premier point et le retirer de la liste
             Point point = queue.poll();
             int x = (int) point.getX();
             int y = (int) point.getY();
 
+            // Si le point n'est pas dans la bufferedImage, passer à la prochaine itération du tant que
             if (x < 0 || x >= bufferedImage.getWidth() || y < 0 || y >= bufferedImage.getHeight()) {
                 continue;
             }
 
+            // Récupérer le code de la couleur du pixel traité
             int currentColor = bufferedImage.getRGB(x, y);
+            // Si la couleur est différente de la couleur du pixel cliqué, passer à la prochaine itération du tant que
             if (currentColor != oldColorRGB) {
                 continue;
             }
 
+            // Définir la couleur du pixel traité à la nouvelle couleur
             bufferedImage.setRGB(x, y, newColorRGB);
 
+            // Ajouter les points adjacents au point traité à la queue
             queue.add(new Point(x - 1, y));
             queue.add(new Point(x + 1, y));
             queue.add(new Point(x, y - 1));

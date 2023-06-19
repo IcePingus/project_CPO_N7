@@ -1,3 +1,5 @@
+import core.FramePinte;
+
 import javax.swing.*;
 
 public class Main {

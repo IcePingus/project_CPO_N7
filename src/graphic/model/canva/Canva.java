@@ -52,19 +52,18 @@ public class Canva extends JComponent {
      * @param zoomLabel label for the current zoom
      */
     public Canva(Toolbox toolbox, JLabel canvaSizeLabel, JLabel zoomLabel) {
-        // Initialize variables
+        // Initialiser les variables
         this.toolbox = toolbox;
         this.imageStates = new ArrayList<>();
         this.currentIndex = 0;
         this.zoom = 1.0;
         this.isFirstPoint = true;
 
-        // Configure component
+        // Configurer le composant
         this.setDoubleBuffered(false);
         this.requestFocusInWindow();
         this.canvaSizeLabel = canvaSizeLabel;
 
-        // Add mouse listener
         this.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
                 // Save coordinates when mouse is pressed
