@@ -3,7 +3,6 @@ package terminalSVG.model.SVGCommand;
 import terminalSVG.model.SVGPreview;
 
 import java.awt.*;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -45,6 +44,9 @@ public abstract class DrawShapeAction implements SVGCommand {
         this.fillColor = fillColor;
     }
 
+    public DrawShapeAction() {
+    }
+
     // Implémentez les méthodes de l'interface SVGCommand
     @Override
     public String getName() {
@@ -55,8 +57,9 @@ public abstract class DrawShapeAction implements SVGCommand {
     public abstract String getHelp();
 
     @Override
-    public void execute(SVGPreview svgPreview, String shapeName) {
+    public String execute(SVGPreview svgPreview, String shapeName) {
         svgPreview.addElement(shapeName, this);
+        return "[+] " + shapeName + "\n";
     }
 
     /**

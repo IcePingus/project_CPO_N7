@@ -11,6 +11,12 @@ import java.util.Map;
  */
 public class EraseSVG implements SVGCommand {
 
+    private final String description = ("\n" + "Erase : Efface une forme"
+            + "\n" + "commande : erase <nom>"
+            + "\n" + "nom : nom d'une forme"
+            + "\n" + "Exemple :"
+            + "\n" + "----------------------------------------------"
+    );
     private String eltName;
 
     /**
@@ -22,6 +28,9 @@ public class EraseSVG implements SVGCommand {
         this.eltName = (String) instruction.get("elementName");
     }
 
+    public EraseSVG() {
+    }
+
     @Override
     public String getName() {
         return eltName;
@@ -29,12 +38,13 @@ public class EraseSVG implements SVGCommand {
 
     @Override
     public String getHelp() {
-        return null;
+        return this.description;
     }
 
     @Override
-    public void execute(SVGPreview svgPreview, String shapeName) {
+    public String execute(SVGPreview svgPreview, String shapeName) {
         svgPreview.delElement(eltName);
+        return "[-] " + eltName + "\n";
     }
 
     /**

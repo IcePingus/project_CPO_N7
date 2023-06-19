@@ -11,10 +11,19 @@ import java.util.Map;
  */
 public class ClearSVG implements SVGCommand {
 
+    private final String description = ("\n" + "Clear : Efface toutes les formes"
+            + "\n" + "commande : clear"
+            + "\n" + "couleur : couleur de base"
+            + "\n" + "----------------------------------------------"
+    );
+
     /**
      * Instantiates a new Clear svg.
      */
     public ClearSVG() {
+    }
+
+    public ClearSVG(Map<String, Object> instruction) {
     }
 
     @Override
@@ -24,12 +33,13 @@ public class ClearSVG implements SVGCommand {
 
     @Override
     public String getHelp() {
-        return null;
+        return this.description;
     }
 
     @Override
-    public void execute(SVGPreview svgPreview, String shapeName) {
+    public String execute(SVGPreview svgPreview, String shapeName) {
         svgPreview.clearShapeList();
+        return  ">> Clear executed\n";
     }
 
     /**

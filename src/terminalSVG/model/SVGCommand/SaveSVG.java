@@ -12,7 +12,17 @@ import java.util.Map;
  */
 public class SaveSVG implements SVGCommand {
 
+    private final String description = ("\n" + "Save : Enregistre le fichier SVG"
+            + "\n" + "commande : save [nomFichier]"
+            + "\n" + "nomFichier : nom du fichier SVG"
+            + "\n" + "Exemple :"
+            + "\n" + "----------------------------------------------"
+    );
+
     private String eltName;
+
+    public SaveSVG() {
+    }
 
     /**
      * Constructs a SaveSVG object with the specified instruction map.
@@ -40,7 +50,7 @@ public class SaveSVG implements SVGCommand {
      */
     @Override
     public String getHelp() {
-        return null;
+        return this.description;
     }
 
     /**
@@ -48,14 +58,16 @@ public class SaveSVG implements SVGCommand {
      *
      * @param svgPreview The SVGPreview object on which to perform the save operation.
      * @param shapeName  The name of the shape (unused).
+     * @return
      */
     @Override
-    public void execute(SVGPreview svgPreview, String shapeName) {
+    public String execute(SVGPreview svgPreview, String shapeName) {
         try {
             svgPreview.saveSVG(eltName);
         } catch (TransformerException e) {
             throw new RuntimeException(e);
         }
+        return  ">> Save executed\n";
     }
 
     /**

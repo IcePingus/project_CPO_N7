@@ -13,6 +13,13 @@ import java.util.Map;
  */
 public class ColorSVG implements SVGCommand {
 
+    private final String description = ("\n" + "Color : Définit la couleur de base"
+            + "\n" + "commande : color <couleur>"
+            + "\n" + "couleur : nouvelle couleur de base"
+            + "\n" + "Exemple :"
+            + "\n" + "----------------------------------------------"
+    );
+
     private Color color;
 
     /**
@@ -24,6 +31,9 @@ public class ColorSVG implements SVGCommand {
         this.color = (Color) instruction.get("strokeColor");
     }
 
+    public ColorSVG() {
+    }
+
     @Override
     public String getName() {
         return null;
@@ -31,12 +41,13 @@ public class ColorSVG implements SVGCommand {
 
     @Override
     public String getHelp() {
-        return null;
+        return this.description;
     }
 
     @Override
-    public void execute(SVGPreview svgPreview, String shapeName) {
+    public String execute(SVGPreview svgPreview, String shapeName) {
         svgPreview.setDefaultColor(color);
+        return  ">> Color executed\n";
     }
 
     /**

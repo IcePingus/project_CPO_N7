@@ -18,7 +18,14 @@ public class RectangleSVG extends DrawShapeAction {
     private double sideLength2;
     private static final Integer COORDS_LIST_SIZE = 4;
     private static final String COMMAND_NAME = "rectangle";
-    private final String description = ("\n" + "Utilisation Rectangle : "
+    private final String description = ("\n" + "Rectangle : Création d'un rectangle"
+            + "\n" + "commande : rectangle <nom> <coordonnéesX> <coordonnéesY> <largeur> <hauteur> [-s contour] [-f remplissage]"
+            + "\n" + " X / Y : coordonnées de la forme"
+            + "\n" + "largeur / hauteur : largeur & hauteur de la forme"
+            + "\n" + "contour : couleur de contour du rectangle"
+            + "\n" + "remplissage : couleur de remplissage du rectangle"
+            + "\n" + "Exemple :"
+            + "\n" + "----------------------------------------------"
     );
 
     /**
@@ -36,6 +43,9 @@ public class RectangleSVG extends DrawShapeAction {
         this.point = new Point(coords.get(0), coords.get(1));
         this.sideLength1 = coords.get(2);
         this.sideLength2 = coords.get(3);
+    }
+
+    public RectangleSVG(){
     }
 
     public void draw(SVGPreview svgPreview) {

@@ -94,7 +94,6 @@ public class Parser {
             instruction.put("coords", coordinates);
             instruction.put("elementActionType", "setter");
             return instruction;
-
         }
     }
 

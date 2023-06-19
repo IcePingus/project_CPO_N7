@@ -16,7 +16,14 @@ public class PolygonSVG extends DrawShapeAction {
     private List<Point> points;
 	private final Integer COORDS_LIST_SIZE = 4;
 	private static final String COMMAND_NAME = "polygon";
-	private final String description = ("\n" + "Utilisation Polygon : "
+	private final String description = ("\n" + "Polygone : Création d'un polygone"
+			+ "\n" + "commande : polygon <nom> <coordonnéesX>* <coordonnéesY>* [-s contour] [-f remplissage]"
+			+ "\n" + " X / Y : coordonnées des points de la forme"
+			+ "\n" + "largeur / hauteur : largeur & hauteur de la forme"
+			+ "\n" + "contour : couleur de contour du polygone"
+			+ "\n" + "remplissage : couleur de remplissage du polygone"
+			+ "\n" + "Exemple :"
+			+ "\n" + "----------------------------------------------"
 	);
 
 	/**
@@ -40,6 +47,9 @@ public class PolygonSVG extends DrawShapeAction {
 			double y = coords.get(i + 1);
 			points.add(new Point(x, y));
 		}
+	}
+
+	public PolygonSVG(){
 	}
 
 	public void draw(SVGPreview svgPreview) {

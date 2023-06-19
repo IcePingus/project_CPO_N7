@@ -4,6 +4,7 @@ import terminalSVG.model.History;
 import terminalSVG.model.Command;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -31,7 +32,9 @@ public class ViewHistoryPanel extends JScrollPane implements Observer {
         this.add(this.commands);
 
         this.setViewportView(this.commands);
+
         this.setLayout(new ScrollPaneLayout());
+
     }
 
     /**

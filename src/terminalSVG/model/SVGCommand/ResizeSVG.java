@@ -11,6 +11,14 @@ import java.util.Map;
  */
 public class ResizeSVG implements SVGCommand {
 
+    private final String description = (
+            "\n" + "Resize : redimensionne une forme"
+            + "\n" + "commande : resize <nom> [-w largeur] [-h hauteur]"
+            + "\n" + "largeur / hauteur : largeur & hauteur de la forme"
+            + "\n" + "NB : Dépend de la forme (cercle & carré -> largeur = hauteur"
+            + "\n" + "Exemple :"
+            + "\n" + "----------------------------------------------"
+    );
     private Map<String, Object> sizes;
 
     /**
@@ -22,6 +30,8 @@ public class ResizeSVG implements SVGCommand {
         this.sizes = instruction;
     }
 
+    public ResizeSVG(){}
+
     @Override
     public String getName() {
         return null;
@@ -29,18 +39,19 @@ public class ResizeSVG implements SVGCommand {
 
     @Override
     public String getHelp() {
-        return null;
+        return this.description;
     }
 
+    /**
+     * Resizes the SVG element with the specified shape name.
+     *
+     * @param svgPreview the SVG preview instance
+     * @param shapeName the name of the shape to be resized
+     */
     @Override
-    public void execute(SVGPreview svgPreview, String shapeName) {
-        /**
-         * Resizes the SVG element with the specified shape name.
-         *
-         * @param svgPreview the SVG preview instance
-         * @param shapeName the name of the shape to be resized
-         */
+    public String execute(SVGPreview svgPreview, String shapeName) {
         svgPreview.resizeElement(shapeName, this.sizes);
+        return  ">> Resize executed\n";
     }
 
     /**

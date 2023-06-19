@@ -19,7 +19,14 @@ public class OvalSVG extends DrawShapeAction {
     private final Integer COORDS_LIST_SIZE = 4;
 
     private static final String COMMAND_NAME = "oval";
-    private final String description = ("\n" + "Utilisation Oval : "
+    private final String description = ("\n" + "Oval : Création d'un oval"
+            + "\n" + "commande : oval <nom> <coordonnéesX> <coordonnéesY> <largeur> <hauteur> [-s contour] [-f remplissage]"
+            + "\n" + " X / Y : coordonnées de la forme"
+            + "\n" + "largeur / hauteur : largeur & hauteur de la forme"
+            + "\n" + "contour : couleur de contour du oval"
+            + "\n" + "remplissage : couleur de remplissage du oval"
+            + "\n" + "Exemple :"
+            + "\n" + "----------------------------------------------"
     );
 
     /**
@@ -38,6 +45,10 @@ public class OvalSVG extends DrawShapeAction {
         this.width = coords.get(2);
         this.height = coords.get(3);
     }
+
+    public OvalSVG(){
+    }
+
 
     public void draw(SVGPreview svgPreview) {
         // Dessiner le cercle avec le SVGGraphics2D

@@ -1,9 +1,7 @@
 package terminalSVG.model.SVGCommand;
 
 import terminalSVG.model.SVGPreview;
-import terminalSVG.model.parser.Parser;
 
-import java.security.InvalidParameterException;
 import java.util.Map;
 
 /**
@@ -13,8 +11,18 @@ import java.util.Map;
  */
 public class TranslateSVG implements SVGCommand {
 
+    private final String description = ("\n" + "Translate : Déplacement d'une forme"
+            + "\n" + "commande : resize <nom> [-x dx] [-y dy]"
+            + "\n" + "dx : déplacement en abscisse"
+            + "\n" + "dy : déplacement en ordonnée"
+            + "\n" + "Exemple :"
+            + "\n" + "----------------------------------------------"
+    );
+
     private Double dx;
     private Double dy;
+
+    public TranslateSVG(){}
 
     /**
      * Constructs a TranslateSVG object with the specified translation values.
@@ -33,12 +41,13 @@ public class TranslateSVG implements SVGCommand {
 
     @Override
     public String getHelp() {
-        return null;
+        return this.description;
     }
 
     @Override
-    public void execute(SVGPreview svgPreview, String shapeName) {
+    public String execute(SVGPreview svgPreview, String shapeName) {
         svgPreview.translateElement(shapeName, dx, dy);
+        return  ">> Translate executed\n";
     }
 
     /**

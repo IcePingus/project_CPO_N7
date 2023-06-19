@@ -58,6 +58,7 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
         this.modifierCommandList.add("recolor");
         this.modifierCommandList.add("translate");
         this.modifierCommandList.add("resize");
+        this.modifierCommandList.add("help");
 
         this.sendButton = new JButton("Entrer");
         this.sendButton.addActionListener(this);
@@ -118,6 +119,7 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
             } catch (Exception e) {
                 // Gérer toutes les autres exceptions
                 this.history.addCommand(new Command("Erreur imprévue s'est produite : " + e.getMessage()));
+                e.printStackTrace();
             }
         }
         this.textArea.setText("");
@@ -131,6 +133,7 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
      * @throws ClassNotFoundException If the specified class is not found.
      */
     public void executeCommand(Map<String, Object> instruction) throws ClassNotFoundException {
+        String returnAction;
         String elementActionType = getString(instruction, "elementActionType");
         String elementAction = getString(instruction, "elementAction");
         String elementName = getString(instruction, "elementName");
@@ -159,7 +162,9 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
             if (svgCommand == null) {
                 throw new IllegalArgumentException("ERROR");
             }
-            svgCommand.execute(this.svgPreview, elementName);
+            returnAction = svgCommand.execute(this.svgPreview, elementName);
+            this.displayReturnAction(returnAction);
+
         } catch (NoSuchMethodException e) {
             throw new RuntimeException(e);
         } catch (InvocationTargetException e) {
@@ -170,6 +175,7 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
             throw new RuntimeException(e);
         }
     }
+
 
     /**
      * Utility method to extract a string value from the map with a default value.
@@ -202,8 +208,29 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
      * @param defaultValue The default color value.
      * @return The extracted color value or the default value if the key is not found.
      */
+
     private Color getColor(Map<String, Object> map, String key, Color defaultValue) {
         return map.containsKey(key) ? (Color) map.get(key) : defaultValue;
+    }
+
+    /**
+     * Utility method to display the result of a command correctly in the terminal
+     *
+     * @param returnAction  The String containing the value.
+     */
+    public void displayReturnAction(String returnAction) {
+        String retour = ""; // Déplacer l'initialisation de retour en dehors de la boucle
+
+        for (int i = 0; i < returnAction.length(); i++) {
+            char c = returnAction.charAt(i);
+            if (c != '\n') {
+                retour += c;
+            }
+            if (c == '\n') {
+                this.history.addCommand(new Command(retour));
+                retour = ""; // Réinitialiser retour pour la prochaine sous-chaîne
+            }
+        }
     }
 
     @Override

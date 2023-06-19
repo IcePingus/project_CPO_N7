@@ -16,17 +16,19 @@ public class CircleSVG extends DrawShapeAction {
     private double radius;
     private final Integer COORDS_LIST_SIZE = 3;
     private static final String COMMAND_NAME = "circle";
-    private final String description = ("\n" + "Utilisation Cercle : "
-            + "\n\t" + "circle <nom> <coordonnéesX> <coordonnéesY> <rayon>"
-            + "\n\t\t" + "coordonnées X et Y : coordonnées du point en haut "
-            + "\n\t\t" + "rayon : rayon du cercle"
-            + "\n"
-            + "\n\t" + "Exemple :"
-            + "\n\t" + ""
-            + ""
-            + "\n"
+    private final String description = (
+            "\n" + "Cercle : Création d'un cercle"
+            + "\n" + "commande : circle <nom> <coordonnéesX> <coordonnéesY> <rayon> [-s contour] [-f remplissage]"
+            + "\n" + " X / Y : coordonnées de la forme"
+            + "\n" + "rayon : rayon du cercle"
+            + "\n" + "contour : couleur de contour du cercle"
+            + "\n" + "remplissage : couleur de remplissage du cercle"
+            + "\n" + "Exemple :"
+            + "\n" + "----------------------------------------------"
     );
 
+    public CircleSVG(){
+    };
     /**
      * Instantiates a new Circle svg.
      *
@@ -36,6 +38,7 @@ public class CircleSVG extends DrawShapeAction {
      * @param cStroke the c stroke
      * @param cFill   the c fill
      */
+
     public CircleSVG(String name, List<Double> coords, boolean isFill, Color cStroke, Color cFill) {
         super(name, isFill, cStroke, cFill);
         assert coords.size() == COORDS_LIST_SIZE;

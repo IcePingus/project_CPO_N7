@@ -16,7 +16,14 @@ public class SquareSVG extends DrawShapeAction {
     private double sideLength;
     private static final Integer COORDS_LIST_SIZE = 3;
     private static final String COMMAND_NAME = "square";
-    private final String description = ("\n" + "Utilisation Carré : "
+    private final String description = ("\n" + "Carré : Création d'un carré"
+            + "\n" + "commande : square <nom> <coordonnéesX> <coordonnéesY> <longueur> [-s contour] [-f remplissage]"
+            + "\n" + " X / Y : coordonnées de la forme"
+            + "\n" + "longueur : longueur du côté"
+            + "\n" + "contour : couleur de contour du carré"
+            + "\n" + "remplissage : couleur de remplissage du carré"
+            + "\n" + "Exemple :"
+            + "\n" + "----------------------------------------------"
     );
 
     /**
@@ -33,6 +40,9 @@ public class SquareSVG extends DrawShapeAction {
         assert coords.size() == COORDS_LIST_SIZE;
         this.point = new Point(coords.get(0), coords.get(1));
         this.sideLength = coords.get(2);
+    }
+
+    public SquareSVG(){
     }
 
     /**

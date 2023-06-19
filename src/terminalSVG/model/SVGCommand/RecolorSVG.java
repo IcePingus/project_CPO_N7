@@ -13,8 +13,19 @@ import java.util.Map;
  */
 public class RecolorSVG implements SVGCommand {
 
+    private final String description = ("\n" + "Recolor : Redéfinit la couleur d'une forme"
+            + "\n" + "commande : recolor <nom> [-s contour] [-f remplissage]"
+            + "\n" + "nom : nom de la forme"
+            + "\n" + "contour : couleur de contour du cercle"
+            + "\n" + "remplissage : couleur de remplissage du cercle"
+            + "\n" + "Exemple :"
+            + "\n" + "----------------------------------------------"
+    );
     private Color sColor;
     private Color fColor;
+
+    public RecolorSVG() {
+    }
 
     /**
      * Instantiates a new Recolor svg.
@@ -33,12 +44,13 @@ public class RecolorSVG implements SVGCommand {
 
     @Override
     public String getHelp() {
-        return null;
+        return this.description;
     }
 
     @Override
-    public void execute(SVGPreview svgPreview, String shapeName) {
+    public String execute(SVGPreview svgPreview, String shapeName) {
         svgPreview.setNewColorShape(sColor, fColor,shapeName);
+        return  ">> Recolor executed\n";
     }
 
     /**

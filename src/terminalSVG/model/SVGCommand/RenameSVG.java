@@ -11,6 +11,15 @@ import java.util.Map;
  */
 public class RenameSVG implements SVGCommand {
 
+    private final String description = ("\n" + "Rename : renomme une forme"
+            + "\n" + "commande : rename <ancienNom> <NouveauNom>"
+            + "\n" + "ancienNom : ancien nom de la forme"
+            + "\n" + "ancienNom : nouveau nom de la forme"
+            + "\n" + "Exemple :"
+            + "\n" + "----------------------------------------------"
+    );
+
+
     private String newName;
 
     /**
@@ -18,9 +27,11 @@ public class RenameSVG implements SVGCommand {
      *
      * @param instruction The instruction map containing the new name for the element.
      */
+
     public RenameSVG(Map<String, Object> instruction) {
         this.newName = (String) instruction.get("elementNewName");
     }
+    public RenameSVG(){}
 
     /**
      * Gets the name of the command.
@@ -39,7 +50,7 @@ public class RenameSVG implements SVGCommand {
      */
     @Override
     public String getHelp() {
-        return null;
+        return this.description;
     }
 
     /**
@@ -47,10 +58,12 @@ public class RenameSVG implements SVGCommand {
      *
      * @param svgPreview The SVGPreview object on which to perform the rename operation.
      * @param shapeName  The name of the shape to rename.
+     * @return
      */
     @Override
-    public void execute(SVGPreview svgPreview, String shapeName) {
+    public String execute(SVGPreview svgPreview, String shapeName) {
         svgPreview.renameElement(shapeName, this.newName);
+        return  ">> Rename executed\n";
     }
 
     /**
