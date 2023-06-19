@@ -3,6 +3,7 @@ package terminalSVG.model.SVGCommand;
 import terminalSVG.model.SVGPreview;
 
 import java.awt.*;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -54,13 +55,14 @@ public abstract class DrawShapeAction implements SVGCommand {
     }
 
     @Override
-    public abstract String getHelp();
+    public abstract List<String> getHelp();
 
     @Override
-    public String execute(SVGPreview svgPreview) {
-        svgPreview.addElement( this.getName(),this);
-        return "[+] " + this.getName() + "\n";
+    public List<String> execute(SVGPreview svgPreview) {
+        svgPreview.addElement(this.getName(), this);
+        return List.of("[+] " + this.getName());
     }
+
 
     /**
      * Draw the shape on the canva.

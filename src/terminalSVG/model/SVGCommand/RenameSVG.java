@@ -3,6 +3,8 @@ package terminalSVG.model.SVGCommand;
 import terminalSVG.model.Instruction;
 import terminalSVG.model.SVGPreview;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -12,14 +14,14 @@ import java.util.Map;
  */
 public class RenameSVG implements SVGCommand {
 
-    private final String description = ("\n" + "Rename : renomme une forme"
-            + "\n" + "commande : rename <ancienNom> <NouveauNom>"
-            + "\n" + "ancienNom : ancien nom de la forme"
-            + "\n" + "ancienNom : nouveau nom de la forme"
-            + "\n" + "Exemple :"
-            + "\n" + "----------------------------------------------"
-    );
-
+    private final List<String> description = new ArrayList<>(List.of(
+            "Rename : renomme une forme",
+            "commande : rename <ancienNom> <NouveauNom>",
+            "ancienNom : ancien nom de la forme",
+            "ancienNom : nouveau nom de la forme",
+            "Exemple :",
+            "----------------------------------------------"
+    ));
 
     private String newName;
 
@@ -35,7 +37,9 @@ public class RenameSVG implements SVGCommand {
         this.newName = instruction.getName();
         this.oldName = instruction.getOldName();
     }
-    public RenameSVG(){}
+
+    public RenameSVG() {
+    }
 
     /**
      * Gets the name of the command.
@@ -53,7 +57,7 @@ public class RenameSVG implements SVGCommand {
      * @return The help information for the command.
      */
     @Override
-    public String getHelp() {
+    public List<String> getHelp() {
         return this.description;
     }
 
@@ -64,10 +68,10 @@ public class RenameSVG implements SVGCommand {
      * @param shapeName  The name of the shape to rename.
      * @return
      */
-    @Override
-    public String execute(SVGPreview svgPreview) {
+
+    public List<String> execute(SVGPreview svgPreview) {
         svgPreview.renameElement(this.oldName, this.newName);
-        return  ">> Rename executed\n";
+        return List.of(">> Rename executed");
     }
 
     /**

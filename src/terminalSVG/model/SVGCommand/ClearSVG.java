@@ -3,6 +3,8 @@ package terminalSVG.model.SVGCommand;
 import terminalSVG.model.Instruction;
 import terminalSVG.model.SVGPreview;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -12,11 +14,12 @@ import java.util.Map;
  */
 public class ClearSVG implements SVGCommand {
 
-    private final String description = ("\n" + "Clear : Efface toutes les formes"
-            + "\n" + "commande : clear"
-            + "\n" + "couleur : couleur de base"
-            + "\n" + "----------------------------------------------"
-    );
+    private final List<String> description = new ArrayList<>(List.of(
+            "Clear : Efface toutes les formes",
+            "commande : clear",
+            "couleur : couleur de base",
+            "----------------------------------------------"
+    ));
 
     /**
      * Instantiates a new Clear svg.
@@ -33,14 +36,14 @@ public class ClearSVG implements SVGCommand {
     }
 
     @Override
-    public String getHelp() {
+    public List<String> getHelp() {
         return this.description;
     }
 
     @Override
-    public String execute(SVGPreview svgPreview) {
+    public List<String> execute(SVGPreview svgPreview) {
         svgPreview.clearShapeList();
-        return  ">> Clear executed\n";
+        return List.of(">> Clear executed");
     }
 
     /**

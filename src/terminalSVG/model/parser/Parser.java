@@ -68,7 +68,7 @@ public class Parser {
                 throw new IllegalArgumentException("La commande doit spécifier un nom pour l'élément.");
             }
 
-            Instruction instruction = new Instruction(elements[0],elements[1]);
+            Instruction instruction = new Instruction(elements[0], elements[1]);
 
             for (int i = 2; i < elements.length; i++) {
                 String element = elements[i].trim();

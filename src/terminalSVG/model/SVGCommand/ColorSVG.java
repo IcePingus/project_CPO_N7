@@ -5,6 +5,8 @@ import terminalSVG.model.SVGPreview;
 import terminalSVG.model.parser.Parser;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -14,12 +16,13 @@ import java.util.Map;
  */
 public class ColorSVG implements SVGCommand {
 
-    private final String description = ("\n" + "Color : Définit la couleur de base"
-            + "\n" + "commande : color <couleur>"
-            + "\n" + "couleur : nouvelle couleur de base"
-            + "\n" + "Exemple :"
-            + "\n" + "----------------------------------------------"
-    );
+    private final List<String> description = new ArrayList<>(List.of(
+            "Color : Définit la couleur de base",
+            "commande : color <couleur>",
+            "couleur : nouvelle couleur de base",
+            "Exemple :",
+            "----------------------------------------------"
+    ));
 
     private Color color;
 
@@ -41,14 +44,14 @@ public class ColorSVG implements SVGCommand {
     }
 
     @Override
-    public String getHelp() {
+    public List<String> getHelp() {
         return this.description;
     }
 
     @Override
-    public String execute(SVGPreview svgPreview) {
+    public java.util.List<String> execute(SVGPreview svgPreview) {
         svgPreview.setDefaultColor(color);
-        return  ">> Color executed\n";
+        return List.of(">> Color executed");
     }
 
     /**

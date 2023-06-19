@@ -4,6 +4,7 @@ import terminalSVG.model.Instruction;
 import terminalSVG.model.SVGPreview;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -17,19 +18,22 @@ public class CircleSVG extends DrawShapeAction {
     private double radius;
     private final Integer COORDS_LIST_SIZE = 3;
     private static final String COMMAND_NAME = "circle";
-    private final String description = (
-            "\n" + "Cercle : Création d'un cercle"
-            + "\n" + "commande : circle <nom> <coordonnéesX> <coordonnéesY> <rayon> [-s contour] [-f remplissage]"
-            + "\n" + " X / Y : coordonnées de la forme"
-            + "\n" + "rayon : rayon du cercle"
-            + "\n" + "contour : couleur de contour du cercle"
-            + "\n" + "remplissage : couleur de remplissage du cercle"
-            + "\n" + "Exemple :"
-            + "\n" + "----------------------------------------------"
-    );
+    private final List<String> description = new ArrayList<>(List.of(
+            "Cercle : Création d'un cercle",
+            "commande : circle <nom> <coordonnéesX> <coordonnéesY> <rayon> [-s contour] [-f remplissage]",
+            " X / Y : coordonnées de la forme",
+            "rayon : rayon du cercle",
+            "contour : couleur de contour du cercle",
+            "remplissage : couleur de remplissage du cercle",
+            "Exemple :",
+            "----------------------------------------------"
+    ));
 
-    public CircleSVG(){
-    };
+    public CircleSVG() {
+    }
+
+    ;
+
     /**
      * Instantiates a new Circle svg.
      *
@@ -89,7 +93,7 @@ public class CircleSVG extends DrawShapeAction {
         this.setRadius(r);
     }
 
-    public String getHelp() {
+    public List<String> getHelp() {
         return this.description;
     }
 

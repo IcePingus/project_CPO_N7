@@ -1,11 +1,12 @@
 package terminalSVG.model.SVGCommand;
 
 import org.reflections.Reflections;
+import terminalSVG.model.Instruction;
 import terminalSVG.model.SVGPreview;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -15,12 +16,13 @@ import java.util.Set;
  */
 public class HelpSVG implements SVGCommand {
 
-    private final String description = ("\n" + "Help : Liste l'ensemble des commandes"
-            + "\n" + "commande : help [commande]"
-            + "\n" + "commande : help de la commande spécifié"
-            + "\n" + "Exemple :"
-            + "\n" + "----------------------------------------------"
-    );
+    private final List<String> description = new ArrayList<>(List.of(
+            "Help : Liste l'ensemble des commandes",
+            "commande : help [commande]",
+            "commande : help de la commande spécifié",
+            "Exemple :",
+            "----------------------------------------------"
+    ));
 
     private String eltName;
 
@@ -31,15 +33,11 @@ public class HelpSVG implements SVGCommand {
     public HelpSVG() {
     }
 
-    public HelpSVG(Map<String, Object> instruction) {
-        String x = null;
-        if (instruction.containsKey("elementName")) {
-            x = (String) instruction.get("elementName");
-            x = x.endsWith("SVG") ? x : x + "SVG";
-            x = x.startsWith(String.valueOf(Character.toUpperCase(x.charAt(0)))) ? x : Character.toUpperCase(x.charAt(0)) + x.substring(1);
-            this.eltName = (String) instruction.get("elementName");
-        } else {
+    public HelpSVG(Instruction instruction) {
+        if (instruction.getName() == null) {
             this.eltName = "";
+        } else {
+            this.eltName = instruction.getName();
         }
     }
 
@@ -49,40 +47,23 @@ public class HelpSVG implements SVGCommand {
     }
 
     @Override
-    public String getHelp() {
+    public List<String> getHelp() {
         return this.description;
     }
 
     @Override
-    public String execute(SVGPreview svgPreview) {
-        String helpList = "";
+    public List<String> execute(SVGPreview svgPreview) {
+        List<String> helpList = new ArrayList<>();
         Reflections reflections = new Reflections("terminalSVG.model.SVGCommand");
         Set<Class<? extends SVGCommand>> classes = reflections.getSubTypesOf(SVGCommand.class);
-            for (Class<?> clazz : classes) {
-                if (!this.eltName.isEmpty()) {
-                    if (clazz.getSimpleName().equals(this.eltName)) {
-                        if (SVGCommand.class.isAssignableFrom(clazz)) {
-                            try {
-                                SVGCommand instance = (SVGCommand) clazz.getDeclaredConstructor().newInstance();
-                                helpList += instance.getHelp();
-                                break;
-                            } catch (InvocationTargetException e) {
-                                throw new RuntimeException(e);
-                            } catch (InstantiationException e) {
-                                throw new RuntimeException(e);
-                            } catch (IllegalAccessException e) {
-                                throw new RuntimeException(e);
-                            } catch (NoSuchMethodException e) {
-                                throw new RuntimeException(e);
-                            }
-
-                        }
-                    }
-                } else if (!clazz.getName().equals("terminalSVG.model.SVGCommand.DrawShapeAction")) {
-                    if (SVGCommand.class.isAssignableFrom(clazz)) {
+        for (Class<?> SVGClass : classes) {
+            if (!this.eltName.isEmpty()) {
+                if (SVGClass.getSimpleName().equals(this.eltName)) {
+                    if (SVGCommand.class.isAssignableFrom(SVGClass)) {
                         try {
-                            SVGCommand instance = (SVGCommand) clazz.getDeclaredConstructor().newInstance();
-                            helpList += instance.getHelp();
+                            SVGCommand instance = (SVGCommand) SVGClass.getDeclaredConstructor().newInstance();
+                            helpList.addAll(instance.getHelp());
+                            break;
                         } catch (InvocationTargetException e) {
                             throw new RuntimeException(e);
                         } catch (InstantiationException e) {
@@ -94,7 +75,23 @@ public class HelpSVG implements SVGCommand {
                         }
                     }
                 }
+            } else if (!SVGClass.getName().equals("terminalSVG.model.SVGCommand.DrawShapeAction")) {
+                if (SVGCommand.class.isAssignableFrom(SVGClass)) {
+                    try {
+                        SVGCommand instance = (SVGCommand) SVGClass.getDeclaredConstructor().newInstance();
+                        helpList.addAll(instance.getHelp());
+                    } catch (InvocationTargetException e) {
+                        throw new RuntimeException(e);
+                    } catch (InstantiationException e) {
+                        throw new RuntimeException(e);
+                    } catch (IllegalAccessException e) {
+                        throw new RuntimeException(e);
+                    } catch (NoSuchMethodException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
             }
+        }
         return helpList;
     }
 
@@ -105,13 +102,12 @@ public class HelpSVG implements SVGCommand {
      * @param elements    the elements of the instruction
      * @throws IllegalArgumentException the illegal argument exception
      */
-    public static void parseCommand(Map<String, Object> instruction, String[] elements) throws
-            IllegalArgumentException {
+    public static void parseCommand(Instruction instruction, String[] elements) throws IllegalArgumentException {
         if (elements.length == 2) {
             String action = elements[1].trim();
             action += "SVG";
             action = Character.toUpperCase(action.charAt(0)) + action.substring(1);
-            instruction.put("elementName", action);
+            instruction.setName(action);
         }
     }
 }

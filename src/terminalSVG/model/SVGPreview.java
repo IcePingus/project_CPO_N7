@@ -107,7 +107,7 @@ public class SVGPreview extends Observable {
             throw new IllegalArgumentException("Aucun élement SVG ne correspond à votre requête");
         }
         DrawShapeAction shape = shapeList.get(shapeName);
-        shape.resize(newWidth,newHeight);
+        shape.resize(newWidth, newHeight);
         buildShapes();
     }
 

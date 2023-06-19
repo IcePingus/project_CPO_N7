@@ -4,6 +4,7 @@ import terminalSVG.model.Instruction;
 import terminalSVG.model.SVGPreview;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -17,15 +18,17 @@ public class SquareSVG extends DrawShapeAction {
     private double sideLength;
     private static final Integer COORDS_LIST_SIZE = 3;
     private static final String COMMAND_NAME = "square";
-    private final String description = ("\n" + "Carré : Création d'un carré"
-            + "\n" + "commande : square <nom> <coordonnéesX> <coordonnéesY> <longueur> [-s contour] [-f remplissage]"
-            + "\n" + " X / Y : coordonnées de la forme"
-            + "\n" + "longueur : longueur du côté"
-            + "\n" + "contour : couleur de contour du carré"
-            + "\n" + "remplissage : couleur de remplissage du carré"
-            + "\n" + "Exemple :"
-            + "\n" + "----------------------------------------------"
-    );
+    private final List<String> description = new ArrayList<>(List.of(
+            "Carré : Création d'un carré",
+            "commande : square <nom> <coordonnéesX> <coordonnéesY> <longueur> [-s contour] [-f remplissage]",
+            " X / Y : coordonnées de la forme",
+            "longueur : longueur du côté",
+            "contour : couleur de contour du carré",
+            "remplissage : couleur de remplissage du carré",
+            "Exemple :",
+            "----------------------------------------------"
+    ));
+
 
     /**
      * Constructs a SquareSVG object with the specified parameters.
@@ -44,7 +47,7 @@ public class SquareSVG extends DrawShapeAction {
         this.sideLength = instruction.getCoords().get(2);
     }
 
-    public SquareSVG(){
+    public SquareSVG() {
     }
 
     /**
@@ -107,7 +110,7 @@ public class SquareSVG extends DrawShapeAction {
      * @return The help information for the square command.
      */
 
-    public String getHelp() {
+    public List<String> getHelp() {
         return this.description;
     }
 

@@ -4,6 +4,7 @@ import terminalSVG.model.Instruction;
 import terminalSVG.model.SVGPreview;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -19,15 +20,16 @@ public class RectangleSVG extends DrawShapeAction {
     private double sideLength2;
     private static final Integer COORDS_LIST_SIZE = 4;
     private static final String COMMAND_NAME = "rectangle";
-    private final String description = ("\n" + "Rectangle : Création d'un rectangle"
-            + "\n" + "commande : rectangle <nom> <coordonnéesX> <coordonnéesY> <largeur> <hauteur> [-s contour] [-f remplissage]"
-            + "\n" + " X / Y : coordonnées de la forme"
-            + "\n" + "largeur / hauteur : largeur & hauteur de la forme"
-            + "\n" + "contour : couleur de contour du rectangle"
-            + "\n" + "remplissage : couleur de remplissage du rectangle"
-            + "\n" + "Exemple :"
-            + "\n" + "----------------------------------------------"
-    );
+    private final List<String> description = new ArrayList<>(List.of(
+            "Rectangle : Création d'un rectangle",
+            "commande : rectangle <nom> <coordonnéesX> <coordonnéesY> <largeur> <hauteur> [-s contour] [-f remplissage]",
+            " X / Y : coordonnées de la forme",
+            "largeur / hauteur : largeur & hauteur de la forme",
+            "contour : couleur de contour du rectangle",
+            "remplissage : couleur de remplissage du rectangle",
+            "Exemple :",
+            "----------------------------------------------"
+    ));
 
     /**
      * Instantiates a new Rectangle svg.
@@ -48,7 +50,7 @@ public class RectangleSVG extends DrawShapeAction {
     }
 
 
-    public RectangleSVG(){
+    public RectangleSVG() {
     }
 
     public void draw(SVGPreview svgPreview) {
@@ -94,9 +96,7 @@ public class RectangleSVG extends DrawShapeAction {
     }
 
 
-
-
-    public String getHelp() {
+    public List<String> getHelp() {
         return this.description;
     }
 

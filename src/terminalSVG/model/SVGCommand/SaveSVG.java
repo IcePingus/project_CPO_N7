@@ -4,6 +4,8 @@ import terminalSVG.model.Instruction;
 import terminalSVG.model.SVGPreview;
 
 import javax.xml.transform.TransformerException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -12,13 +14,13 @@ import java.util.Map;
  * @author Team 3
  */
 public class SaveSVG implements SVGCommand {
-
-    private final String description = ("\n" + "Save : Enregistre le fichier SVG"
-            + "\n" + "commande : save [nomFichier]"
-            + "\n" + "nomFichier : nom du fichier SVG"
-            + "\n" + "Exemple :"
-            + "\n" + "----------------------------------------------"
-    );
+    private final List<String> description = new ArrayList<>(List.of(
+            "Save : Enregistre le fichier SVG",
+            "commande : save [nomFichier]",
+            "nomFichier : nom du fichier SVG",
+            "Exemple :",
+            "----------------------------------------------"
+    ));
 
     private String eltName;
 
@@ -50,7 +52,7 @@ public class SaveSVG implements SVGCommand {
      * @return The help information for the command.
      */
     @Override
-    public String getHelp() {
+    public List<String> getHelp() {
         return this.description;
     }
 
@@ -62,13 +64,13 @@ public class SaveSVG implements SVGCommand {
      * @return
      */
     @Override
-    public String execute(SVGPreview svgPreview) {
+    public List<String> execute(SVGPreview svgPreview) {
         try {
             svgPreview.saveSVG(eltName);
         } catch (TransformerException e) {
             throw new RuntimeException(e);
         }
-        return  ">> Save executed\n";
+        return List.of(">> Save executed");
     }
 
     /**

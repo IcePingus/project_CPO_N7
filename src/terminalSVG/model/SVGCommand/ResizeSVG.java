@@ -3,6 +3,8 @@ package terminalSVG.model.SVGCommand;
 import terminalSVG.model.Instruction;
 import terminalSVG.model.SVGPreview;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -12,17 +14,19 @@ import java.util.Map;
  */
 public class ResizeSVG implements SVGCommand {
 
-    private final String description = (
-            "\n" + "Resize : redimensionne une forme"
-            + "\n" + "commande : resize <nom> [-w largeur] [-h hauteur]"
-            + "\n" + "largeur / hauteur : largeur & hauteur de la forme"
-            + "\n" + "NB : Dépend de la forme (cercle & carré -> largeur = hauteur"
-            + "\n" + "Exemple :"
-            + "\n" + "----------------------------------------------"
-    );
+    private final List<String> description = new ArrayList<>(List.of(
+            "Resize : redimensionne une forme",
+            "commande : resize <nom> [-w largeur] [-h hauteur]",
+            "largeur / hauteur : largeur & hauteur de la forme",
+            "NB : Dépend de la forme (cercle & carré -> largeur = hauteur",
+            "Exemple :",
+            "----------------------------------------------"
+    ));
+
     private Double newWidth;
 
     private Double newHeight;
+
     /**
      * Constructs a new ResizeSVG instance with the given instruction.
      *
@@ -33,7 +37,8 @@ public class ResizeSVG implements SVGCommand {
         this.newHeight = instruction.getHeight();
     }
 
-    public ResizeSVG(){}
+    public ResizeSVG() {
+    }
 
     @Override
     public String getName() {
@@ -41,7 +46,7 @@ public class ResizeSVG implements SVGCommand {
     }
 
     @Override
-    public String getHelp() {
+    public List<String> getHelp() {
         return this.description;
     }
 
@@ -49,12 +54,11 @@ public class ResizeSVG implements SVGCommand {
      * Resizes the SVG element with the specified shape name.
      *
      * @param svgPreview the SVG preview instance
-     * @param shapeName the name of the shape to be resized
+     * @param shapeName  the name of the shape to be resized
      */
-    @Override
-    public String execute(SVGPreview svgPreview) {
+    public List<String> execute(SVGPreview svgPreview) {
         svgPreview.resizeElement(this.getName(), this.newWidth, this.newHeight);
-        return  ">> Resize executed\n";
+        return List.of(">> Resize executed");
     }
 
     /**

@@ -4,6 +4,7 @@ import terminalSVG.model.Instruction;
 import terminalSVG.model.SVGPreview;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -20,15 +21,17 @@ public class OvalSVG extends DrawShapeAction {
     private final Integer COORDS_LIST_SIZE = 4;
 
     private static final String COMMAND_NAME = "oval";
-    private final String description = ("\n" + "Oval : Création d'un oval"
-            + "\n" + "commande : oval <nom> <coordonnéesX> <coordonnéesY> <largeur> <hauteur> [-s contour] [-f remplissage]"
-            + "\n" + " X / Y : coordonnées de la forme"
-            + "\n" + "largeur / hauteur : largeur & hauteur de la forme"
-            + "\n" + "contour : couleur de contour du oval"
-            + "\n" + "remplissage : couleur de remplissage du oval"
-            + "\n" + "Exemple :"
-            + "\n" + "----------------------------------------------"
-    );
+
+    private final List<String> description = new ArrayList<>(List.of(
+            "Oval : Création d'un oval",
+            "commande : oval <nom> <coordonnéesX> <coordonnéesY> <largeur> <hauteur> [-s contour] [-f remplissage]",
+            " X / Y : coordonnées de la forme",
+            "largeur / hauteur : largeur & hauteur de la forme",
+            "contour : couleur de contour du oval",
+            "remplissage : couleur de remplissage du oval",
+            "Exemple :",
+            "----------------------------------------------"
+    ));
 
     /**
      * Instantiates a new Oval svg.
@@ -48,7 +51,7 @@ public class OvalSVG extends DrawShapeAction {
         this.height = instruction.getCoords().get(3);
     }
 
-    public OvalSVG(){
+    public OvalSVG() {
     }
 
 
@@ -90,7 +93,7 @@ public class OvalSVG extends DrawShapeAction {
         this.setHeight(h);
     }
 
-    public String getHelp() {
+    public List<String> getHelp() {
         return this.description;
     }
 

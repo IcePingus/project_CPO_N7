@@ -3,6 +3,9 @@ package terminalSVG.model.SVGCommand;
 import terminalSVG.model.Instruction;
 import terminalSVG.model.SVGPreview;
 
+import javax.xml.transform.TransformerException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -12,18 +15,20 @@ import java.util.Map;
  */
 public class TranslateSVG implements SVGCommand {
 
-    private final String description = ("\n" + "Translate : Déplacement d'une forme"
-            + "\n" + "commande : resize <nom> [-x dx] [-y dy]"
-            + "\n" + "dx : déplacement en abscisse"
-            + "\n" + "dy : déplacement en ordonnée"
-            + "\n" + "Exemple :"
-            + "\n" + "----------------------------------------------"
-    );
+    private final List<String> description = new ArrayList<>(List.of(
+            "Translate : Déplacement d'une forme",
+            "commande : resize <nom> [-x dx] [-y dy]",
+            "dx : déplacement en abscisse",
+            "dy : déplacement en ordonnée",
+            "Exemple :",
+            "----------------------------------------------"
+    ));
 
     private Double dx;
     private Double dy;
 
-    public TranslateSVG(){}
+    public TranslateSVG() {
+    }
 
     /**
      * Constructs a TranslateSVG object with the specified translation values.
@@ -41,14 +46,14 @@ public class TranslateSVG implements SVGCommand {
     }
 
     @Override
-    public String getHelp() {
+    public List<String> getHelp() {
         return this.description;
     }
 
     @Override
-    public String execute(SVGPreview svgPreview) {
+    public List<String> execute(SVGPreview svgPreview) {
         svgPreview.translateElement(this.getName(), dx, dy);
-        return  ">> Translate executed\n";
+        return List.of(">> Translate executed");
     }
 
     /**

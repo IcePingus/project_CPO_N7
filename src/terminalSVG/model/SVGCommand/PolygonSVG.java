@@ -15,141 +15,142 @@ import java.util.Map;
  */
 public class PolygonSVG extends DrawShapeAction {
     private List<Point> points;
-	private final Integer COORDS_LIST_SIZE = 4;
-	private static final String COMMAND_NAME = "polygon";
-	private final String description = ("\n" + "Polygone : Création d'un polygone"
-			+ "\n" + "commande : polygon <nom> <coordonnéesX>* <coordonnéesY>* [-s contour] [-f remplissage]"
-			+ "\n" + " X / Y : coordonnées des points de la forme"
-			+ "\n" + "largeur / hauteur : largeur & hauteur de la forme"
-			+ "\n" + "contour : couleur de contour du polygone"
-			+ "\n" + "remplissage : couleur de remplissage du polygone"
-			+ "\n" + "Exemple :"
-			+ "\n" + "----------------------------------------------"
-	);
+    private final Integer COORDS_LIST_SIZE = 4;
+    private static final String COMMAND_NAME = "polygon";
+    private final List<String> description = new ArrayList<>(List.of(
+            "Polygone : Création d'un polygone",
+            "commande : polygon <nom> <coordonnéesX>* <coordonnéesY>* [-s contour] [-f remplissage]",
+            " X / Y : coordonnées des points de la forme",
+            "largeur / hauteur : largeur & hauteur de la forme",
+            "contour : couleur de contour du polygone",
+            "remplissage : couleur de remplissage du polygone",
+            "Exemple :",
+            "----------------------------------------------"
+    ));
 
-	/**
-	 * Instantiates a new Polygon svg.
-	 *
-	 * @param name        the name of the polygon
-	 * @param coords      the coordinates of the points of the polygon
-	 * @param isFill      is the polygon is filled or not
-	 * @param strokeColor the stroke color of the polygon
-	 * @param fillColor   the fill color of the polygon
-	 */
-	public PolygonSVG(String name, List<Double> coords, boolean isFill, Color strokeColor, Color fillColor) {
-		super(name, isFill, strokeColor, fillColor);
-		assert coords.size() >= COORDS_LIST_SIZE;
-		assert (coords.size()% 2 != 0);
+    /**
+     * Instantiates a new Polygon svg.
+     *
+     * @param name        the name of the polygon
+     * @param coords      the coordinates of the points of the polygon
+     * @param isFill      is the polygon is filled or not
+     * @param strokeColor the stroke color of the polygon
+     * @param fillColor   the fill color of the polygon
+     */
+    public PolygonSVG(String name, List<Double> coords, boolean isFill, Color strokeColor, Color fillColor) {
+        super(name, isFill, strokeColor, fillColor);
+        assert coords.size() >= COORDS_LIST_SIZE;
+        assert (coords.size() % 2 != 0);
 
-		points = new ArrayList<>();
+        points = new ArrayList<>();
 
-		for (int i = 0; i < coords.size(); i += 2) {
-			double x = coords.get(i);
-			double y = coords.get(i + 1);
-			points.add(new Point(x, y));
-		}
-	}
+        for (int i = 0; i < coords.size(); i += 2) {
+            double x = coords.get(i);
+            double y = coords.get(i + 1);
+            points.add(new Point(x, y));
+        }
+    }
 
-	public PolygonSVG(Instruction instruction) {
-		super(instruction.getName(), instruction.isFilled(), instruction.getStrokeColor(), instruction.getFillColor());
-		assert instruction.getCoords().size() == COORDS_LIST_SIZE;
-		assert instruction.getCoords().size() >= COORDS_LIST_SIZE;
-		assert (instruction.getCoords().size()% 2 != 0);
+    public PolygonSVG(Instruction instruction) {
+        super(instruction.getName(), instruction.isFilled(), instruction.getStrokeColor(), instruction.getFillColor());
+        assert instruction.getCoords().size() == COORDS_LIST_SIZE;
+        assert instruction.getCoords().size() >= COORDS_LIST_SIZE;
+        assert (instruction.getCoords().size() % 2 != 0);
 
-		points = new ArrayList<>();
+        points = new ArrayList<>();
 
-		for (int i = 0; i < instruction.getCoords().size(); i += 2) {
-			double x = instruction.getCoords().get(i);
-			double y = instruction.getCoords().get(i + 1);
-			points.add(new Point(x, y));
-		}
-	}
+        for (int i = 0; i < instruction.getCoords().size(); i += 2) {
+            double x = instruction.getCoords().get(i);
+            double y = instruction.getCoords().get(i + 1);
+            points.add(new Point(x, y));
+        }
+    }
 
-	public PolygonSVG(){
-	}
+    public PolygonSVG() {
+    }
 
-	public void draw(SVGPreview svgPreview) {
-		svgPreview.getSVGGraphics().setColor(getStrokeColor());
+    public void draw(SVGPreview svgPreview) {
+        svgPreview.getSVGGraphics().setColor(getStrokeColor());
 
-		// Créer les tableaux de coordonnées x et y
-		int[] xArray = new int[points.size()];
-		int[] yArray = new int[points.size()];
+        // Créer les tableaux de coordonnées x et y
+        int[] xArray = new int[points.size()];
+        int[] yArray = new int[points.size()];
 
-		for (int i = 0; i < points.size(); i++) {
-			Point point = points.get(i);
-			xArray[i] = (int) point.getX();
-			yArray[i] = (int) point.getY();
-		}
+        for (int i = 0; i < points.size(); i++) {
+            Point point = points.get(i);
+            xArray[i] = (int) point.getX();
+            yArray[i] = (int) point.getY();
+        }
 
-		// Créer le polygone avec les coordonnées
-		Polygon polygon = new Polygon(xArray, yArray, points.size());
+        // Créer le polygone avec les coordonnées
+        Polygon polygon = new Polygon(xArray, yArray, points.size());
 
-		// Dessiner le polygone avec le SVGGraphics2D
-		svgPreview.getSVGGraphics().setColor(getStrokeColor());
-		svgPreview.getSVGGraphics().draw(polygon);
+        // Dessiner le polygone avec le SVGGraphics2D
+        svgPreview.getSVGGraphics().setColor(getStrokeColor());
+        svgPreview.getSVGGraphics().draw(polygon);
 
-		if (isFill) {
-			// Remplir le polygone avec une couleur spécifique
-			svgPreview.getSVGGraphics().setColor(this.fillColor);
-			svgPreview.getSVGGraphics().fill(polygon);
-		}
-	}
+        if (isFill) {
+            // Remplir le polygone avec une couleur spécifique
+            svgPreview.getSVGGraphics().setColor(this.fillColor);
+            svgPreview.getSVGGraphics().fill(polygon);
+        }
+    }
 
-	@Override
-	public void translate(Double dx, Double dy) {
-		if(dx == null){
-			dx = 0.0;
-		}
-		if(dy == null){
-			dy = 0.0;
-		}
-		for(Point point : points){
-			point.translater(dx,dy);
-		}
-	}
+    @Override
+    public void translate(Double dx, Double dy) {
+        if (dx == null) {
+            dx = 0.0;
+        }
+        if (dy == null) {
+            dy = 0.0;
+        }
+        for (Point point : points) {
+            point.translater(dx, dy);
+        }
+    }
 
-	@Override
-	public void resize(Double newWidth, Double newHeight) {
-		throw new IllegalArgumentException("Resize impossible pour un polygone");
-	}
+    @Override
+    public void resize(Double newWidth, Double newHeight) {
+        throw new IllegalArgumentException("Resize impossible pour un polygone");
+    }
 
-	public String getHelp() {
-		return this.description;
-	}
+    public List<String> getHelp() {
+        return this.description;
+    }
 
-	/**
-	 * Gets the points of the polygon.
-	 *
-	 * @return the points
-	 */
-	public List<Point> getPoints() {
-		return points;
-	}
+    /**
+     * Gets the points of the polygon.
+     *
+     * @return the points
+     */
+    public List<Point> getPoints() {
+        return points;
+    }
 
-	/**
-	 * Sets points of the polygon.
-	 *
-	 * @param points the points
-	 */
-	public void setPoints(List<Point> points) {
-		this.points = points;
-	}
+    /**
+     * Sets points of the polygon.
+     *
+     * @param points the points
+     */
+    public void setPoints(List<Point> points) {
+        this.points = points;
+    }
 
-	/**
-	 * Gets command name.
-	 *
-	 * @return the command name
-	 */
-	public static String getCommandName() {
-		return COMMAND_NAME;
-	}
+    /**
+     * Gets command name.
+     *
+     * @return the command name
+     */
+    public static String getCommandName() {
+        return COMMAND_NAME;
+    }
 
-	/**
-	 * Gets coords list size.
-	 *
-	 * @return the coords list size
-	 */
-	public Integer getCoordsListSize() {
-		return COORDS_LIST_SIZE;
-	}
+    /**
+     * Gets coords list size.
+     *
+     * @return the coords list size
+     */
+    public Integer getCoordsListSize() {
+        return COORDS_LIST_SIZE;
+    }
 }
