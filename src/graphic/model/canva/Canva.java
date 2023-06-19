@@ -47,6 +47,8 @@ public class Canva extends JComponent {
 
     private ToolContext context;
 
+    private BufferedImage transparentBackground;
+
     /**
      * Constructs a new Canva object with the specified toolbox.
      *
@@ -343,6 +345,24 @@ public class Canva extends JComponent {
         at.scale(zoom, zoom);
         at.translate(-zoomPointX, -zoomPointY);
         ((Graphics2D) g).setTransform(at);
+
+        // Dessiner le fond transparent
+        this.transparentBackground = new BufferedImage(this.imageStates.get(this.currentIndex).getWidth(), this.imageStates.get(this.currentIndex).getHeight(), BufferedImage.TYPE_INT_ARGB);
+        Graphics2D backgroundG2 = (Graphics2D) this.transparentBackground.getGraphics();
+        int size = 1 + (int) ((double) (48 - 1) / (5000 - 16) * (Math.min(this.transparentBackground.getWidth(), this.transparentBackground.getHeight()) - 16));
+        for (int row = 0; row < this.transparentBackground.getHeight() / size; row++) {
+            for (int col = 0; col < this.transparentBackground.getWidth() / size; col++) {
+                int x = col * size;
+                int y = row * size;
+
+                // Alterner entre gris et blanc
+                Color color = (row + col) % 2 == 0 ? Color.WHITE : Color.lightGray;
+                backgroundG2.setColor(color);
+                backgroundG2.fillRect(x, y, size, size);
+            }
+        }
+        g.drawImage(this.transparentBackground, ((this.getWidth() - this.transparentBackground.getWidth()) / 2), ((this.getHeight() - this.transparentBackground.getHeight()) / 2), null);
+
 
         // Dessiner la bufferedImage sur la toile
         g.drawImage(this.imageStates.get(this.currentIndex), ((this.getWidth() - this.imageStates.get(this.currentIndex).getWidth()) / 2), ((this.getHeight() - this.imageStates.get(this.currentIndex).getHeight()) / 2), null);
