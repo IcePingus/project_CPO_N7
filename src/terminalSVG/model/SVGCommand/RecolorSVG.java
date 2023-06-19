@@ -49,8 +49,8 @@ public class RecolorSVG implements SVGCommand {
     }
 
     @Override
-    public String execute(SVGPreview svgPreview, String shapeName) {
-        svgPreview.setNewColorShape(sColor, fColor,shapeName);
+    public String execute(SVGPreview svgPreview) {
+        svgPreview.setNewColorShape(sColor, fColor,this.getName());
         return  ">> Recolor executed\n";
     }
 

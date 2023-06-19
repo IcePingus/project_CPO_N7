@@ -134,7 +134,6 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
      */
     public void executeCommand(Instruction instruction) throws ClassNotFoundException {
         String returnAction;
-        System.out.println(instruction.toString());
         String elementAction = instruction.getAction();
         instruction.setStrokeColor(getColor(instruction));
 
@@ -150,7 +149,7 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
             if (svgCommand == null) {
                 throw new IllegalArgumentException("ERROR");
             }
-            returnAction = svgCommand.execute(this.svgPreview, instruction.getName());
+            returnAction = svgCommand.execute(this.svgPreview);
             this.displayReturnAction(returnAction);
 
         } catch (NoSuchMethodException e) {

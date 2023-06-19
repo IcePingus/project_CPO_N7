@@ -65,7 +65,7 @@ public class RenameSVG implements SVGCommand {
      * @return
      */
     @Override
-    public String execute(SVGPreview svgPreview, String shapeName) {
+    public String execute(SVGPreview svgPreview) {
         svgPreview.renameElement(this.oldName, this.newName);
         return  ">> Rename executed\n";
     }

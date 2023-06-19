@@ -9,6 +9,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import terminalSVG.model.Instruction;
 import terminalSVG.model.SVGPreview;
 import terminalSVG.model.SVGCommand.SquareSVG;
 
@@ -23,7 +24,7 @@ public class TestSquareSVG {
 	String names1, names2;
 	SVGPreview svgp, svgp2, svgpcomp1,svgpcomp2;
 	String strSVG1, strSVG2, strSVGcomp1,strSVGcomp2;
-	
+	Instruction i1, i2;
 	// précision pour les comparaisons réelle
 	public final static double EPSILON = 0.001;
 	
@@ -64,9 +65,11 @@ public class TestSquareSVG {
 		svgpcomp2.getSVGGraphics().drawRect(437, 253, 67, 67);
 		strSVGcomp2 = svgpcomp2.getSVGCode();
 
-		s1 = new SquareSVG(names1,coordc1, fills1, cStrokes1, cFills1 );	
-		s2 = new SquareSVG(names2,coordc2, fills2, cStrokes2, cFills2 );
-		
+		i1 = new Instruction("square", names1,coordc1, cStrokes1, cFills1);
+		i2 = new Instruction("square", names2,coordc2, cStrokes2, cFills2);
+
+		s1 = new SquareSVG(i1);
+		s2 = new SquareSVG(i2);
 	}
 	
 	@Test public void testColor() {

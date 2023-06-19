@@ -62,7 +62,7 @@ public class SaveSVG implements SVGCommand {
      * @return
      */
     @Override
-    public String execute(SVGPreview svgPreview, String shapeName) {
+    public String execute(SVGPreview svgPreview) {
         try {
             svgPreview.saveSVG(eltName);
         } catch (TransformerException e) {

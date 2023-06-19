@@ -9,6 +9,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import terminalSVG.model.Instruction;
 import terminalSVG.model.SVGPreview;
 import terminalSVG.model.SVGCommand.RectangleSVG;
 
@@ -24,6 +25,7 @@ public class TestRectangleSVG {
 	String namer1, namer2;
 	SVGPreview svgp, svgp2, svgpcomp1,svgpcomp2;
 	String strSVG1, strSVG2, strSVGcomp1,strSVGcomp2;
+	Instruction i1, i2;
 	
 	// précision pour les comparaisons réelle
 	public final static double EPSILON = 0.001;
@@ -67,8 +69,11 @@ public class TestRectangleSVG {
 		svgpcomp2.getSVGGraphics().drawRect(437, 253, 67, 35);
 		strSVGcomp2 = svgpcomp2.getSVGCode();
 
-		r1 = new RectangleSVG(namer1,coordc1, fillr1, cStroker1, cFillr1 );	
-		r2 = new RectangleSVG(namer2,coordc2, fillr2, cStroker2, cFillr2 );
+		i1 = new Instruction("rectangle", namer1,coordc1, cStroker1,cFillr1);
+		i2 = new Instruction("rectangle", namer2,coordc2, cStroker2, cFillr2);
+
+		r1 = new RectangleSVG(i1);
+		r2 = new RectangleSVG(i2);
 		
 	}
 	

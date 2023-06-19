@@ -38,7 +38,7 @@ public class ClearSVG implements SVGCommand {
     }
 
     @Override
-    public String execute(SVGPreview svgPreview, String shapeName) {
+    public String execute(SVGPreview svgPreview) {
         svgPreview.clearShapeList();
         return  ">> Clear executed\n";
     }

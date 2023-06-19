@@ -54,7 +54,7 @@ public class HelpSVG implements SVGCommand {
     }
 
     @Override
-    public String execute(SVGPreview svgPreview, String shapeName) {
+    public String execute(SVGPreview svgPreview) {
         String helpList = "";
         Reflections reflections = new Reflections("terminalSVG.model.SVGCommand");
         Set<Class<? extends SVGCommand>> classes = reflections.getSubTypesOf(SVGCommand.class);

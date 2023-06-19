@@ -117,7 +117,6 @@ public class SVGPreview extends Observable {
      */
     public void buildShapes() {
         clearSVGDocument();
-        System.out.println(shapeList);
         for (Map.Entry<String, DrawShapeAction> shape : shapeList.entrySet()) {
             shape.getValue().draw(this);
             updateSVGDocument(shape.getValue().getClass().getSimpleName() + " : " + shape.getValue().getName());

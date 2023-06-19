@@ -25,5 +25,5 @@ public interface SVGCommand {
      * @param svgPreview The SVGPreview object on which to execute the SVG command.
      * @param shapeName  The name of the shape to apply the command to.
      */
-    String execute(SVGPreview svgPreview, String shapeName);
+    String execute(SVGPreview svgPreview);
 }

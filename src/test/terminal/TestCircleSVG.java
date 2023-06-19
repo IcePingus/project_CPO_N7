@@ -1,7 +1,5 @@
 package test.terminal;
 
-import static org.junit.Assert.assertEquals;
-
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,9 +7,11 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import terminalSVG.model.Instruction;
 import terminalSVG.model.SVGPreview;
 import terminalSVG.model.SVGCommand.CircleSVG;
 
+import static org.junit.Assert.*;
 
 
 public class TestCircleSVG {
@@ -22,6 +22,7 @@ public class TestCircleSVG {
 	String namec1, namec2;
 	SVGPreview svgp, svgp2, svgpcomp1,svgpcomp2;
 	String strSVG1, strSVG2, strSVGcomp1,strSVGcomp2;
+	Instruction i1, i2;
 	
 	
 	// précision pour les comparaisons réelle
@@ -33,8 +34,7 @@ public class TestCircleSVG {
 		
 		svgpcomp1 = new SVGPreview();
 		svgpcomp2 = new SVGPreview();
-		
-		
+
 		coordc1 = new ArrayList<>();
 		coordc2 = new ArrayList<>();
 		
@@ -64,18 +64,21 @@ public class TestCircleSVG {
 		svgpcomp2.getSVGGraphics().drawOval(175, 253, 78, 78);
 		strSVGcomp2 = svgpcomp2.getSVGCode();
 
-		c1 = new CircleSVG(namec1,coordc1, fillc1, cStrokec1, cFillc1 );	
-		c2 = new CircleSVG(namec2,coordc2, fillc2, cStrokec2, cFillc2 );
+		i1 = new Instruction("circle", namec1,coordc1, cStrokec1, cFillc1);
+		i2 = new Instruction("circle", namec2,coordc2, cStrokec2, cFillc2);
+
+		c1 = new CircleSVG(i1);
+		c2 = new CircleSVG(i2);
 		
 	}
 	
 	@Test public void testColor() {
 		assertEquals("la couleur de contour n'est pas bonne !", Color.RED , c1.getStrokeColor());
 		assertEquals("la couleur de remplissage n'est pas bonne !", Color.BLUE , c1.getFillColor());
-		assertEquals("le fill n'est pas activé alors que fill a true", true , c1.isFill());
+		assertTrue("le fill n'est pas activé alors que fill a true", c1.isFill());
 		assertEquals("la couleur de contour n'est pas bonne !", Color.GREEN , c2.getStrokeColor());
 		assertEquals("la couleur de remplissage n'est pas bonne !", null , c2.getFillColor());
-		assertEquals("le fill est activé alors que fill est a false", false , c2.isFill());
+		assertFalse("le fill est activé alors que fill est a false", c2.isFill());
 	}
 	
 	@Test public void testRayon() {

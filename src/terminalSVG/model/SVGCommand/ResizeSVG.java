@@ -52,9 +52,8 @@ public class ResizeSVG implements SVGCommand {
      * @param shapeName the name of the shape to be resized
      */
     @Override
-    public String execute(SVGPreview svgPreview, String shapeName) {
-        System.out.print(newHeight);
-        svgPreview.resizeElement(shapeName, this.newWidth, this.newHeight);
+    public String execute(SVGPreview svgPreview) {
+        svgPreview.resizeElement(this.getName(), this.newWidth, this.newHeight);
         return  ">> Resize executed\n";
     }
 

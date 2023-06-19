@@ -46,7 +46,7 @@ public class ColorSVG implements SVGCommand {
     }
 
     @Override
-    public String execute(SVGPreview svgPreview, String shapeName) {
+    public String execute(SVGPreview svgPreview) {
         svgPreview.setDefaultColor(color);
         return  ">> Color executed\n";
     }

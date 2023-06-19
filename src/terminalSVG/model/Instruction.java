@@ -32,12 +32,23 @@ public class Instruction {
             this.strokeColor = color;
         } else {
             this.fillColor = color;
+            if(this.fillColor != null) {
+                this.isFilled = true;
+            }
         }
     }
 
     public Instruction(String action, String name, Color strokeColor, Color fillColor) {
         this(action, name, strokeColor, true);
         this.fillColor = fillColor;
+        if(this.fillColor != null) {
+            this.isFilled = true;
+        }
+    }
+
+    public Instruction(String action, String name, List<Double> coords, Color strokeColor, Color fillColor) {
+        this(action, name, strokeColor, fillColor);
+        this.coords = coords;
     }
 
     public String getOldName() {
@@ -127,7 +138,7 @@ public class Instruction {
 
     @Override
     public String toString() {
-        return getAction() + " " + getName() + " " + getCoords() + " " + getStrokeColor() + " " + isFilled() + " " +getFillColor()
+        return getAction() + " " + getName() + " " + getOldName() + " " + getCoords() + " " + getStrokeColor() + " " + isFilled() + " " +getFillColor()
                 + " " + getWidth() + " " + getHeight();
     }
 }

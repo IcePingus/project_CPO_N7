@@ -46,8 +46,8 @@ public class TranslateSVG implements SVGCommand {
     }
 
     @Override
-    public String execute(SVGPreview svgPreview, String shapeName) {
-        svgPreview.translateElement(shapeName, dx, dy);
+    public String execute(SVGPreview svgPreview) {
+        svgPreview.translateElement(this.getName(), dx, dy);
         return  ">> Translate executed\n";
     }
 

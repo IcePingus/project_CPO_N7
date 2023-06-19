@@ -86,7 +86,6 @@ public class CircleSVG extends DrawShapeAction {
         if (r == null || r < 0.0) {
             throw new IllegalArgumentException("Width or height must be non-negative");
         }
-        System.out.println("OUI" + r);
         this.setRadius(r);
     }
 
