@@ -24,6 +24,8 @@ public class Instruction {
     public Instruction(String action, String name) {
         this.action = action;
         this.name = name;
+        this.strokeColor = Color.black;
+        this.fillColor = null;
     }
 
     public Instruction(String action, String name, Color color, boolean isStrokeColor) {
@@ -32,7 +34,7 @@ public class Instruction {
             this.strokeColor = color;
         } else {
             this.fillColor = color;
-            if(this.fillColor != null) {
+            if (this.fillColor != null) {
                 this.isFilled = true;
             }
         }
@@ -41,7 +43,7 @@ public class Instruction {
     public Instruction(String action, String name, Color strokeColor, Color fillColor) {
         this(action, name, strokeColor, true);
         this.fillColor = fillColor;
-        if(this.fillColor != null) {
+        if (this.fillColor != null) {
             this.isFilled = true;
         }
     }
@@ -138,7 +140,7 @@ public class Instruction {
 
     @Override
     public String toString() {
-        return getAction() + " " + getName() + " " + getOldName() + " " + getCoords() + " " + getStrokeColor() + " " + isFilled() + " " +getFillColor()
+        return getAction() + " " + getName() + " " + getOldName() + " " + getCoords() + " " + getStrokeColor() + " " + isFilled() + " " + getFillColor()
                 + " " + getWidth() + " " + getHeight();
     }
 }
