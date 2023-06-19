@@ -1,5 +1,6 @@
 package terminalSVG.model.SVGCommand;
 
+import terminalSVG.model.Instruction;
 import terminalSVG.model.SVGPreview;
 
 import java.util.Map;
@@ -29,9 +30,9 @@ public class TranslateSVG implements SVGCommand {
      *
      * @param instruction A map containing the instruction parameters.
      */
-    public TranslateSVG(Map<String, Object> instruction) {
-        this.dx = (Double) instruction.get("translationX");
-        this.dy = (Double) instruction.get("translationY");
+    public TranslateSVG(Instruction instruction) {
+        this.dx = (Double) instruction.getDx();
+        this.dy = (Double) instruction.getDy();
     }
 
     @Override
@@ -57,7 +58,7 @@ public class TranslateSVG implements SVGCommand {
      * @param elements    The command elements to parse.
      * @throws IllegalArgumentException If the command parameters are invalid.
      */
-    public static void parseCommand(Map<String, Object> instruction, String[] elements) throws IllegalArgumentException {
+    public static void parseCommand(Instruction instruction, String[] elements) throws IllegalArgumentException {
         boolean foundX = false;
         boolean foundY = false;
 
@@ -76,7 +77,7 @@ public class TranslateSVG implements SVGCommand {
                     throw new IllegalArgumentException("need argument after option -x");
                 }
 
-                instruction.put("translationX", Double.parseDouble(elements[i + 1].trim()));
+                instruction.setDx(Double.parseDouble(elements[i + 1].trim()));
                 foundX = true;
                 i += 1; // Skip the next element since it is used as an argument for -x
             } else if (element.equals("-y")) {
@@ -88,7 +89,7 @@ public class TranslateSVG implements SVGCommand {
                     throw new IllegalArgumentException("need argument after option -y");
                 }
 
-                instruction.put("translationY", Double.parseDouble(elements[i + 1].trim()));
+                instruction.setDy(Double.parseDouble(elements[i + 1].trim()));
                 foundY = true;
                 i += 1; // Skip the next element since it is used as an argument for -y
             } else {
@@ -100,6 +101,6 @@ public class TranslateSVG implements SVGCommand {
             throw new IllegalArgumentException("No -x or -y option found");
         }
 
-        instruction.put("elementName", elements[1].trim());
+        instruction.setName(elements[1].trim());
     }
 }

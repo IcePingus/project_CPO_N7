@@ -1,5 +1,6 @@
 package terminalSVG.model.SVGCommand;
 
+import terminalSVG.model.Instruction;
 import terminalSVG.model.SVGPreview;
 
 import javax.xml.transform.TransformerException;
@@ -29,8 +30,8 @@ public class SaveSVG implements SVGCommand {
      *
      * @param instruction The instruction map containing the name of the SVG element to save.
      */
-    public SaveSVG(Map<String, Object> instruction) {
-        this.eltName = (String) instruction.get("elementName");
+    public SaveSVG(Instruction instruction) {
+        this.eltName = instruction.getName();
     }
 
     /**
@@ -77,14 +78,14 @@ public class SaveSVG implements SVGCommand {
      * @param elements    The elements of the command.
      * @throws IllegalArgumentException If the command elements are invalid or incomplete.
      */
-    public static void parseCommand(Map<String, Object> instruction, String[] elements) throws IllegalArgumentException {
+    public static void parseCommand(Instruction instruction, String[] elements) throws IllegalArgumentException {
         if (elements.length > 2) {
             throw new IllegalArgumentException("Préciser le nom de l'enregistrement");
         }
         if (elements.length == 2 && !elements[1].trim().isEmpty()) {
-            instruction.put("elementName", elements[1].trim());
+            instruction.setName(elements[1].trim());
         } else {
-            instruction.put("elementName", "canva.svg");
+            instruction.setName("canva.svg");
         }
     }
 }

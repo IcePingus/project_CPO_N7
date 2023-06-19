@@ -77,7 +77,7 @@ public abstract class DrawShapeAction implements SVGCommand {
      */
     public abstract void translate(Double dx, Double dy);
 
-    public abstract void resize(Map<String, Object> sizes);
+    public abstract void resize(Double newWidth, Double newHeight);
 
     /**
      * Sets a new name to the shape.

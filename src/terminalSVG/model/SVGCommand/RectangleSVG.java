@@ -1,5 +1,6 @@
 package terminalSVG.model.SVGCommand;
 
+import terminalSVG.model.Instruction;
 import terminalSVG.model.SVGPreview;
 
 import java.awt.*;
@@ -37,13 +38,15 @@ public class RectangleSVG extends DrawShapeAction {
      * @param strokeColor the stroke color of the rectangle
      * @param fillColor   the fill color of the rectangle
      */
-    public RectangleSVG(String name, List<Double> coords, boolean isFill, Color strokeColor, Color fillColor) {
-        super(name, isFill, strokeColor, fillColor);
-        assert coords.size() == COORDS_LIST_SIZE;
-        this.point = new Point(coords.get(0), coords.get(1));
-        this.sideLength1 = coords.get(2);
-        this.sideLength2 = coords.get(3);
+
+    public RectangleSVG(Instruction instruction) {
+        super(instruction.getName(), instruction.isFilled(), instruction.getStrokeColor(), instruction.getFillColor());
+        assert instruction.getCoords().size() == COORDS_LIST_SIZE;
+        this.point = new Point(instruction.getCoords().get(0), instruction.getCoords().get(1));
+        this.sideLength1 = instruction.getCoords().get(2);
+        this.sideLength2 = instruction.getCoords().get(3);
     }
+
 
     public RectangleSVG(){
     }
@@ -78,15 +81,9 @@ public class RectangleSVG extends DrawShapeAction {
     }
 
     @Override
-    public void resize(Map<String, Object> sizes) {
-        Double w = 0.0;
-        Double h = 0.0;
-        if (sizes.containsKey("newWidth")) {
-            w = (Double) sizes.get("newWidth");
-        }
-        if (sizes.containsKey("newHeight")) {
-            h = (Double) sizes.get("newHeight");
-        }
+    public void resize(Double newWidth, Double newHeight) {
+        Double w = newWidth != null ? newWidth : 0.0;
+        Double h = newHeight != null ? newHeight : 0.0;
 
         if (w < 0.0 || h < 0.0) {
             throw new IllegalArgumentException("Width and height must be non-negative");
@@ -95,6 +92,8 @@ public class RectangleSVG extends DrawShapeAction {
         this.setSideLength1(w);
         this.setSideLength2(h);
     }
+
+
 
 
     public String getHelp() {

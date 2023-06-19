@@ -1,5 +1,6 @@
 package terminalSVG.model.SVGCommand;
 
+import terminalSVG.model.Instruction;
 import terminalSVG.model.SVGPreview;
 
 import java.awt.*;
@@ -38,12 +39,13 @@ public class OvalSVG extends DrawShapeAction {
      * @param strokeColor the stroke color of the oval
      * @param fillColor   the fill color of the oval
      */
-    public OvalSVG(String name, List<Double> coords, boolean isFill, Color strokeColor, Color fillColor) {
-        super(name, isFill, strokeColor, fillColor);
-        assert coords.size() == COORDS_LIST_SIZE;
-        this.center = new Point(coords.get(0), coords.get(1));
-        this.width = coords.get(2);
-        this.height = coords.get(3);
+
+    public OvalSVG(Instruction instruction) {
+        super(instruction.getName(), instruction.isFilled(), instruction.getStrokeColor(), instruction.getFillColor());
+        assert instruction.getCoords().size() == COORDS_LIST_SIZE;
+        this.center = new Point(instruction.getCoords().get(0), instruction.getCoords().get(1));
+        this.width = instruction.getCoords().get(2);
+        this.height = instruction.getCoords().get(3);
     }
 
     public OvalSVG(){
@@ -76,15 +78,9 @@ public class OvalSVG extends DrawShapeAction {
     }
 
     @Override
-    public void resize(Map<String, Object> sizes) {
-        Double w = 0.0;
-        Double h = 0.0;
-        if (sizes.containsKey("newWidth")) {
-            w = (Double) sizes.get("newWidth");
-        }
-        if (sizes.containsKey("newHeight")) {
-            h = (Double) sizes.get("newHeight");
-        }
+    public void resize(Double newWidth, Double newHeight) {
+        Double w = newWidth != null ? newWidth : 0.0;
+        Double h = newHeight != null ? newHeight : 0.0;
 
         if (w < 0.0 || h < 0.0) {
             throw new IllegalArgumentException("Width and height must be non-negative");

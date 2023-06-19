@@ -1,5 +1,6 @@
 package terminalSVG.model.SVGCommand;
 
+import terminalSVG.model.Instruction;
 import terminalSVG.model.SVGPreview;
 import terminalSVG.model.parser.Parser;
 
@@ -27,8 +28,8 @@ public class ColorSVG implements SVGCommand {
      *
      * @param instruction the instruction strokeColor
      */
-    public ColorSVG(Map<String, Object> instruction) {
-        this.color = (Color) instruction.get("strokeColor");
+    public ColorSVG(Instruction instruction) {
+        this.color = instruction.getStrokeColor();
     }
 
     public ColorSVG() {
@@ -57,12 +58,12 @@ public class ColorSVG implements SVGCommand {
      * @param elements    the elements of the instruction
      * @throws IllegalArgumentException the illegal argument exception
      */
-    public static void parseCommand(Map<String, Object> instruction, String[] elements) throws IllegalArgumentException {
+    public static void parseCommand(Instruction instruction, String[] elements) throws IllegalArgumentException {
         if (!(elements.length == 2)) {
             throw new IllegalArgumentException("Préciser une nouvelle couleur");
         }
         try {
-            instruction.put("strokeColor", Parser.convertStringToColor(elements[1].trim()));
+            instruction.setStrokeColor(Parser.convertStringToColor(elements[1].trim()));
         } catch (IllegalArgumentException e) {
             throw e;
         }

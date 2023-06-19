@@ -1,5 +1,6 @@
 package terminalSVG.model.SVGCommand;
 
+import terminalSVG.model.Instruction;
 import terminalSVG.model.SVGPreview;
 
 import java.awt.*;
@@ -39,11 +40,11 @@ public class CircleSVG extends DrawShapeAction {
      * @param cFill   the c fill
      */
 
-    public CircleSVG(String name, List<Double> coords, boolean isFill, Color cStroke, Color cFill) {
-        super(name, isFill, cStroke, cFill);
-        assert coords.size() == COORDS_LIST_SIZE;
-        this.center = new Point(coords.get(0), coords.get(1));
-        this.radius = coords.get(2);
+    public CircleSVG(Instruction instruction) {
+        super(instruction.getName(), instruction.isFilled(), instruction.getStrokeColor(), instruction.getFillColor());
+        assert instruction.getCoords().size() == COORDS_LIST_SIZE;
+        this.center = new Point(instruction.getCoords().get(0), instruction.getCoords().get(1));
+        this.radius = instruction.getCoords().get(2);
     }
 
     public void draw(SVGPreview svgPreview) {
@@ -76,20 +77,16 @@ public class CircleSVG extends DrawShapeAction {
     }
 
     @Override
-    public void resize(Map<String, Object> sizes) {
-        Double r = 0.0;
-
-        if (sizes.containsKey("newWidth") && !sizes.containsKey("newHeight")) {
-            r = (Double) sizes.get("newWidth");
-        } else if (!sizes.containsKey("newWidth") && sizes.containsKey("newHeight")) {
-            r = (Double) sizes.get("newHeight");
-        } else {
+    public void resize(Double newWidth, Double newHeight) {
+        if (newWidth != null && newHeight != null) {
             throw new IllegalArgumentException("Either newWidth or newHeight should be provided, but not both");
         }
 
-        if (r < 0.0) {
+        Double r = newWidth != null ? newWidth : newHeight;
+        if (r == null || r < 0.0) {
             throw new IllegalArgumentException("Width or height must be non-negative");
         }
+        System.out.println("OUI" + r);
         this.setRadius(r);
     }
 

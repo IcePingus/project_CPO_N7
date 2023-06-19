@@ -1,5 +1,6 @@
 package terminalSVG.model.SVGCommand;
 
+import terminalSVG.model.Instruction;
 import terminalSVG.model.SVGPreview;
 
 import java.awt.*;
@@ -49,6 +50,21 @@ public class PolygonSVG extends DrawShapeAction {
 		}
 	}
 
+	public PolygonSVG(Instruction instruction) {
+		super(instruction.getName(), instruction.isFilled(), instruction.getStrokeColor(), instruction.getFillColor());
+		assert instruction.getCoords().size() == COORDS_LIST_SIZE;
+		assert instruction.getCoords().size() >= COORDS_LIST_SIZE;
+		assert (instruction.getCoords().size()% 2 != 0);
+
+		points = new ArrayList<>();
+
+		for (int i = 0; i < instruction.getCoords().size(); i += 2) {
+			double x = instruction.getCoords().get(i);
+			double y = instruction.getCoords().get(i + 1);
+			points.add(new Point(x, y));
+		}
+	}
+
 	public PolygonSVG(){
 	}
 
@@ -93,7 +109,7 @@ public class PolygonSVG extends DrawShapeAction {
 	}
 
 	@Override
-	public void resize(Map<String, Object> sizes) {
+	public void resize(Double newWidth, Double newHeight) {
 		throw new IllegalArgumentException("Resize impossible pour un polygone");
 	}
 

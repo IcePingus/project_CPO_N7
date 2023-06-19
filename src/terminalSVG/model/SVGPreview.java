@@ -102,12 +102,12 @@ public class SVGPreview extends Observable {
      * @param shapeName The name of the shape to be resized.
      * @param sizes     The new sizes of the shapes.
      */
-    public void resizeElement(String shapeName, Map<String, Object> sizes) {
+    public void resizeElement(String shapeName, Double newWidth, Double newHeight) {
         if (!this.shapeList.containsKey(shapeName)) {
             throw new IllegalArgumentException("Aucun élement SVG ne correspond à votre requête");
         }
         DrawShapeAction shape = shapeList.get(shapeName);
-        shape.resize(sizes);
+        shape.resize(newWidth,newHeight);
         buildShapes();
     }
 
@@ -117,6 +117,7 @@ public class SVGPreview extends Observable {
      */
     public void buildShapes() {
         clearSVGDocument();
+        System.out.println(shapeList);
         for (Map.Entry<String, DrawShapeAction> shape : shapeList.entrySet()) {
             shape.getValue().draw(this);
             updateSVGDocument(shape.getValue().getClass().getSimpleName() + " : " + shape.getValue().getName());
@@ -221,7 +222,7 @@ public class SVGPreview extends Observable {
         filename = filename.endsWith(".svg") ? filename : filename + ".svg";
 
         Transformer transformer = TransformerFactory.newInstance().newTransformer();
-        Result output = new StreamResult(new File("./export/" + filename));
+        Result output = new StreamResult(new File(filename));
         Source input = new DOMSource(svgDocument);
         transformer.transform(input, output);
     }

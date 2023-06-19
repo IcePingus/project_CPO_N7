@@ -132,37 +132,25 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
      * @param instruction The parsed command represented as a map.
      * @throws ClassNotFoundException If the specified class is not found.
      */
-    public void executeCommand(Map<String, Object> instruction) throws ClassNotFoundException {
+    public void executeCommand(Instruction instruction) throws ClassNotFoundException {
         String returnAction;
-        String elementActionType = getString(instruction, "elementActionType");
-        String elementAction = getString(instruction, "elementAction");
-        String elementName = getString(instruction, "elementName");
-        List<Double> coords = getList(instruction, "coords");
-        Color strokeColor = getColor(instruction, "strokeColor", this.svgPreview.getDefaultColor());
-        boolean isFill = false;
-        Color fillColor = getColor(instruction, "fillColor", null);
-        if (fillColor != null) {
-            isFill = true;
-        }
+        System.out.println(instruction.toString());
+        String elementAction = instruction.getAction();
+        instruction.setStrokeColor(getColor(instruction));
+
         try {
             String action = elementAction;
             action += "SVG";
             action = Character.toUpperCase(action.charAt(0)) + action.substring(1);
             SVGCommand svgCommand = null;
             Class<?> actionClass = Class.forName("terminalSVG.model.SVGCommand." + action);
-            if (elementActionType.equals("setter")) {
-                Constructor<?> shapeConstructor = actionClass.getDeclaredConstructor(String.class, List.class, boolean.class, Color.class, Color.class);
-                shapeConstructor.setAccessible(true);
-                svgCommand = (DrawShapeAction) shapeConstructor.newInstance(elementName, coords, isFill, strokeColor, fillColor);
-            } else if (elementActionType.equals("modifier")) {
-                Constructor<?> CommandConstructor = actionClass.getDeclaredConstructor(Map.class);
-                CommandConstructor.setAccessible(true);
-                svgCommand = (SVGCommand) CommandConstructor.newInstance(instruction);
-            }
+            Constructor<?> shapeConstructor = actionClass.getDeclaredConstructor(Instruction.class);
+            shapeConstructor.setAccessible(true);
+            svgCommand = (SVGCommand) shapeConstructor.newInstance(instruction);
             if (svgCommand == null) {
                 throw new IllegalArgumentException("ERROR");
             }
-            returnAction = svgCommand.execute(this.svgPreview, elementName);
+            returnAction = svgCommand.execute(this.svgPreview, instruction.getName());
             this.displayReturnAction(returnAction);
 
         } catch (NoSuchMethodException e) {
@@ -178,29 +166,6 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
 
 
     /**
-     * Utility method to extract a string value from the map with a default value.
-     *
-     * @param map The map containing the values.
-     * @param key The key to retrieve the value.
-     * @return The extracted string value or an empty string if the key is not found.
-     */
-    // Méthode utilitaire pour extraire une chaîne de caractères du dictionnaire avec une valeur par défaut
-    private String getString(Map<String, Object> map, String key) {
-        return map.containsKey(key) ? (String) map.get(key) : "";
-    }
-
-    /**
-     * Utility method to extract a list of double values from the map with a default value.
-     *
-     * @param map The map containing the values.
-     * @param key The key to retrieve the value.
-     * @return The extracted list of double values or null if the key is not found.
-     */
-    private List<Double> getList(Map<String, Object> map, String key) {
-        return map.containsKey(key) ? (List<Double>) map.get(key) : null;
-    }
-
-    /**
      * Utility method to extract a color value from the map with a default value.
      *
      * @param map          The map containing the values.
@@ -209,8 +174,8 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
      * @return The extracted color value or the default value if the key is not found.
      */
 
-    private Color getColor(Map<String, Object> map, String key, Color defaultValue) {
-        return map.containsKey(key) ? (Color) map.get(key) : defaultValue;
+    private Color getColor(Instruction instruction) {
+        return instruction.getStrokeColor() != null ?  instruction.getStrokeColor() : this.svgPreview.getDefaultColor();
     }
 
     /**

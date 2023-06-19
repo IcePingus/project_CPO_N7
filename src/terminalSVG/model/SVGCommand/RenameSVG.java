@@ -1,5 +1,6 @@
 package terminalSVG.model.SVGCommand;
 
+import terminalSVG.model.Instruction;
 import terminalSVG.model.SVGPreview;
 
 import java.util.Map;
@@ -22,14 +23,17 @@ public class RenameSVG implements SVGCommand {
 
     private String newName;
 
+    private String oldName;
+
     /**
      * Constructs a RenameSVG object with the specified instruction map.
      *
      * @param instruction The instruction map containing the new name for the element.
      */
 
-    public RenameSVG(Map<String, Object> instruction) {
-        this.newName = (String) instruction.get("elementNewName");
+    public RenameSVG(Instruction instruction) {
+        this.newName = instruction.getName();
+        this.oldName = instruction.getOldName();
     }
     public RenameSVG(){}
 
@@ -62,7 +66,7 @@ public class RenameSVG implements SVGCommand {
      */
     @Override
     public String execute(SVGPreview svgPreview, String shapeName) {
-        svgPreview.renameElement(shapeName, this.newName);
+        svgPreview.renameElement(this.oldName, this.newName);
         return  ">> Rename executed\n";
     }
 
@@ -73,13 +77,13 @@ public class RenameSVG implements SVGCommand {
      * @param elements    The elements of the command.
      * @throws IllegalArgumentException If the command elements are invalid or incomplete.
      */
-    public static void parseCommand(Map<String, Object> instruction, String[] elements) throws IllegalArgumentException {
+    public static void parseCommand(Instruction instruction, String[] elements) throws IllegalArgumentException {
         if (elements.length == 1) {
             throw new IllegalArgumentException("Préciser le nom de l'élément et son nouveau nom");
         } else if (elements.length == 2) {
             throw new IllegalArgumentException("Préciser le nouveau nom de l'élément");
         }
-        instruction.put("elementName", elements[1].trim());
-        instruction.put("elementNewName", elements[2].trim());
+        instruction.setOldName(elements[1].trim());
+        instruction.setName(elements[2].trim());
     }
 }

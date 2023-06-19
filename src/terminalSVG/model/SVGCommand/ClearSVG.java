@@ -1,5 +1,6 @@
 package terminalSVG.model.SVGCommand;
 
+import terminalSVG.model.Instruction;
 import terminalSVG.model.SVGPreview;
 
 import java.util.Map;
@@ -23,7 +24,7 @@ public class ClearSVG implements SVGCommand {
     public ClearSVG() {
     }
 
-    public ClearSVG(Map<String, Object> instruction) {
+    public ClearSVG(Instruction instruction) {
     }
 
     @Override
@@ -49,7 +50,7 @@ public class ClearSVG implements SVGCommand {
      * @param elements    the elements of the instruction
      * @throws IllegalArgumentException the illegal argument exception
      */
-    public static void parseCommand(Map<String, Object> instruction, String[] elements) throws IllegalArgumentException {
+    public static void parseCommand(Instruction instruction, String[] elements) throws IllegalArgumentException {
         if (!(elements.length == 1)) {
             throw new IllegalArgumentException("Ne pas préciser d'arguments");
         }

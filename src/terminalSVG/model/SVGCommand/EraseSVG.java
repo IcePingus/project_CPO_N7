@@ -1,5 +1,6 @@
 package terminalSVG.model.SVGCommand;
 
+import terminalSVG.model.Instruction;
 import terminalSVG.model.SVGPreview;
 
 import java.util.Map;
@@ -24,8 +25,8 @@ public class EraseSVG implements SVGCommand {
      *
      * @param instruction the instruction of erase
      */
-    public EraseSVG(Map<String, Object> instruction) {
-        this.eltName = (String) instruction.get("elementName");
+    public EraseSVG(Instruction instruction) {
+        this.eltName = instruction.getName();
     }
 
     public EraseSVG() {
@@ -54,10 +55,10 @@ public class EraseSVG implements SVGCommand {
      * @param elements    the elements of the instruction
      * @throws IllegalArgumentException the illegal argument exception
      */
-    public static void parseCommand(Map<String, Object> instruction, String[] elements) throws IllegalArgumentException {
+    public static void parseCommand(Instruction instruction, String[] elements) throws IllegalArgumentException {
         if (!(elements.length == 2)) {
             throw new IllegalArgumentException("Préciser le nom d'un élément");
         }
-        instruction.put("elementName", elements[1].trim());
+        instruction.setName(elements[1].trim());
     }
 }

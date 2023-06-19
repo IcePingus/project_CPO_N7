@@ -1,5 +1,6 @@
 package terminalSVG.model.SVGCommand;
 
+import terminalSVG.model.Instruction;
 import terminalSVG.model.SVGPreview;
 
 import java.util.Map;
@@ -19,15 +20,17 @@ public class ResizeSVG implements SVGCommand {
             + "\n" + "Exemple :"
             + "\n" + "----------------------------------------------"
     );
-    private Map<String, Object> sizes;
+    private Double newWidth;
 
+    private Double newHeight;
     /**
      * Constructs a new ResizeSVG instance with the given instruction.
      *
      * @param instruction the instruction containing the sizes for resizing
      */
-    public ResizeSVG(Map<String, Object> instruction) {
-        this.sizes = instruction;
+    public ResizeSVG(Instruction instruction) {
+        this.newWidth = instruction.getWidth();
+        this.newHeight = instruction.getHeight();
     }
 
     public ResizeSVG(){}
@@ -50,7 +53,8 @@ public class ResizeSVG implements SVGCommand {
      */
     @Override
     public String execute(SVGPreview svgPreview, String shapeName) {
-        svgPreview.resizeElement(shapeName, this.sizes);
+        System.out.print(newHeight);
+        svgPreview.resizeElement(shapeName, this.newWidth, this.newHeight);
         return  ">> Resize executed\n";
     }
 
@@ -61,7 +65,7 @@ public class ResizeSVG implements SVGCommand {
      * @param elements    the command elements
      * @throws IllegalArgumentException if the command is invalid or missing required arguments
      */
-    public static void parseCommand(Map<String, Object> instruction, String[] elements) throws IllegalArgumentException {
+    public static void parseCommand(Instruction instruction, String[] elements) throws IllegalArgumentException {
         boolean foundW = false;
         boolean foundH = false;
 
@@ -79,8 +83,7 @@ public class ResizeSVG implements SVGCommand {
                 if (!(i + 1 < elements.length)) {
                     throw new IllegalArgumentException("need argument after option -w");
                 }
-
-                instruction.put("newWidth", Double.parseDouble(elements[i + 1].trim()));
+                instruction.setWidth(Double.parseDouble(elements[i + 1].trim()));
                 foundW = true;
                 i += 1;
 
@@ -93,7 +96,7 @@ public class ResizeSVG implements SVGCommand {
                     throw new IllegalArgumentException("need argument after option -h");
                 }
 
-                instruction.put("newHeight", Double.parseDouble(elements[i + 1].trim()));
+                instruction.setHeight(Double.parseDouble(elements[i + 1].trim()));
                 foundH = true;
                 i += 1;
             } else {
@@ -105,6 +108,6 @@ public class ResizeSVG implements SVGCommand {
             throw new IllegalArgumentException("No -w or -h option found");
         }
 
-        instruction.put("elementName", elements[1].trim());
+        instruction.setName(elements[1].trim());
     }
 }
