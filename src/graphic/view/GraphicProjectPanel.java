@@ -59,8 +59,6 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
 
         add(toolbar, BorderLayout.SOUTH);
 
-        setBackground(Color.LIGHT_GRAY);
-
         // Instanciation des models
         Toolbox toolbox = new Toolbox();
         ColorModel colorModel = new ColorModel();

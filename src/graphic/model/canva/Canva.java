@@ -66,7 +66,7 @@ public class Canva extends JComponent {
 
         this.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
-                // Save coordinates when mouse is pressed
+                // Sauvegarder les coordonnées lors d'un clic de souris
                 double doubleOldX = e.getX() / zoom + (getBufferedImage().getWidth() - getWidth() / zoom) / 2;
                 oldX = (int) doubleOldX;
                 double doubleOldY = e.getY() / zoom + (getBufferedImage().getHeight() - getHeight() / zoom) / 2;
@@ -75,12 +75,14 @@ public class Canva extends JComponent {
                 currentY = oldY;
                 isFirstPoint = true;
 
+                // Instancer une nouvelle bufferedImage et l'ajouter dans le tableau de bufferedImage
                 BufferedImage newImage = nextBufferedImage();
 
-                // Execute active tool
+                // Changer le curseur si l'outil actif est moveTool
                 if (toolbox.getActiveTool() instanceof MoveTool) {
                     setCursor(new Cursor(Cursor.HAND_CURSOR));
                 }
+                // Execute l'outil actif
                 toolbox.getActiveTool().execute(oldX, oldY, currentX, currentY, newImage, g2, e.getModifiersEx(), toolbox.getToolSize(), toolbox.getIsSquareShape(), isFirstPoint, Canva.this);
 
                 repaint();
@@ -88,6 +90,7 @@ public class Canva extends JComponent {
 
             @Override
             public void mouseReleased(MouseEvent e) {
+                // Changer le curseur si l'outil actif est moveTool
                 if (toolbox.getActiveTool() instanceof MoveTool) {
                     setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
                 }
@@ -147,17 +150,17 @@ public class Canva extends JComponent {
             }
         });
 
-        // Add mouse motion listener
         this.addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
+                // Sauvegarde les coordonnées actuelles
                 double doubleCurrentX = e.getX() / zoom + (getBufferedImage().getWidth() - getWidth() / zoom) / 2;
                 currentX = (int) doubleCurrentX;
                 double doubleCurrentY = e.getY() / zoom + (getBufferedImage().getHeight() - getHeight() / zoom) / 2;
                 currentY = (int) doubleCurrentY;
 
                 if (g2 != null) {
-                    // Execute active tool
+                    // Execute l'outil actif
                     toolbox.getActiveTool().execute(oldX, oldY, currentX, currentY, imageStates.get(currentIndex), g2, e.getModifiersEx(), toolbox.getToolSize(), toolbox.getIsSquareShape(), isFirstPoint, Canva.this);
                     if (isFirstPoint) isFirstPoint = false;
                     oldX = currentX;
@@ -167,8 +170,8 @@ public class Canva extends JComponent {
             }
         });
 
-        // Add mouse wheel listener
         this.addMouseWheelListener(e -> {
+            // Ajuster le zoom quand on scroll
             zoomPointX = getWidth() / 2;
             zoomPointY = getHeight() / 2;
             if (e.getPreciseWheelRotation() < 0) {
@@ -194,6 +197,7 @@ public class Canva extends JComponent {
      * @return the copied BufferedImage
      */
     private BufferedImage copyBufferedImage(BufferedImage source) {
+        // Copier la bufferedImage
         ColorModel cm = source.getColorModel();
         boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
         WritableRaster raster = source.copyData(null);
@@ -206,6 +210,7 @@ public class Canva extends JComponent {
      * @return the new BufferedImage
      */
     public BufferedImage nextBufferedImage() {
+        // Créer une nouvelle bufferedImage et la définir comme actif
         BufferedImage newImage = copyBufferedImage(this.imageStates.get(this.currentIndex));
         this.setBufferedImage(newImage);
         return newImage;
@@ -248,29 +253,23 @@ public class Canva extends JComponent {
     }
 
     /**
-     * Gets the zoom of the canva.
-     *
-     * @return the zoom.
-     */
-    public double getZoom() {
-        return this.zoom;
-    }
-
-    /**
      * Sets the specified buffered image as the current image state and updates the graphics object.
      *
      * @param bufferedImage the new buffered image
      */
     public void setBufferedImage(BufferedImage bufferedImage) {
+        // Vérifie la taille de la liste d'image
         if (this.imageStates.size() == 0) {
             this.imageStates.add(bufferedImage);
         } else {
+            // Créer la bufferedImage en fonction de l'index courant
             this.currentIndex++;
             this.imageStates.add(this.currentIndex, bufferedImage);
             if (this.imageStates.size() > this.currentIndex + 1) {
                 this.imageStates.subList(this.currentIndex + 1, this.imageStates.size()).clear();
             }
             this.canvaSizeLabel.setText(this.getBufferedImage().getWidth() + "x" + this.getBufferedImage().getHeight());
+            // Récupérer la nouvelle bufferedImage
             this.g2 = (Graphics2D) bufferedImage.getGraphics();
             this.repaint();
         }
@@ -292,6 +291,7 @@ public class Canva extends JComponent {
      */
     public void setCurrentIndex(int currentIndex) {
         this.currentIndex = currentIndex;
+        // Modifier le label sur la taille de la toile
         this.canvaSizeLabel.setText(this.getBufferedImage().getWidth() + "x" + this.getBufferedImage().getHeight());
     }
 
@@ -302,7 +302,9 @@ public class Canva extends JComponent {
      */
     protected void paintComponent(Graphics g) {
         this.g = g;
+        // Vérifier si la bufferedImage est null ou si aucune bufferedImage est présent dans la liste
         if (this.imageStates.size() == 0 || this.imageStates.get(this.currentIndex) == null) {
+            // Initialise la toile
             this.imageStates.add(this.currentIndex, new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_ARGB));
             this.zoom = 0.75;
             this.zoomPointX = getWidth() / 2;
@@ -314,12 +316,14 @@ public class Canva extends JComponent {
             this.g2.fillRect(0, 0, this.getWidth(), this.getHeight());
             this.repaint();
         }
+        // Applique le niveau de zoom
         AffineTransform at = ((Graphics2D) g).getTransform();
         at.translate(zoomPointX, zoomPointY);
         at.scale(zoom, zoom);
         at.translate(-zoomPointX, -zoomPointY);
         ((Graphics2D) g).setTransform(at);
 
+        // Dessiner la bufferedImage sur la toile
         g.drawImage(this.imageStates.get(this.currentIndex), ((this.getWidth() - this.imageStates.get(this.currentIndex).getWidth()) / 2), ((this.getHeight() - this.imageStates.get(this.currentIndex).getHeight()) / 2), null);
 
         if (!isFirstPoint && shapeType != null) {
