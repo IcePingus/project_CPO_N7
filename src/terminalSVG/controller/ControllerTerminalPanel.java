@@ -58,6 +58,7 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
         this.modifierCommandList.add("recolor");
         this.modifierCommandList.add("translate");
         this.modifierCommandList.add("resize");
+        this.modifierCommandList.add("help");
 
         this.sendButton = new JButton("Entrer");
         this.sendButton.addActionListener(this);
@@ -104,7 +105,7 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
     /**
      * Adds the command to the history, clears the content of the text area, and prepares the command for execution.
      */
-    public void prepareCommand() {
+    private void prepareCommand() {
         String commandText = this.textArea.getText().trim(); // Retirer les espaces avant et après le texte
 
         if (!commandText.isEmpty()) {
@@ -118,6 +119,7 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
             } catch (Exception e) {
                 // Gérer toutes les autres exceptions
                 this.history.addCommand(new Command("Erreur imprévue s'est produite : " + e.getMessage()));
+                e.printStackTrace();
             }
         }
         this.textArea.setText("");
@@ -130,36 +132,26 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
      * @param instruction The parsed command represented as a map.
      * @throws ClassNotFoundException If the specified class is not found.
      */
-    public void executeCommand(Map<String, Object> instruction) throws ClassNotFoundException {
-        String elementActionType = getString(instruction, "elementActionType");
-        String elementAction = getString(instruction, "elementAction");
-        String elementName = getString(instruction, "elementName");
-        List<Double> coords = getList(instruction, "coords");
-        Color strokeColor = getColor(instruction, "strokeColor", this.svgPreview.getDefaultColor());
-        boolean isFill = false;
-        Color fillColor = getColor(instruction, "fillColor", null);
-        if (fillColor != null) {
-            isFill = true;
-        }
+    private void executeCommand(Instruction instruction) throws ClassNotFoundException {
+        List<String> returnAction;
+        String elementAction = instruction.getAction();
+        instruction.setStrokeColor(getColor(instruction));
+
         try {
             String action = elementAction;
             action += "SVG";
             action = Character.toUpperCase(action.charAt(0)) + action.substring(1);
             SVGCommand svgCommand = null;
             Class<?> actionClass = Class.forName("terminalSVG.model.SVGCommand." + action);
-            if (elementActionType.equals("setter")) {
-                Constructor<?> shapeConstructor = actionClass.getDeclaredConstructor(String.class, List.class, boolean.class, Color.class, Color.class);
-                shapeConstructor.setAccessible(true);
-                svgCommand = (DrawShapeAction) shapeConstructor.newInstance(elementName, coords, isFill, strokeColor, fillColor);
-            } else if (elementActionType.equals("modifier")) {
-                Constructor<?> CommandConstructor = actionClass.getDeclaredConstructor(Map.class);
-                CommandConstructor.setAccessible(true);
-                svgCommand = (SVGCommand) CommandConstructor.newInstance(instruction);
-            }
+            Constructor<?> shapeConstructor = actionClass.getDeclaredConstructor(Instruction.class);
+            shapeConstructor.setAccessible(true);
+            svgCommand = (SVGCommand) shapeConstructor.newInstance(instruction);
             if (svgCommand == null) {
                 throw new IllegalArgumentException("ERROR");
             }
-            svgCommand.execute(this.svgPreview, elementName);
+            returnAction = svgCommand.execute(this.svgPreview);
+            this.displayReturnAction(returnAction);
+
         } catch (NoSuchMethodException e) {
             throw new RuntimeException(e);
         } catch (InvocationTargetException e) {
@@ -171,28 +163,6 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
         }
     }
 
-    /**
-     * Utility method to extract a string value from the map with a default value.
-     *
-     * @param map The map containing the values.
-     * @param key The key to retrieve the value.
-     * @return The extracted string value or an empty string if the key is not found.
-     */
-    // Méthode utilitaire pour extraire une chaîne de caractères du dictionnaire avec une valeur par défaut
-    private String getString(Map<String, Object> map, String key) {
-        return map.containsKey(key) ? (String) map.get(key) : "";
-    }
-
-    /**
-     * Utility method to extract a list of double values from the map with a default value.
-     *
-     * @param map The map containing the values.
-     * @param key The key to retrieve the value.
-     * @return The extracted list of double values or null if the key is not found.
-     */
-    private List<Double> getList(Map<String, Object> map, String key) {
-        return map.containsKey(key) ? (List<Double>) map.get(key) : null;
-    }
 
     /**
      * Utility method to extract a color value from the map with a default value.
@@ -202,8 +172,20 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
      * @param defaultValue The default color value.
      * @return The extracted color value or the default value if the key is not found.
      */
-    private Color getColor(Map<String, Object> map, String key, Color defaultValue) {
-        return map.containsKey(key) ? (Color) map.get(key) : defaultValue;
+
+    private Color getColor(Instruction instruction) {
+        return instruction.getStrokeColor() != null ? instruction.getStrokeColor() : this.svgPreview.getDefaultColor();
+    }
+
+    /**
+     * Utility method to display the result of a command correctly in the terminal
+     *
+     * @param returnAction The String containing the value.
+     */
+    public void displayReturnAction(List<String> returnAction) {
+        for (String e : returnAction) {
+            this.history.addCommand(new Command(e));
+        }
     }
 
     @Override

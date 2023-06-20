@@ -1,8 +1,10 @@
 package terminalSVG.model.SVGCommand;
 
+import terminalSVG.model.Instruction;
 import terminalSVG.model.SVGPreview;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -16,8 +18,17 @@ public class SquareSVG extends DrawShapeAction {
     private double sideLength;
     private static final Integer COORDS_LIST_SIZE = 3;
     private static final String COMMAND_NAME = "square";
-    private final String description = ("\n" + "Utilisation Carré : "
-    );
+    private final List<String> description = new ArrayList<>(List.of(
+            "Carré : Création d'un carré",
+            "commande : square <nom> <coordonnéesX> <coordonnéesY> <longueur> [-s contour] [-f remplissage]",
+            " X / Y : coordonnées de la forme",
+            "longueur : longueur du côté",
+            "contour : couleur de contour du carré",
+            "remplissage : couleur de remplissage du carré",
+            "Exemple : square carre 100 100 400",
+            "----------------------------------------------"
+    ));
+
 
     /**
      * Constructs a SquareSVG object with the specified parameters.
@@ -28,11 +39,15 @@ public class SquareSVG extends DrawShapeAction {
      * @param strokeColor The color of the stroke.
      * @param fillColor   The color of the fill.
      */
-    public SquareSVG(String name, List<Double> coords, boolean isFill, Color strokeColor, Color fillColor) {
-        super(name, isFill, strokeColor, fillColor);
-        assert coords.size() == COORDS_LIST_SIZE;
-        this.point = new Point(coords.get(0), coords.get(1));
-        this.sideLength = coords.get(2);
+
+    public SquareSVG(Instruction instruction) {
+        super(instruction.getName(), instruction.isFilled(), instruction.getStrokeColor(), instruction.getFillColor());
+        assert instruction.getCoords().size() == COORDS_LIST_SIZE;
+        this.point = new Point(instruction.getCoords().get(0), instruction.getCoords().get(1));
+        this.sideLength = instruction.getCoords().get(2);
+    }
+
+    public SquareSVG() {
     }
 
     /**
@@ -75,22 +90,19 @@ public class SquareSVG extends DrawShapeAction {
     }
 
     @Override
-    public void resize(Map<String, Object> sizes) {
-        Double l = 0.0;
-
-        if (sizes.containsKey("newWidth") && !sizes.containsKey("newHeight")) {
-            l = (Double) sizes.get("newWidth");
-        } else if (!sizes.containsKey("newWidth") && sizes.containsKey("newHeight")) {
-            l = (Double) sizes.get("newHeight");
-        } else {
+    public void resize(Double newWidth, Double newHeight) {
+        if (newWidth != null && newHeight != null) {
             throw new IllegalArgumentException("Either newWidth or newHeight should be provided, but not both");
         }
 
-        if (l < 0.0) {
+        Double l = newWidth != null ? newWidth : newHeight;
+        if (l == null || l < 0.0) {
             throw new IllegalArgumentException("Width or height must be non-negative");
         }
+
         this.setSideLength(l);
     }
+
 
     /**
      * Gets the help information for using the square command.
@@ -98,7 +110,7 @@ public class SquareSVG extends DrawShapeAction {
      * @return The help information for the square command.
      */
 
-    public String getHelp() {
+    public List<String> getHelp() {
         return this.description;
     }
 

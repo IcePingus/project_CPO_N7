@@ -102,12 +102,12 @@ public class SVGPreview extends Observable {
      * @param shapeName The name of the shape to be resized.
      * @param sizes     The new sizes of the shapes.
      */
-    public void resizeElement(String shapeName, Map<String, Object> sizes) {
+    public void resizeElement(String shapeName, Double newWidth, Double newHeight) {
         if (!this.shapeList.containsKey(shapeName)) {
             throw new IllegalArgumentException("Aucun élement SVG ne correspond à votre requête");
         }
         DrawShapeAction shape = shapeList.get(shapeName);
-        shape.resize(sizes);
+        shape.resize(newWidth, newHeight);
         buildShapes();
     }
 
@@ -115,7 +115,7 @@ public class SVGPreview extends Observable {
      * Builds the shapes in the SVG document.
      * Clears the SVG document, draws each shape, and updates the document.
      */
-    public void buildShapes() {
+    private void buildShapes() {
         clearSVGDocument();
         for (Map.Entry<String, DrawShapeAction> shape : shapeList.entrySet()) {
             shape.getValue().draw(this);
@@ -142,7 +142,7 @@ public class SVGPreview extends Observable {
      *
      * @param comment The comment to be added to the SVG document.
      */
-    public void updateSVGDocument(String comment) {
+    private void updateSVGDocument(String comment) {
         // Mettre à jour le document SVG
         this.svgGeneratorContext.setComment(comment);
         Element root = svgDocument.getDocumentElement();
@@ -155,7 +155,7 @@ public class SVGPreview extends Observable {
     /**
      * Clears the SVG document.
      */
-    public void clearSVGDocument() {
+    private void clearSVGDocument() {
         Node root = svgDocument.getDocumentElement();
         while (root.hasChildNodes()) {
             root.removeChild(root.getFirstChild());
@@ -221,7 +221,7 @@ public class SVGPreview extends Observable {
         filename = filename.endsWith(".svg") ? filename : filename + ".svg";
 
         Transformer transformer = TransformerFactory.newInstance().newTransformer();
-        Result output = new StreamResult(new File("./export/" + filename));
+        Result output = new StreamResult(new File(filename));
         Source input = new DOMSource(svgDocument);
         transformer.transform(input, output);
     }
@@ -292,7 +292,7 @@ public class SVGPreview extends Observable {
      * @return The shape with the given name.
      * @throws IllegalArgumentException if the shape does not exist.
      */
-    public DrawShapeAction getShapeByName(String name) {
+    private DrawShapeAction getShapeByName(String name) {
         if (!(this.shapeList.containsKey(name)))
             throw new IllegalArgumentException("Aucun élement SVG ne correspond à votre requête");
         return this.shapeList.get(name);

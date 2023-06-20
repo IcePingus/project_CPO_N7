@@ -1,8 +1,10 @@
 package terminalSVG.model.SVGCommand;
 
+import terminalSVG.model.Instruction;
 import terminalSVG.model.SVGPreview;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -18,8 +20,16 @@ public class RectangleSVG extends DrawShapeAction {
     private double sideLength2;
     private static final Integer COORDS_LIST_SIZE = 4;
     private static final String COMMAND_NAME = "rectangle";
-    private final String description = ("\n" + "Utilisation Rectangle : "
-    );
+    private final List<String> description = new ArrayList<>(List.of(
+            "Rectangle : Création d'un rectangle",
+            "commande : rectangle <nom> <coordonnéesX> <coordonnéesY> <largeur> <hauteur> [-s contour] [-f remplissage]",
+            " X / Y : coordonnées de la forme",
+            "largeur / hauteur : largeur & hauteur de la forme",
+            "contour : couleur de contour du rectangle",
+            "remplissage : couleur de remplissage du rectangle",
+            "Exemple : rectangle rect1 100 100 400 20 -s orange",
+            "----------------------------------------------"
+    ));
 
     /**
      * Instantiates a new Rectangle svg.
@@ -30,12 +40,17 @@ public class RectangleSVG extends DrawShapeAction {
      * @param strokeColor the stroke color of the rectangle
      * @param fillColor   the fill color of the rectangle
      */
-    public RectangleSVG(String name, List<Double> coords, boolean isFill, Color strokeColor, Color fillColor) {
-        super(name, isFill, strokeColor, fillColor);
-        assert coords.size() == COORDS_LIST_SIZE;
-        this.point = new Point(coords.get(0), coords.get(1));
-        this.sideLength1 = coords.get(2);
-        this.sideLength2 = coords.get(3);
+
+    public RectangleSVG(Instruction instruction) {
+        super(instruction.getName(), instruction.isFilled(), instruction.getStrokeColor(), instruction.getFillColor());
+        assert instruction.getCoords().size() == COORDS_LIST_SIZE;
+        this.point = new Point(instruction.getCoords().get(0), instruction.getCoords().get(1));
+        this.sideLength1 = instruction.getCoords().get(2);
+        this.sideLength2 = instruction.getCoords().get(3);
+    }
+
+
+    public RectangleSVG() {
     }
 
     public void draw(SVGPreview svgPreview) {
@@ -68,15 +83,9 @@ public class RectangleSVG extends DrawShapeAction {
     }
 
     @Override
-    public void resize(Map<String, Object> sizes) {
-        Double w = 0.0;
-        Double h = 0.0;
-        if (sizes.containsKey("newWidth")) {
-            w = (Double) sizes.get("newWidth");
-        }
-        if (sizes.containsKey("newHeight")) {
-            h = (Double) sizes.get("newHeight");
-        }
+    public void resize(Double newWidth, Double newHeight) {
+        Double w = newWidth != null ? newWidth : 0.0;
+        Double h = newHeight != null ? newHeight : 0.0;
 
         if (w < 0.0 || h < 0.0) {
             throw new IllegalArgumentException("Width and height must be non-negative");
@@ -87,7 +96,7 @@ public class RectangleSVG extends DrawShapeAction {
     }
 
 
-    public String getHelp() {
+    public List<String> getHelp() {
         return this.description;
     }
 

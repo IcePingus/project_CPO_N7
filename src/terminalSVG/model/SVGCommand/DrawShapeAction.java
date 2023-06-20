@@ -45,6 +45,9 @@ public abstract class DrawShapeAction implements SVGCommand {
         this.fillColor = fillColor;
     }
 
+    public DrawShapeAction() {
+    }
+
     // Implémentez les méthodes de l'interface SVGCommand
     @Override
     public String getName() {
@@ -52,12 +55,14 @@ public abstract class DrawShapeAction implements SVGCommand {
     }
 
     @Override
-    public abstract String getHelp();
+    public abstract List<String> getHelp();
 
     @Override
-    public void execute(SVGPreview svgPreview, String shapeName) {
-        svgPreview.addElement(shapeName, this);
+    public List<String> execute(SVGPreview svgPreview) {
+        svgPreview.addElement(this.getName(), this);
+        return List.of("[+] " + this.getName());
     }
+
 
     /**
      * Draw the shape on the canva.
@@ -74,7 +79,7 @@ public abstract class DrawShapeAction implements SVGCommand {
      */
     public abstract void translate(Double dx, Double dy);
 
-    public abstract void resize(Map<String, Object> sizes);
+    public abstract void resize(Double newWidth, Double newHeight);
 
     /**
      * Sets a new name to the shape.

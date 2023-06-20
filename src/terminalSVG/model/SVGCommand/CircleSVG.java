@@ -1,8 +1,10 @@
 package terminalSVG.model.SVGCommand;
 
+import terminalSVG.model.Instruction;
 import terminalSVG.model.SVGPreview;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -16,16 +18,21 @@ public class CircleSVG extends DrawShapeAction {
     private double radius;
     private final Integer COORDS_LIST_SIZE = 3;
     private static final String COMMAND_NAME = "circle";
-    private final String description = ("\n" + "Utilisation Cercle : "
-            + "\n\t" + "circle <nom> <coordonnéesX> <coordonnéesY> <rayon>"
-            + "\n\t\t" + "coordonnées X et Y : coordonnées du point en haut "
-            + "\n\t\t" + "rayon : rayon du cercle"
-            + "\n"
-            + "\n\t" + "Exemple :"
-            + "\n\t" + ""
-            + ""
-            + "\n"
-    );
+    private final List<String> description = new ArrayList<>(List.of(
+            "Cercle : Création d'un cercle",
+            "commande : circle <nom> <coordonnéesX> <coordonnéesY> <rayon> [-s contour] [-f remplissage]",
+            " X / Y : coordonnées de la forme",
+            "rayon : rayon du cercle",
+            "contour : couleur de contour du cercle",
+            "remplissage : couleur de remplissage du cercle",
+            "Exemple : circle cercle1 200 200 50 -s blue -f red",
+            "----------------------------------------------"
+    ));
+
+    public CircleSVG() {
+    }
+
+    ;
 
     /**
      * Instantiates a new Circle svg.
@@ -36,11 +43,12 @@ public class CircleSVG extends DrawShapeAction {
      * @param cStroke the c stroke
      * @param cFill   the c fill
      */
-    public CircleSVG(String name, List<Double> coords, boolean isFill, Color cStroke, Color cFill) {
-        super(name, isFill, cStroke, cFill);
-        assert coords.size() == COORDS_LIST_SIZE;
-        this.center = new Point(coords.get(0), coords.get(1));
-        this.radius = coords.get(2);
+
+    public CircleSVG(Instruction instruction) {
+        super(instruction.getName(), instruction.isFilled(), instruction.getStrokeColor(), instruction.getFillColor());
+        assert instruction.getCoords().size() == COORDS_LIST_SIZE;
+        this.center = new Point(instruction.getCoords().get(0), instruction.getCoords().get(1));
+        this.radius = instruction.getCoords().get(2);
     }
 
     public void draw(SVGPreview svgPreview) {
@@ -73,24 +81,19 @@ public class CircleSVG extends DrawShapeAction {
     }
 
     @Override
-    public void resize(Map<String, Object> sizes) {
-        Double r = 0.0;
-
-        if (sizes.containsKey("newWidth") && !sizes.containsKey("newHeight")) {
-            r = (Double) sizes.get("newWidth");
-        } else if (!sizes.containsKey("newWidth") && sizes.containsKey("newHeight")) {
-            r = (Double) sizes.get("newHeight");
-        } else {
+    public void resize(Double newWidth, Double newHeight) {
+        if (newWidth != null && newHeight != null) {
             throw new IllegalArgumentException("Either newWidth or newHeight should be provided, but not both");
         }
 
-        if (r < 0.0) {
+        Double r = newWidth != null ? newWidth : newHeight;
+        if (r == null || r < 0.0) {
             throw new IllegalArgumentException("Width or height must be non-negative");
         }
         this.setRadius(r);
     }
 
-    public String getHelp() {
+    public List<String> getHelp() {
         return this.description;
     }
 

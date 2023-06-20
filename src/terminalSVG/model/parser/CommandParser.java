@@ -1,5 +1,7 @@
 package terminalSVG.model.parser;
 
+import terminalSVG.model.Instruction;
+
 import java.util.Map;
 
 /**
@@ -17,5 +19,5 @@ public interface CommandParser {
      * @return A map containing the parsed command.
      * @throws IllegalArgumentException If the command is invalid or contains errors.
      */
-    Map<String, Object> parseCommand(String[] elements) throws IllegalArgumentException;
+    Instruction parseCommand(String[] elements) throws IllegalArgumentException;
 }

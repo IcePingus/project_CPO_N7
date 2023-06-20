@@ -1,8 +1,10 @@
 package terminalSVG.model.SVGCommand;
 
+import terminalSVG.model.Instruction;
 import terminalSVG.model.SVGPreview;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -19,8 +21,17 @@ public class OvalSVG extends DrawShapeAction {
     private final Integer COORDS_LIST_SIZE = 4;
 
     private static final String COMMAND_NAME = "oval";
-    private final String description = ("\n" + "Utilisation Oval : "
-    );
+
+    private final List<String> description = new ArrayList<>(List.of(
+            "Oval : Création d'un oval",
+            "commande : oval <nom> <coordonnéesX> <coordonnéesY> <largeur> <hauteur> [-s contour] [-f remplissage]",
+            " X / Y : coordonnées de la forme",
+            "largeur / hauteur : largeur & hauteur de la forme",
+            "contour : couleur de contour du oval",
+            "remplissage : couleur de remplissage du oval",
+            "Exemple : oval oval1 200 400 200 10 -f green -s red",
+            "----------------------------------------------"
+    ));
 
     /**
      * Instantiates a new Oval svg.
@@ -31,13 +42,18 @@ public class OvalSVG extends DrawShapeAction {
      * @param strokeColor the stroke color of the oval
      * @param fillColor   the fill color of the oval
      */
-    public OvalSVG(String name, List<Double> coords, boolean isFill, Color strokeColor, Color fillColor) {
-        super(name, isFill, strokeColor, fillColor);
-        assert coords.size() == COORDS_LIST_SIZE;
-        this.center = new Point(coords.get(0), coords.get(1));
-        this.width = coords.get(2);
-        this.height = coords.get(3);
+
+    public OvalSVG(Instruction instruction) {
+        super(instruction.getName(), instruction.isFilled(), instruction.getStrokeColor(), instruction.getFillColor());
+        assert instruction.getCoords().size() == COORDS_LIST_SIZE;
+        this.center = new Point(instruction.getCoords().get(0), instruction.getCoords().get(1));
+        this.width = instruction.getCoords().get(2);
+        this.height = instruction.getCoords().get(3);
     }
+
+    public OvalSVG() {
+    }
+
 
     public void draw(SVGPreview svgPreview) {
         // Dessiner le cercle avec le SVGGraphics2D
@@ -65,15 +81,9 @@ public class OvalSVG extends DrawShapeAction {
     }
 
     @Override
-    public void resize(Map<String, Object> sizes) {
-        Double w = 0.0;
-        Double h = 0.0;
-        if (sizes.containsKey("newWidth")) {
-            w = (Double) sizes.get("newWidth");
-        }
-        if (sizes.containsKey("newHeight")) {
-            h = (Double) sizes.get("newHeight");
-        }
+    public void resize(Double newWidth, Double newHeight) {
+        Double w = newWidth != null ? newWidth : 0.0;
+        Double h = newHeight != null ? newHeight : 0.0;
 
         if (w < 0.0 || h < 0.0) {
             throw new IllegalArgumentException("Width and height must be non-negative");
@@ -83,7 +93,7 @@ public class OvalSVG extends DrawShapeAction {
         this.setHeight(h);
     }
 
-    public String getHelp() {
+    public List<String> getHelp() {
         return this.description;
     }
 

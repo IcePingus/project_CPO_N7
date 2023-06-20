@@ -1,7 +1,10 @@
 package terminalSVG.model.SVGCommand;
 
+import terminalSVG.model.Instruction;
 import terminalSVG.model.SVGPreview;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -11,36 +14,54 @@ import java.util.Map;
  */
 public class ResizeSVG implements SVGCommand {
 
-    private Map<String, Object> sizes;
+    private final List<String> description = new ArrayList<>(List.of(
+            "Resize : redimensionne une forme",
+            "commande : resize <nom> [-w largeur] [-h hauteur]",
+            "largeur / hauteur : largeur & hauteur de la forme",
+            "NB : Dépend de la forme (cercle & carré -> largeur = hauteur",
+            "Exemple : resize carre -h 75",
+            "----------------------------------------------"
+    ));
+
+    private String eltName;
+
+    private Double newWidth;
+
+    private Double newHeight;
 
     /**
      * Constructs a new ResizeSVG instance with the given instruction.
      *
      * @param instruction the instruction containing the sizes for resizing
      */
-    public ResizeSVG(Map<String, Object> instruction) {
-        this.sizes = instruction;
+    public ResizeSVG(Instruction instruction) {
+        this.eltName = instruction.getName();
+        this.newWidth = instruction.getWidth();
+        this.newHeight = instruction.getHeight();
+    }
+
+    public ResizeSVG() {
     }
 
     @Override
     public String getName() {
-        return null;
+        return this.eltName;
     }
 
     @Override
-    public String getHelp() {
-        return null;
+    public List<String> getHelp() {
+        return this.description;
     }
 
-    @Override
-    public void execute(SVGPreview svgPreview, String shapeName) {
-        /**
-         * Resizes the SVG element with the specified shape name.
-         *
-         * @param svgPreview the SVG preview instance
-         * @param shapeName the name of the shape to be resized
-         */
-        svgPreview.resizeElement(shapeName, this.sizes);
+    /**
+     * Resizes the SVG element with the specified shape name.
+     *
+     * @param svgPreview the SVG preview instance
+     * @param shapeName  the name of the shape to be resized
+     */
+    public List<String> execute(SVGPreview svgPreview) {
+        svgPreview.resizeElement(this.getName(), this.newWidth, this.newHeight);
+        return List.of(">> Resize executed");
     }
 
     /**
@@ -50,7 +71,7 @@ public class ResizeSVG implements SVGCommand {
      * @param elements    the command elements
      * @throws IllegalArgumentException if the command is invalid or missing required arguments
      */
-    public static void parseCommand(Map<String, Object> instruction, String[] elements) throws IllegalArgumentException {
+    public static void parseCommand(Instruction instruction, String[] elements) throws IllegalArgumentException {
         boolean foundW = false;
         boolean foundH = false;
 
@@ -68,8 +89,7 @@ public class ResizeSVG implements SVGCommand {
                 if (!(i + 1 < elements.length)) {
                     throw new IllegalArgumentException("need argument after option -w");
                 }
-
-                instruction.put("newWidth", Double.parseDouble(elements[i + 1].trim()));
+                instruction.setWidth(Double.parseDouble(elements[i + 1].trim()));
                 foundW = true;
                 i += 1;
 
@@ -82,7 +102,7 @@ public class ResizeSVG implements SVGCommand {
                     throw new IllegalArgumentException("need argument after option -h");
                 }
 
-                instruction.put("newHeight", Double.parseDouble(elements[i + 1].trim()));
+                instruction.setHeight(Double.parseDouble(elements[i + 1].trim()));
                 foundH = true;
                 i += 1;
             } else {
@@ -94,6 +114,6 @@ public class ResizeSVG implements SVGCommand {
             throw new IllegalArgumentException("No -w or -h option found");
         }
 
-        instruction.put("elementName", elements[1].trim());
+        instruction.setName(elements[1].trim());
     }
 }

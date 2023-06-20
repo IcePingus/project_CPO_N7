@@ -1,7 +1,10 @@
 package terminalSVG.model.SVGCommand;
 
+import terminalSVG.model.Instruction;
 import terminalSVG.model.SVGPreview;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -11,6 +14,13 @@ import java.util.Map;
  */
 public class EraseSVG implements SVGCommand {
 
+    private final List<String> description = new ArrayList<>(List.of(
+            "Erase : Efface une forme",
+            "commande : erase <nom>",
+            "nom : nom d'une forme",
+            "Exemple : erase cercle1",
+            "----------------------------------------------"
+    ));
     private String eltName;
 
     /**
@@ -18,8 +28,11 @@ public class EraseSVG implements SVGCommand {
      *
      * @param instruction the instruction of erase
      */
-    public EraseSVG(Map<String, Object> instruction) {
-        this.eltName = (String) instruction.get("elementName");
+    public EraseSVG(Instruction instruction) {
+        this.eltName = instruction.getName();
+    }
+
+    public EraseSVG() {
     }
 
     @Override
@@ -28,13 +41,14 @@ public class EraseSVG implements SVGCommand {
     }
 
     @Override
-    public String getHelp() {
-        return null;
+    public List<String> getHelp() {
+        return this.description;
     }
 
     @Override
-    public void execute(SVGPreview svgPreview, String shapeName) {
+    public List<String> execute(SVGPreview svgPreview) {
         svgPreview.delElement(eltName);
+        return List.of("[-] " + eltName);
     }
 
     /**
@@ -44,10 +58,10 @@ public class EraseSVG implements SVGCommand {
      * @param elements    the elements of the instruction
      * @throws IllegalArgumentException the illegal argument exception
      */
-    public static void parseCommand(Map<String, Object> instruction, String[] elements) throws IllegalArgumentException {
+    public static void parseCommand(Instruction instruction, String[] elements) throws IllegalArgumentException {
         if (!(elements.length == 2)) {
             throw new IllegalArgumentException("Préciser le nom d'un élément");
         }
-        instruction.put("elementName", elements[1].trim());
+        instruction.setName(elements[1].trim());
     }
 }
