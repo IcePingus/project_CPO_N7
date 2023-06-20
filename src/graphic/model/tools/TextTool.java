@@ -6,7 +6,6 @@ import graphic.model.color.ColorModel;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
 import java.util.Observable;
 
 /**
@@ -131,7 +130,7 @@ public class TextTool implements ToolCommand, FocusListener, KeyListener {
 
     @Override
     public void focusLost(FocusEvent e) {
-        // Vérifier que le JTextField ne soit pa snull
+        // Vérifier que le JTextField ne soit pas null
         if (this.jtextField != null) {
             // Replacer la JTextField
             this.jtextField.setBounds(currentX, currentY, size * 7, size);

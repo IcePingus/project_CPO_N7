@@ -3,8 +3,6 @@ package graphic.model.tools;
 import graphic.model.ToolContext;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.Observable;
 
 /**
@@ -16,8 +14,8 @@ public class MoveTool implements ToolCommand {
 
     private final String name;
     private final Icon image;
-    private boolean isResizable;
-    private boolean isSquareRoundShape;
+    private final boolean isResizable;
+    private final boolean isSquareRoundShape;
 
     /**
      * Constructs a new MoveTool instance for move the canva.
@@ -25,6 +23,8 @@ public class MoveTool implements ToolCommand {
     public MoveTool() {
         this.name = "Move";
         this.image = new ImageIcon(getClass().getResource("/assets/images/move.png"));
+        this.isResizable = false;
+        this.isSquareRoundShape = false;
     }
 
     /**

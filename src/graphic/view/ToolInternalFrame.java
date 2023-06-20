@@ -1,6 +1,7 @@
 package graphic.view;
 
 import graphic.controller.ColorController;
+import graphic.controller.ToolController;
 import graphic.model.ShapeTypes;
 import graphic.model.color.ColorModel;
 import graphic.model.tools.*;
@@ -21,34 +22,28 @@ import java.awt.event.ActionListener;
  */
 public class ToolInternalFrame extends JInternalFrame implements ActionListener, ChangeListener, DocumentListener {
 
-    private final Toolbox toolbox;
+    private final ToolController toolController;
     private int activeTool;
-    private JSlider sliderSize;
+    private final JSlider sliderSize;
 
-    private JRadioButton squarePencilShapeButton;
-    private JRadioButton circlePencilShapeButton;
-    private ButtonGroup shapePencilButtonGroup;
+    private final JRadioButton squarePencilShapeButton;
+    private final JRadioButton circlePencilShapeButton;
 
-    private JLabel shapeLabel;
-    private JRadioButton rectangleShapeButton;
-    private JRadioButton circleShapeButton;
-    private JRadioButton lineShapeButton;
-    private ButtonGroup shapeButtonGroup;
+    private final JRadioButton rectangleShapeButton;
+    private final JRadioButton circleShapeButton;
+    private final JRadioButton lineShapeButton;
 
-    private JLabel fillModeLabel;
-    private JRadioButton strokeButton;
-    private JRadioButton fillButton;
-    private ButtonGroup fillButtonGroup;
+    private final JRadioButton strokeButton;
+    private final JRadioButton fillButton;
 
-    private JPanel toolsPanel;
-    private JPanel toolOptionsPanel;
+    private final JPanel toolOptionsPanel;
 
-    private JPanel sliderPanel;
-    private JPanel squareShapePanel;
-    private JPanel shapePanel;
-    private JPanel fillOptionPanel;
+    private final JPanel sliderPanel;
+    private final JPanel squareShapePanel;
+    private final JPanel shapePanel;
+    private final JPanel fillOptionPanel;
 
-    private JTextField sizeLabel;
+    private final JTextField sizeLabel;
 
     private Runnable runnableInsert;
 
@@ -72,38 +67,38 @@ public class ToolInternalFrame extends JInternalFrame implements ActionListener,
 
         this.setLayout(new BorderLayout());
 
-        this.toolsPanel = new JPanel();
+        JPanel toolsPanel = new JPanel();
 
-        this.toolsPanel.setLayout(new GridLayout(4, 2));
+        toolsPanel.setLayout(new GridLayout(4, 2));
 
-        this.toolbox = toolbox;
+        this.toolController = new ToolController(toolbox);
         // Ajout des outils
-        this.toolbox.addTool(new RubberTool());
-        this.toolbox.addTool(new BucketTool());
-        this.toolbox.addTool(new PickerTool(colorController));
-        this.toolbox.addTool(new HighlighterTool());
+        this.toolController.addTool(new RubberTool());
+        this.toolController.addTool(new BucketTool());
+        this.toolController.addTool(new PickerTool(colorController));
+        this.toolController.addTool(new HighlighterTool());
         TextTool textTool = new TextTool();
-        this.toolbox.addObserver(textTool);
-        this.toolbox.addTool(textTool);
+        toolbox.addObserver(textTool);
+        this.toolController.addTool(textTool);
         ShapeTool shapeTool = new ShapeTool();
-        this.toolbox.addObserver(shapeTool);
-        this.toolbox.addTool(shapeTool);
-        this.toolbox.addTool(new MoveTool());
+        toolbox.addObserver(shapeTool);
+        this.toolController.addTool(shapeTool);
+        this.toolController.addTool(new MoveTool());
 
-        for (int i = 0; i < this.toolbox.getTools().size(); i++) {
+        for (int i = 0; i < this.toolController.getTools().size(); i++) {
             // Ajout des outils au panel
-            this.toolsPanel.add(this.toolbox.getToolsButtons().get(i));
-            this.toolbox.getToolsButtons().get(i).setName(this.toolbox.getTools().get(i).getName());
-            this.toolbox.getToolsButtons().get(i).setIcon(this.toolbox.getTools().get(i).getImage());
-            this.toolbox.getToolsButtons().get(i).addActionListener(this);
-            colorModel.addObserver(this.toolbox.getTools().get(i));
+            toolsPanel.add(this.toolController.getToolsButtons().get(i));
+            this.toolController.getToolsButtons().get(i).setName(this.toolController.getTools().get(i).getName());
+            this.toolController.getToolsButtons().get(i).setIcon(this.toolController.getTools().get(i).getImage());
+            this.toolController.getToolsButtons().get(i).addActionListener(this);
+            colorModel.addObserver(this.toolController.getTools().get(i));
         }
 
         // Définition de l'outil actif
         this.activeTool = 0;
-        this.toolbox.getToolsButtons().get(0).setBackground(Color.red);
+        this.toolController.getToolsButtons().get(0).setBackground(Color.red);
 
-        this.add(this.toolsPanel, BorderLayout.CENTER);
+        this.add(toolsPanel, BorderLayout.CENTER);
 
         // Positionnement des panels
         this.sliderPanel = new JPanel();
@@ -135,14 +130,14 @@ public class ToolInternalFrame extends JInternalFrame implements ActionListener,
         this.circlePencilShapeButton = new JRadioButton("Circle");
         this.circlePencilShapeButton.addActionListener(this);
 
-        this.shapePencilButtonGroup = new ButtonGroup();
-        this.shapePencilButtonGroup.add(this.squarePencilShapeButton);
-        this.shapePencilButtonGroup.add(this.circlePencilShapeButton);
+        ButtonGroup shapePencilButtonGroup = new ButtonGroup();
+        shapePencilButtonGroup.add(this.squarePencilShapeButton);
+        shapePencilButtonGroup.add(this.circlePencilShapeButton);
 
         this.squareShapePanel.add(this.squarePencilShapeButton);
         this.squareShapePanel.add(this.circlePencilShapeButton);
 
-        this.shapeLabel = new JLabel("Shape :");
+        JLabel shapeLabel = new JLabel("Shape :");
 
         this.rectangleShapeButton = new JRadioButton("Rectangle");
         this.rectangleShapeButton.setSelected(true);
@@ -152,17 +147,17 @@ public class ToolInternalFrame extends JInternalFrame implements ActionListener,
         this.lineShapeButton = new JRadioButton("Line");
         this.lineShapeButton.addActionListener(this);
 
-        this.shapeButtonGroup = new ButtonGroup();
-        this.shapeButtonGroup.add(this.rectangleShapeButton);
-        this.shapeButtonGroup.add(this.circleShapeButton);
-        this.shapeButtonGroup.add(this.lineShapeButton);
+        ButtonGroup shapeButtonGroup = new ButtonGroup();
+        shapeButtonGroup.add(this.rectangleShapeButton);
+        shapeButtonGroup.add(this.circleShapeButton);
+        shapeButtonGroup.add(this.lineShapeButton);
 
-        this.shapePanel.add(this.shapeLabel);
+        this.shapePanel.add(shapeLabel);
         this.shapePanel.add(this.rectangleShapeButton);
         this.shapePanel.add(this.circleShapeButton);
         this.shapePanel.add(this.lineShapeButton);
 
-        this.fillModeLabel = new JLabel("Fill mode :");
+        JLabel fillModeLabel = new JLabel("Fill mode :");
 
         this.strokeButton = new JRadioButton("Stroke");
         this.strokeButton.setSelected(true);
@@ -170,11 +165,11 @@ public class ToolInternalFrame extends JInternalFrame implements ActionListener,
         this.fillButton = new JRadioButton("Fill");
         this.fillButton.addActionListener(this);
 
-        this.fillButtonGroup = new ButtonGroup();
-        this.fillButtonGroup.add(this.strokeButton);
-        this.fillButtonGroup.add(this.fillButton);
+        ButtonGroup fillButtonGroup = new ButtonGroup();
+        fillButtonGroup.add(this.strokeButton);
+        fillButtonGroup.add(this.fillButton);
 
-        this.fillOptionPanel.add(this.fillModeLabel);
+        this.fillOptionPanel.add(fillModeLabel);
         this.fillOptionPanel.add(this.strokeButton);
         this.fillOptionPanel.add(this.fillButton);
 
@@ -195,37 +190,37 @@ public class ToolInternalFrame extends JInternalFrame implements ActionListener,
     public void actionPerformed(ActionEvent e) {
         // Enregistrer les options d'outil ou sélectionner le nouvel outil
         if (e.getSource() == this.squarePencilShapeButton || e.getSource() == this.circlePencilShapeButton) {
-            this.toolbox.setIsSquareShape(this.squarePencilShapeButton.isSelected());
+            this.toolController.setIsSquareShape(this.squarePencilShapeButton.isSelected());
         } else if (e.getSource() == this.rectangleShapeButton || e.getSource() == this.circleShapeButton || e.getSource() == this.lineShapeButton) {
             if (e.getSource() == this.rectangleShapeButton) {
-                this.toolbox.setShapeType(ShapeTypes.RECTANGLE);
+                this.toolController.setShapeType(ShapeTypes.RECTANGLE);
             } else if (e.getSource() == this.circleShapeButton) {
-                this.toolbox.setShapeType(ShapeTypes.OVAL);
+                this.toolController.setShapeType(ShapeTypes.OVAL);
             } else {
-                this.toolbox.setShapeType(ShapeTypes.LINE);
+                this.toolController.setShapeType(ShapeTypes.LINE);
             }
         } else if (e.getSource() == this.strokeButton || e.getSource() == this.fillButton) {
-            this.toolbox.setIsFilledShape(this.fillButton.isSelected());
+            this.toolController.setIsFilledShape(this.fillButton.isSelected());
         } else {
-            for (int i = 0; i < this.toolbox.getTools().size(); i++) {
-                if (e.getSource() == this.toolbox.getToolsButtons().get(i) && this.activeTool != i) {
-                    this.toolbox.getToolsButtons().get(this.activeTool).setBackground(null);
+            for (int i = 0; i < this.toolController.getTools().size(); i++) {
+                if (e.getSource() == this.toolController.getToolsButtons().get(i) && this.activeTool != i) {
+                    this.toolController.getToolsButtons().get(this.activeTool).setBackground(null);
                     this.activeTool = i;
-                    this.toolbox.getToolsButtons().get(i).setBackground(Color.red);
-                    this.toolbox.setActiveTool(this.activeTool);
+                    this.toolController.getToolsButtons().get(i).setBackground(Color.red);
+                    this.toolController.setActiveTool(this.activeTool);
 
                     // Traitement des options possibles pour les outils (taille de l'outil, forme, stroke ou fill)
                     this.toolOptionsPanel.setVisible(true);
-                    if (!this.toolbox.getActiveTool().getIsResizable() && !this.toolbox.getActiveTool().getIsSquareRoundShape()) {
+                    if (!this.toolController.getActiveTool().getIsResizable() && !this.toolController.getActiveTool().getIsSquareRoundShape()) {
                         this.toolOptionsPanel.setVisible(false);
                         this.toolOptionsPanel.removeAll();
                         this.setSize(148, 315);
-                    } else if (!this.toolbox.getActiveTool().getIsResizable() && this.toolbox.getActiveTool().getIsSquareRoundShape()) {
+                    } else if (!this.toolController.getActiveTool().getIsResizable() && this.toolController.getActiveTool().getIsSquareRoundShape()) {
                         this.toolOptionsPanel.setLayout(new GridLayout(1, 1));
                         this.toolOptionsPanel.removeAll();
                         this.toolOptionsPanel.add(this.squareShapePanel);
                         this.setSize(148, 335);
-                    } else if (this.toolbox.getActiveTool().getIsResizable() && !this.toolbox.getActiveTool().getIsSquareRoundShape()) {
+                    } else if (this.toolController.getActiveTool().getIsResizable() && !this.toolController.getActiveTool().getIsSquareRoundShape()) {
                         this.toolOptionsPanel.setLayout(new GridLayout(1, 1));
                         this.toolOptionsPanel.removeAll();
                         this.toolOptionsPanel.add(this.sliderPanel);
@@ -238,7 +233,7 @@ public class ToolInternalFrame extends JInternalFrame implements ActionListener,
                         this.setSize(148, 363);
                     }
 
-                    if (this.toolbox.getActiveTool().getHasShapeSelection()) {
+                    if (this.toolController.getActiveTool().getHasShapeSelection()) {
                         this.toolOptionsPanel.setVisible(true);
                         this.toolOptionsPanel.setLayout(new BorderLayout());
                         this.toolOptionsPanel.removeAll();
@@ -264,7 +259,7 @@ public class ToolInternalFrame extends JInternalFrame implements ActionListener,
             this.sizeLabel.getDocument().removeDocumentListener(this);
             this.sizeLabel.setText(String.valueOf(this.sliderSize.getValue()));
             this.sizeLabel.getDocument().addDocumentListener(this);
-            this.toolbox.setToolSize(this.sliderSize.getValue());
+            this.toolController.setToolSize(this.sliderSize.getValue());
         }
     }
 
@@ -292,7 +287,7 @@ public class ToolInternalFrame extends JInternalFrame implements ActionListener,
                     }
 
                     sliderSize.setValue(Integer.parseInt(sizeLabel.getText()));
-                    toolbox.setToolSize(Integer.parseInt(sizeLabel.getText()));
+                    toolController.setToolSize(Integer.parseInt(sizeLabel.getText()));
                 }
             };
         }
@@ -319,7 +314,7 @@ public class ToolInternalFrame extends JInternalFrame implements ActionListener,
                     }
 
                     sliderSize.setValue(Integer.parseInt(sizeLabel.getText()));
-                    toolbox.setToolSize(Integer.parseInt(sizeLabel.getText()));
+                    toolController.setToolSize(Integer.parseInt(sizeLabel.getText()));
                 }
             };
         }

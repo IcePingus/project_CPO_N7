@@ -1,6 +1,6 @@
 package test.graphic;
 
-import graphic.exception.nullImageException;
+import graphic.exception.NullImageException;
 
 import java.awt.image.BufferedImage;
 
@@ -8,7 +8,7 @@ public class ImageComparator {
 
     public static boolean areImagesSimilar(BufferedImage image1, BufferedImage image2) {
         if (image1 == null || image2 == null) {
-            throw new nullImageException("BufferedImage null");
+            throw new NullImageException("BufferedImage null");
         }
         if (image1.getWidth() != image2.getWidth() || image1.getHeight() != image2.getHeight()) {
             return false;

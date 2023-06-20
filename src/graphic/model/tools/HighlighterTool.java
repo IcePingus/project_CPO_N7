@@ -6,7 +6,6 @@ import graphic.model.color.ColorModel;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.InputEvent;
-import java.awt.image.BufferedImage;
 import java.util.Observable;
 
 /**
@@ -20,8 +19,8 @@ public class HighlighterTool implements ToolCommand {
     private final String name;
     private final Icon image;
     private final boolean isResizable;
-    private boolean isSquareRoundShape;
-    private boolean hasShapeSelection;
+    private final boolean isSquareRoundShape;
+    private final boolean hasShapeSelection;
     private Color primaryColor;
     private Color secondaryColor;
 
@@ -35,6 +34,8 @@ public class HighlighterTool implements ToolCommand {
         this.image = new ImageIcon(getClass().getResource("/assets/images/highlighter.png"));
         // Options par défaut
         this.isResizable = true;
+        this.isSquareRoundShape = false;
+        this.hasShapeSelection = false;
         this.primaryColor = Color.BLACK;
         this.secondaryColor = Color.WHITE;
     }

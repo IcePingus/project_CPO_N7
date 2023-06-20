@@ -227,12 +227,10 @@ public class CanvaController {
         int x = 0;
         int y = 0;
         switch (horizontalAlign) {
-            case LEFT -> x = 0;
             case MIDDLE -> x = (width - this.canva.getBufferedImage().getWidth()) / 2;
             case RIGHT -> x = (width - this.canva.getBufferedImage().getWidth());
         }
         switch (verticalAlign) {
-            case TOP -> y = 0;
             case MIDDLE -> y = (height - this.canva.getBufferedImage().getHeight()) / 2;
             case BOTTOM -> y = height - this.canva.getBufferedImage().getHeight();
         }

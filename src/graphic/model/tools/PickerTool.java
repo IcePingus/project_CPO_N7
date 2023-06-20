@@ -6,7 +6,6 @@ import graphic.model.ToolContext;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.InputEvent;
-import java.awt.image.BufferedImage;
 import java.util.Observable;
 
 

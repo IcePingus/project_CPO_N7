@@ -11,16 +11,16 @@ import java.io.IOException;
 /**
  * The SelectionPanel class represents a panel for selecting between graphic mode and terminal mode.
  *
- * @aythor Team 3
+ * @author Team 3
  */
 public class SelectionPanel extends JPanel {
 
-    private JButton graphicModeButton;
-    private JButton terminalModeButton;
+    private final JButton graphicModeButton;
+    private final JButton terminalModeButton;
 
     private GraphicProjectPanel graphicProjectPanel;
     private TerminalProjectPanel terminalProjectPanel;
-    private JFrame frame;
+    private final JFrame frame;
 
     /**
      * Constructs a SelectionPanel object with the specified JFrame.
