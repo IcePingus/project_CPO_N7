@@ -122,7 +122,6 @@ public class SVGPreview extends Observable {
             updateSVGDocument(shape.getValue().getClass().getSimpleName() + " : " + shape.getValue().getName());
         }
         updateSVGDocument("END");
-        System.out.println(shapeList);
     }
 
     /**

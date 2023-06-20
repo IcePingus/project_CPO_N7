@@ -136,7 +136,6 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
         List<String> returnAction;
         String elementAction = instruction.getAction();
         instruction.setStrokeColor(getColor(instruction));
-        System.out.println(instruction);
 
         try {
             String action = elementAction;
