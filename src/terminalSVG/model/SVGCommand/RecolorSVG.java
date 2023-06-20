@@ -22,7 +22,7 @@ public class RecolorSVG implements SVGCommand {
             "nom : nom de la forme",
             "contour : couleur de contour du cercle",
             "remplissage : couleur de remplissage du cercle",
-            "Exemple :",
+            "Exemple : recolor cercle1 -f red -s blue",
             "----------------------------------------------"
     ));
 

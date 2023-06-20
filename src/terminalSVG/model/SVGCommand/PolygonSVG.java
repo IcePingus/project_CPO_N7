@@ -24,7 +24,7 @@ public class PolygonSVG extends DrawShapeAction {
             "largeur / hauteur : largeur & hauteur de la forme",
             "contour : couleur de contour du polygone",
             "remplissage : couleur de remplissage du polygone",
-            "Exemple :",
+            "Exemple : polygon polygone1 100 100 150 200 50 200 -f orange",
             "----------------------------------------------"
     ));
 

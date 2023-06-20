@@ -18,7 +18,7 @@ public class SaveSVG implements SVGCommand {
             "Save : Enregistre le fichier SVG",
             "commande : save [nomFichier]",
             "nomFichier : nom du fichier SVG",
-            "Exemple :",
+            "Exemple : save dessin",
             "----------------------------------------------"
     ));
 

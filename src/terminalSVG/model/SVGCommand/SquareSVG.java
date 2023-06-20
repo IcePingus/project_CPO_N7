@@ -25,7 +25,7 @@ public class SquareSVG extends DrawShapeAction {
             "longueur : longueur du côté",
             "contour : couleur de contour du carré",
             "remplissage : couleur de remplissage du carré",
-            "Exemple :",
+            "Exemple : square carre 100 100 400",
             "----------------------------------------------"
     ));
 

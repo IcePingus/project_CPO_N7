@@ -20,7 +20,7 @@ public class TranslateSVG implements SVGCommand {
             "commande : resize <nom> [-x dx] [-y dy]",
             "dx : déplacement en abscisse",
             "dy : déplacement en ordonnée",
-            "Exemple :",
+            "Exemple : translate carre -x -100 -y 50",
             "----------------------------------------------"
     ));
 

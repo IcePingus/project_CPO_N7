@@ -19,7 +19,7 @@ public class RenameSVG implements SVGCommand {
             "commande : rename <ancienNom> <NouveauNom>",
             "ancienNom : ancien nom de la forme",
             "ancienNom : nouveau nom de la forme",
-            "Exemple :",
+            "Exemple : rename circle1 rond",
             "----------------------------------------------"
     ));
 

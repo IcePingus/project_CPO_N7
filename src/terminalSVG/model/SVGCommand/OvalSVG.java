@@ -29,7 +29,7 @@ public class OvalSVG extends DrawShapeAction {
             "largeur / hauteur : largeur & hauteur de la forme",
             "contour : couleur de contour du oval",
             "remplissage : couleur de remplissage du oval",
-            "Exemple :",
+            "Exemple : oval oval1 200 400 200 10 -f green -s red",
             "----------------------------------------------"
     ));
 

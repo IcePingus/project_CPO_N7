@@ -20,7 +20,7 @@ public class ColorSVG implements SVGCommand {
             "Color : Définit la couleur de base",
             "commande : color <couleur>",
             "couleur : nouvelle couleur de base",
-            "Exemple :",
+            "Exemple : color blue",
             "----------------------------------------------"
     ));
 

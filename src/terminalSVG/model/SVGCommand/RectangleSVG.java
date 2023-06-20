@@ -27,7 +27,7 @@ public class RectangleSVG extends DrawShapeAction {
             "largeur / hauteur : largeur & hauteur de la forme",
             "contour : couleur de contour du rectangle",
             "remplissage : couleur de remplissage du rectangle",
-            "Exemple :",
+            "Exemple : rectangle rect1 100 100 400 20 -s orange",
             "----------------------------------------------"
     ));
 

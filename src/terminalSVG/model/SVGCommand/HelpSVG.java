@@ -20,7 +20,7 @@ public class HelpSVG implements SVGCommand {
             "Help : Liste l'ensemble des commandes",
             "commande : help [commande]",
             "commande : help de la commande spécifié",
-            "Exemple :",
+            "Exemple : help circle",
             "----------------------------------------------"
     ));
 

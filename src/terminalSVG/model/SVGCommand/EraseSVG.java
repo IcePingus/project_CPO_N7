@@ -18,7 +18,7 @@ public class EraseSVG implements SVGCommand {
             "Erase : Efface une forme",
             "commande : erase <nom>",
             "nom : nom d'une forme",
-            "Exemple :",
+            "Exemple : erase cercle1",
             "----------------------------------------------"
     ));
     private String eltName;

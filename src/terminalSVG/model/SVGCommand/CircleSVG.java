@@ -25,7 +25,7 @@ public class CircleSVG extends DrawShapeAction {
             "rayon : rayon du cercle",
             "contour : couleur de contour du cercle",
             "remplissage : couleur de remplissage du cercle",
-            "Exemple :",
+            "Exemple : circle cercle1 200 200 50 -s blue -f red",
             "----------------------------------------------"
     ));
 

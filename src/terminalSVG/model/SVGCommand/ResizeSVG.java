@@ -19,7 +19,7 @@ public class ResizeSVG implements SVGCommand {
             "commande : resize <nom> [-w largeur] [-h hauteur]",
             "largeur / hauteur : largeur & hauteur de la forme",
             "NB : Dépend de la forme (cercle & carré -> largeur = hauteur",
-            "Exemple :",
+            "Exemple : resize carre -h 75",
             "----------------------------------------------"
     ));
 
