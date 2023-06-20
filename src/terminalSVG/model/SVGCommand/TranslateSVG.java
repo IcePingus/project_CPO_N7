@@ -24,6 +24,7 @@ public class TranslateSVG implements SVGCommand {
             "----------------------------------------------"
     ));
 
+    private String eltName;
     private Double dx;
     private Double dy;
 
@@ -36,13 +37,14 @@ public class TranslateSVG implements SVGCommand {
      * @param instruction A map containing the instruction parameters.
      */
     public TranslateSVG(Instruction instruction) {
-        this.dx = (Double) instruction.getDx();
-        this.dy = (Double) instruction.getDy();
+        this.eltName = instruction.getName();
+        this.dx = instruction.getDx();
+        this.dy =  instruction.getDy();
     }
 
     @Override
     public String getName() {
-        return null;
+        return this.eltName;
     }
 
     @Override

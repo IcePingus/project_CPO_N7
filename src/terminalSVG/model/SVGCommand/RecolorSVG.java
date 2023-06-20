@@ -25,6 +25,8 @@ public class RecolorSVG implements SVGCommand {
             "Exemple :",
             "----------------------------------------------"
     ));
+
+    private String eltName;
     private Color sColor;
     private Color fColor;
 
@@ -37,13 +39,14 @@ public class RecolorSVG implements SVGCommand {
      * @param instruction the instruction of recolor
      */
     public RecolorSVG(Instruction instruction) {
+        this.eltName = instruction.getName();
         this.sColor = instruction.getStrokeColor();
         this.fColor = instruction.getFillColor();
     }
 
     @Override
     public String getName() {
-        return null;
+        return this.eltName;
     }
 
     @Override

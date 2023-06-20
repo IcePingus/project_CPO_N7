@@ -115,13 +115,14 @@ public class SVGPreview extends Observable {
      * Builds the shapes in the SVG document.
      * Clears the SVG document, draws each shape, and updates the document.
      */
-    public void buildShapes() {
+    private void buildShapes() {
         clearSVGDocument();
         for (Map.Entry<String, DrawShapeAction> shape : shapeList.entrySet()) {
             shape.getValue().draw(this);
             updateSVGDocument(shape.getValue().getClass().getSimpleName() + " : " + shape.getValue().getName());
         }
         updateSVGDocument("END");
+        System.out.println(shapeList);
     }
 
     /**
@@ -142,7 +143,7 @@ public class SVGPreview extends Observable {
      *
      * @param comment The comment to be added to the SVG document.
      */
-    public void updateSVGDocument(String comment) {
+    private void updateSVGDocument(String comment) {
         // Mettre à jour le document SVG
         this.svgGeneratorContext.setComment(comment);
         Element root = svgDocument.getDocumentElement();
@@ -155,7 +156,7 @@ public class SVGPreview extends Observable {
     /**
      * Clears the SVG document.
      */
-    public void clearSVGDocument() {
+    private void clearSVGDocument() {
         Node root = svgDocument.getDocumentElement();
         while (root.hasChildNodes()) {
             root.removeChild(root.getFirstChild());
@@ -292,7 +293,7 @@ public class SVGPreview extends Observable {
      * @return The shape with the given name.
      * @throws IllegalArgumentException if the shape does not exist.
      */
-    public DrawShapeAction getShapeByName(String name) {
+    private DrawShapeAction getShapeByName(String name) {
         if (!(this.shapeList.containsKey(name)))
             throw new IllegalArgumentException("Aucun élement SVG ne correspond à votre requête");
         return this.shapeList.get(name);

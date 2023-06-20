@@ -24,24 +24,13 @@ public class Instruction {
     public Instruction(String action, String name) {
         this.action = action;
         this.name = name;
-        this.strokeColor = Color.black;
+        this.strokeColor = null;
         this.fillColor = null;
     }
 
-    public Instruction(String action, String name, Color color, boolean isStrokeColor) {
-        this(action, name);
-        if (isStrokeColor) {
-            this.strokeColor = color;
-        } else {
-            this.fillColor = color;
-            if (this.fillColor != null) {
-                this.isFilled = true;
-            }
-        }
-    }
-
     public Instruction(String action, String name, Color strokeColor, Color fillColor) {
-        this(action, name, strokeColor, true);
+        this(action,name);
+        this.strokeColor = strokeColor;
         this.fillColor = fillColor;
         if (this.fillColor != null) {
             this.isFilled = true;

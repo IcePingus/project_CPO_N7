@@ -105,7 +105,7 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
     /**
      * Adds the command to the history, clears the content of the text area, and prepares the command for execution.
      */
-    public void prepareCommand() {
+    private void prepareCommand() {
         String commandText = this.textArea.getText().trim(); // Retirer les espaces avant et après le texte
 
         if (!commandText.isEmpty()) {
@@ -119,6 +119,7 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
             } catch (Exception e) {
                 // Gérer toutes les autres exceptions
                 this.history.addCommand(new Command("Erreur imprévue s'est produite : " + e.getMessage()));
+                e.printStackTrace();
             }
         }
         this.textArea.setText("");
@@ -131,10 +132,11 @@ public class ControllerTerminalPanel extends JPanel implements ActionListener {
      * @param instruction The parsed command represented as a map.
      * @throws ClassNotFoundException If the specified class is not found.
      */
-    public void executeCommand(Instruction instruction) throws ClassNotFoundException {
+    private void executeCommand(Instruction instruction) throws ClassNotFoundException {
         List<String> returnAction;
         String elementAction = instruction.getAction();
         instruction.setStrokeColor(getColor(instruction));
+        System.out.println(instruction);
 
         try {
             String action = elementAction;

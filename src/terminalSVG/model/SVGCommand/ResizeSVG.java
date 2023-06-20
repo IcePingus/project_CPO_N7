@@ -23,6 +23,8 @@ public class ResizeSVG implements SVGCommand {
             "----------------------------------------------"
     ));
 
+    private String eltName;
+
     private Double newWidth;
 
     private Double newHeight;
@@ -33,6 +35,7 @@ public class ResizeSVG implements SVGCommand {
      * @param instruction the instruction containing the sizes for resizing
      */
     public ResizeSVG(Instruction instruction) {
+        this.eltName = instruction.getName();
         this.newWidth = instruction.getWidth();
         this.newHeight = instruction.getHeight();
     }
@@ -42,7 +45,7 @@ public class ResizeSVG implements SVGCommand {
 
     @Override
     public String getName() {
-        return null;
+        return this.eltName;
     }
 
     @Override
