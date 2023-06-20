@@ -1,6 +1,6 @@
 package terminalSVG.view;
 
-import graphic.view.SelectionPanel;
+import core.SelectionPanel;
 import terminalSVG.controller.ControllerTerminalPanel;
 import terminalSVG.model.History;
 import terminalSVG.model.SVGPreview;

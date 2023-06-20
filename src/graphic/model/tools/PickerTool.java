@@ -1,6 +1,7 @@
 package graphic.model.tools;
 
 import graphic.controller.ColorController;
+import graphic.model.ToolContext;
 
 import javax.swing.*;
 import java.awt.*;
@@ -94,27 +95,23 @@ public class PickerTool implements ToolCommand {
      * It retrieves the color of the pixel at the current position on the canvas and sets it as either the primary or secondary color
      * based on the click event. The color controller is used to update the selected colors.
      *
-     * @param oldX          the x-coordinate of the initial point
-     * @param oldY          the y-coordinate of the initial point
-     * @param currentX      the current x-coordinate
-     * @param currentY      the current y-coordinate
-     * @param bufferedImage the buffered image
-     * @param graphics2D    the graphics context
-     * @param click         the click event
-     * @param size          the tool size
-     * @param square        the flag indicating whether the shape should be square
-     * @param isFirstPoint  the flag indicating whether it is the first point
-     * @param canva         the canvas component
+     * @param context          the application context
      */
     @Override
-    public void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click, int size, boolean square, boolean isFirstPoint, JComponent canva) {
-        Color color = new Color(bufferedImage.getRGB(currentX, currentY));
-        if (click == InputEvent.BUTTON1_DOWN_MASK) {
-            this.colorController.setPrimaryColor(color);
-            this.colorController.setIsPrimaryColor(true);
-        } else if (click == InputEvent.BUTTON3_DOWN_MASK) {
-            this.colorController.setIsPrimaryColor(false);
-            this.colorController.setSecondaryColor(color);
+    public void execute(ToolContext context) {
+        try {
+            // Récupérer la couleur du point cliqué
+            Color color = new Color(context.getCanva().getBufferedImage().getRGB(context.getCurrentX(), context.getCurrentY()));
+            // Définir la couleur en fonction du type de clic
+            if (context.getClick() == InputEvent.BUTTON1_DOWN_MASK) {
+                this.colorController.setPrimaryColor(color);
+                this.colorController.setIsPrimaryColor(true);
+            } else if (context.getClick() == InputEvent.BUTTON3_DOWN_MASK) {
+                this.colorController.setIsPrimaryColor(false);
+                this.colorController.setSecondaryColor(color);
+            }
+        } catch (Exception e) {
+            System.out.println("Au revoir Pipette !");
         }
     }
 

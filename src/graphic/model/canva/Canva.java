@@ -1,6 +1,7 @@
 package graphic.model.canva;
 
 import graphic.model.ShapeTypes;
+import graphic.model.ToolContext;
 import graphic.model.tools.MoveTool;
 import graphic.model.tools.Toolbox;
 
@@ -44,30 +45,34 @@ public class Canva extends JComponent {
 
     private Toolbox toolbox;
 
+    private ToolContext context;
+
+    private BufferedImage transparentBackground;
+
     /**
      * Constructs a new Canva object with the specified toolbox.
      *
-     * @param toolbox the toolbox associated with the canvas
+     * @param toolbox        the toolbox associated with the canvas
      * @param canvaSizeLabel label for the current size of the canva
-     * @param zoomLabel label for the current zoom
+     * @param zoomLabel      label for the current zoom
      */
     public Canva(Toolbox toolbox, JLabel canvaSizeLabel, JLabel zoomLabel) {
-        // Initialize variables
+        // Initialiser les variables
         this.toolbox = toolbox;
         this.imageStates = new ArrayList<>();
         this.currentIndex = 0;
         this.zoom = 1.0;
         this.isFirstPoint = true;
+        this.context = new ToolContext();
 
-        // Configure component
+        // Configurer le composant
         this.setDoubleBuffered(false);
         this.requestFocusInWindow();
         this.canvaSizeLabel = canvaSizeLabel;
 
-        // Add mouse listener
         this.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
-                // Save coordinates when mouse is pressed
+                // Sauvegarder les coordonnées lors d'un clic de souris
                 double doubleOldX = e.getX() / zoom + (getBufferedImage().getWidth() - getWidth() / zoom) / 2;
                 oldX = (int) doubleOldX;
                 double doubleOldY = e.getY() / zoom + (getBufferedImage().getHeight() - getHeight() / zoom) / 2;
@@ -76,22 +81,35 @@ public class Canva extends JComponent {
                 currentY = oldY;
                 isFirstPoint = true;
 
+                // Instancer une nouvelle bufferedImage et l'ajouter dans le tableau de bufferedImage
                 BufferedImage newImage = nextBufferedImage();
 
-                // Execute active tool
+                // Changer le curseur si l'outil actif est moveTool
                 if (toolbox.getActiveTool() instanceof MoveTool) {
                     setCursor(new Cursor(Cursor.HAND_CURSOR));
                 }
-                toolbox.getActiveTool().execute(oldX, oldY, currentX, currentY, newImage, g2, e.getModifiersEx(), toolbox.getToolSize(), toolbox.getIsSquareShape(), isFirstPoint, Canva.this);
+                // Execute l'outil actif
+                context.setOldX(oldX);
+                context.setOldY(oldY);
+                context.setCurrentX(currentX);
+                context.setCurrentY(currentY);
+                context.setClick(e.getModifiersEx());
+                context.setSize(toolbox.getToolSize());
+                context.setSquare(toolbox.getIsSquareShape());
+                context.setFirstPoint(isFirstPoint);
+                context.setCanva(Canva.this);
+                toolbox.getActiveTool().execute(context);
 
                 repaint();
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
+                // Changer le curseur si l'outil actif est moveTool
                 if (toolbox.getActiveTool() instanceof MoveTool) {
                     setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
                 }
+                // Si une forme est dessinée, la construire sur la buffered image (voir paintComponent(Graphics g) pour plus de détails).
                 if (shapeType != null) {
                     g2.setColor(color);
                     switch (shapeType) {
@@ -102,12 +120,10 @@ public class Canva extends JComponent {
                                 if (toolbox.getToolSize() > endX || toolbox.getToolSize() > endY) {
                                     g2.fillRect(startX, startY, endX, endY);
                                 } else {
-                                    for (int i = 0; i < toolbox.getToolSize(); i++) {
-                                        g2.fillRect(startX, startY, toolbox.getToolSize(), endY);
-                                        g2.fillRect(startX, startY, endX, toolbox.getToolSize());
-                                        g2.fillRect(startX + endX - toolbox.getToolSize(), startY, toolbox.getToolSize(), endY);
-                                        g2.fillRect(startX, startY + endY - toolbox.getToolSize(), endX, toolbox.getToolSize());
-                                    }
+                                    g2.fillRect(startX, startY, toolbox.getToolSize(), endY);
+                                    g2.fillRect(startX, startY, endX, toolbox.getToolSize());
+                                    g2.fillRect(startX + endX - toolbox.getToolSize(), startY, toolbox.getToolSize(), endY);
+                                    g2.fillRect(startX, startY + endY - toolbox.getToolSize(), endX, toolbox.getToolSize());
                                 }
                             }
                         }
@@ -148,18 +164,27 @@ public class Canva extends JComponent {
             }
         });
 
-        // Add mouse motion listener
         this.addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
+                // Sauvegarde les coordonnées actuelles
                 double doubleCurrentX = e.getX() / zoom + (getBufferedImage().getWidth() - getWidth() / zoom) / 2;
                 currentX = (int) doubleCurrentX;
                 double doubleCurrentY = e.getY() / zoom + (getBufferedImage().getHeight() - getHeight() / zoom) / 2;
                 currentY = (int) doubleCurrentY;
 
                 if (g2 != null) {
-                    // Execute active tool
-                    toolbox.getActiveTool().execute(oldX, oldY, currentX, currentY, imageStates.get(currentIndex), g2, e.getModifiersEx(), toolbox.getToolSize(), toolbox.getIsSquareShape(), isFirstPoint, Canva.this);
+                    // Execute l'outil actif
+                    context.setOldX(oldX);
+                    context.setOldY(oldY);
+                    context.setCurrentX(currentX);
+                    context.setCurrentY(currentY);
+                    context.setClick(e.getModifiersEx());
+                    context.setSize(toolbox.getToolSize());
+                    context.setSquare(toolbox.getIsSquareShape());
+                    context.setFirstPoint(isFirstPoint);
+                    context.setCanva(Canva.this);
+                    toolbox.getActiveTool().execute(context);
                     if (isFirstPoint) isFirstPoint = false;
                     oldX = currentX;
                     oldY = currentY;
@@ -168,8 +193,8 @@ public class Canva extends JComponent {
             }
         });
 
-        // Add mouse wheel listener
         this.addMouseWheelListener(e -> {
+            // Ajuster le zoom quand on scroll
             zoomPointX = getWidth() / 2;
             zoomPointY = getHeight() / 2;
             if (e.getPreciseWheelRotation() < 0) {
@@ -195,6 +220,7 @@ public class Canva extends JComponent {
      * @return the copied BufferedImage
      */
     private BufferedImage copyBufferedImage(BufferedImage source) {
+        // Copier la bufferedImage
         ColorModel cm = source.getColorModel();
         boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
         WritableRaster raster = source.copyData(null);
@@ -207,6 +233,7 @@ public class Canva extends JComponent {
      * @return the new BufferedImage
      */
     public BufferedImage nextBufferedImage() {
+        // Créer une nouvelle bufferedImage et la définir comme actif
         BufferedImage newImage = copyBufferedImage(this.imageStates.get(this.currentIndex));
         this.setBufferedImage(newImage);
         return newImage;
@@ -249,29 +276,23 @@ public class Canva extends JComponent {
     }
 
     /**
-     * Gets the zoom of the canva.
-     *
-     * @return the zoom.
-     */
-    public double getZoom() {
-        return this.zoom;
-    }
-
-    /**
      * Sets the specified buffered image as the current image state and updates the graphics object.
      *
      * @param bufferedImage the new buffered image
      */
     public void setBufferedImage(BufferedImage bufferedImage) {
+        // Vérifie la taille de la liste d'image
         if (this.imageStates.size() == 0) {
             this.imageStates.add(bufferedImage);
         } else {
+            // Créer la bufferedImage en fonction de l'index courant
             this.currentIndex++;
             this.imageStates.add(this.currentIndex, bufferedImage);
             if (this.imageStates.size() > this.currentIndex + 1) {
                 this.imageStates.subList(this.currentIndex + 1, this.imageStates.size()).clear();
             }
             this.canvaSizeLabel.setText(this.getBufferedImage().getWidth() + "x" + this.getBufferedImage().getHeight());
+            // Récupérer la nouvelle bufferedImage
             this.g2 = (Graphics2D) bufferedImage.getGraphics();
             this.repaint();
         }
@@ -293,6 +314,7 @@ public class Canva extends JComponent {
      */
     public void setCurrentIndex(int currentIndex) {
         this.currentIndex = currentIndex;
+        // Modifier le label sur la taille de la toile
         this.canvaSizeLabel.setText(this.getBufferedImage().getWidth() + "x" + this.getBufferedImage().getHeight());
     }
 
@@ -303,7 +325,9 @@ public class Canva extends JComponent {
      */
     protected void paintComponent(Graphics g) {
         this.g = g;
+        // Vérifier si la bufferedImage est null ou si aucune bufferedImage est présent dans la liste
         if (this.imageStates.size() == 0 || this.imageStates.get(this.currentIndex) == null) {
+            // Initialise la toile
             this.imageStates.add(this.currentIndex, new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_ARGB));
             this.zoom = 0.75;
             this.zoomPointX = getWidth() / 2;
@@ -315,30 +339,56 @@ public class Canva extends JComponent {
             this.g2.fillRect(0, 0, this.getWidth(), this.getHeight());
             this.repaint();
         }
+        // Applique le niveau de zoom
         AffineTransform at = ((Graphics2D) g).getTransform();
         at.translate(zoomPointX, zoomPointY);
         at.scale(zoom, zoom);
         at.translate(-zoomPointX, -zoomPointY);
         ((Graphics2D) g).setTransform(at);
 
+        // Dessiner le fond transparent
+        this.transparentBackground = new BufferedImage(this.imageStates.get(this.currentIndex).getWidth(), this.imageStates.get(this.currentIndex).getHeight(), BufferedImage.TYPE_INT_ARGB);
+        Graphics2D backgroundG2 = (Graphics2D) this.transparentBackground.getGraphics();
+        int size = 1 + (int) ((double) (48 - 1) / (5000 - 16) * (Math.min(this.transparentBackground.getWidth(), this.transparentBackground.getHeight()) - 16));
+        for (int row = 0; row < this.transparentBackground.getHeight() / size; row++) {
+            for (int col = 0; col < this.transparentBackground.getWidth() / size; col++) {
+                int x = col * size;
+                int y = row * size;
+
+                // Alterner entre gris et blanc
+                Color color = (row + col) % 2 == 0 ? Color.WHITE : Color.lightGray;
+                backgroundG2.setColor(color);
+                backgroundG2.fillRect(x, y, size, size);
+            }
+        }
+        g.drawImage(this.transparentBackground, ((this.getWidth() - this.transparentBackground.getWidth()) / 2), ((this.getHeight() - this.transparentBackground.getHeight()) / 2), null);
+
+
+        // Dessiner la bufferedImage sur la toile
         g.drawImage(this.imageStates.get(this.currentIndex), ((this.getWidth() - this.imageStates.get(this.currentIndex).getWidth()) / 2), ((this.getHeight() - this.imageStates.get(this.currentIndex).getHeight()) / 2), null);
 
+        // Si une forme est en train d'être dessinée, la dessiner sur le panel
         if (!isFirstPoint && shapeType != null) {
+            // Couleur de dessin
             this.g.setColor(this.color);
+            // Choisir la forme à dessiner en fonction de son type
             switch (shapeType) {
                 case RECTANGLE -> {
                     if (isShapeFilled) {
+                        // Forme remplie si l'option est activée
                         g.fillRect(startX, startY, endX, endY);
                     } else {
                         if (this.toolbox.getToolSize() > endX || this.toolbox.getToolSize() > endY) {
+                            /* Forme remplie si l'option bordure est activée, mais que la taille du trait est plus
+                               grande que la distance entre le point de départ et de fin */
                             g.fillRect(startX, startY, endX, endY);
                         } else {
-                            for (int i = 0; i < this.toolbox.getToolSize(); i++) {
-                                g.fillRect(startX, startY, toolbox.getToolSize(), endY);
-                                g.fillRect(startX, startY, endX, toolbox.getToolSize());
-                                g.fillRect(startX + endX - toolbox.getToolSize(), startY, toolbox.getToolSize(), endY);
-                                g.fillRect(startX, startY + endY - toolbox.getToolSize(), endX, toolbox.getToolSize());
-                            }
+                            /* Forme remplie si l'option bordure est activée, mais que la taille du trait est plus
+                               grande que la distance entre le point de départ et de fin */
+                            g.fillRect(startX, startY, toolbox.getToolSize(), endY);
+                            g.fillRect(startX, startY, endX, toolbox.getToolSize());
+                            g.fillRect(startX + endX - toolbox.getToolSize(), startY, toolbox.getToolSize(), endY);
+                            g.fillRect(startX, startY + endY - toolbox.getToolSize(), endX, toolbox.getToolSize());
                         }
                     }
                 }
@@ -350,6 +400,7 @@ public class Canva extends JComponent {
                     }
                 }
                 case LINE -> {
+                    // Utiliser l'algorithme Bresenham pour calculer tous les points de la ligne et faire un cercle de la taille de l'outil pour remplir la ligne
                     int startX2 = startX;
                     int startY2 = startY;
                     int endX2 = endX;
@@ -382,13 +433,13 @@ public class Canva extends JComponent {
     /**
      * Repaints the component with the specified shape type, coordinates, color, and shape filling.
      *
-     * @param shapeType      the type of shape
-     * @param startX         the starting X-coordinate
-     * @param startY         the starting Y-coordinate
-     * @param endX           the ending X-coordinate
-     * @param endY           the ending Y-coordinate
-     * @param color          the color of the shape
-     * @param isFilledShape  indicates if the shape should be filled
+     * @param shapeType     the type of shape
+     * @param startX        the starting X-coordinate
+     * @param startY        the starting Y-coordinate
+     * @param endX          the ending X-coordinate
+     * @param endY          the ending Y-coordinate
+     * @param color         the color of the shape
+     * @param isFilledShape indicates if the shape should be filled
      */
     public void repaintComponent(ShapeTypes shapeType, int startX, int startY, int endX, int endY, Color color, boolean isFilledShape) {
         this.shapeType = shapeType;

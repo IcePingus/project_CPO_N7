@@ -46,6 +46,7 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
 
         setLayout(new BorderLayout());
 
+        // Création toolbar et ajout labels (taille de la toile et niveau de zoom)
         JToolBar toolbar = new JToolBar();
         toolbar.setFloatable(false);
         toolbar.setBorderPainted(false);
@@ -58,20 +59,20 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
 
         add(toolbar, BorderLayout.SOUTH);
 
-        setBackground(Color.LIGHT_GRAY);
-
+        // Instanciation des models
         Toolbox toolbox = new Toolbox();
         ColorModel colorModel = new ColorModel();
-        ColorController colorController = new ColorController(colorModel);
-
         this.canva = new Canva(toolbox, canvaSizeLabel, zoomLabel);
+
+        // Instanciation des controllers
+        ColorController colorController = new ColorController(colorModel);
         this.canvaController = new CanvaController(this.canva);
 
+        // Initialisation des fenêtres internes et ajout au panel
         ToolInternalFrame toolInternalFrame = new ToolInternalFrame(toolbox, colorController, colorModel);
         toolInternalFrame.setVisible(true);
         this.add(toolInternalFrame);
         this.setSize(this.getToolkit().getScreenSize());
-
         ColorSchemeInternalFrame colorSchemeInternalFrame = new ColorSchemeInternalFrame(colorController);
         colorModel.addObserver(colorSchemeInternalFrame);
         colorSchemeInternalFrame.setLocation(this.getSize().width - 430, 0);
@@ -82,6 +83,7 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
 
         this.add(this.canva, BorderLayout.CENTER);
 
+        // Ajout des menus et options de menu
         JMenuBar mb = new JMenuBar();
         JMenu menuFile = new JMenu("File");
         this.saveImage = new JMenuItem("Save image");
@@ -140,8 +142,12 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
         this.addComponentListener(new ComponentListener() {
             @Override
             public void componentResized(ComponentEvent e) {
+                // Déplacement des fenêtres internes lorsque la fenêtre est trop petite
                 if (getSize().width < colorSchemeInternalFrame.getX() + 550) {
-                    colorSchemeInternalFrame.setLocation(getSize().width - 550, colorSchemeInternalFrame.getHeight());
+                    colorSchemeInternalFrame.setLocation(getSize().width - 550, 0);
+                }
+                if (getSize().width < toolInternalFrame.getX() + 148) {
+                    toolInternalFrame.setLocation(0, 0);
                 }
             }
 
@@ -213,12 +219,21 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
         inputMap.put(resizeKeyStroke, "resize");
         actionMap.put("resize", new AbstractAction() {
             public void actionPerformed(ActionEvent actionEvent) {
+                resizeDialog.setInputs(false);
                 resizeDialog.setLocation(getSize().width / 3, getSize().height / 3);
                 resizeDialog.setVisible(true);
             }
         });
 
-        //CROP KEY
+        KeyStroke cropKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_C, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
+        inputMap.put(cropKeyStroke, "crop");
+        actionMap.put("crop", new AbstractAction() {
+            public void actionPerformed(ActionEvent actionEvent) {
+                resizeDialog.setInputs(true);
+                resizeDialog.setLocation(getSize().width / 3, getSize().height / 3);
+                resizeDialog.setVisible(true);
+            }
+        });
 
         KeyStroke leftHorizontalFlipKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
         inputMap.put(leftHorizontalFlipKeyStroke, "horizontalFlip");
@@ -276,6 +291,7 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
      */
     @Override
     public void actionPerformed(ActionEvent e) {
+        // Traitement lors du clic sur une option de menu
         if (e.getSource() == this.saveImage) {
             this.canvaController.chooseExportPath();
         } else if (e.getSource() == this.importImage) {
@@ -288,12 +304,8 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
             this.canvaController.redo();
         } else if (e.getSource() == this.paste) {
             this.canvaController.clipboardToBufferedImage();
-        } else if (e.getSource() == this.resize) {
-            this.resizeDialog.setInputs(false);
-            this.resizeDialog.setLocation(this.getSize().width / 3, this.getSize().height / 3);
-            this.resizeDialog.setVisible(true);
-        } else if (e.getSource() == this.crop) {
-            this.resizeDialog.setInputs(true);
+        } else if (e.getSource() == this.resize || e.getSource() == this.crop) {
+            this.resizeDialog.setInputs(e.getSource() == this.crop);
             this.resizeDialog.setLocation(this.getSize().width / 3, this.getSize().height / 3);
             this.resizeDialog.setVisible(true);
         } else if (e.getSource() == this.flipHorizontalImage) {

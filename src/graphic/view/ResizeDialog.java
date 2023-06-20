@@ -74,6 +74,7 @@ public class ResizeDialog extends JDialog implements ActionListener {
         this.errorMessage.setForeground(Color.RED);
         this.errorMessage.setVisible(false);
 
+        // Initialisation des boutons de placement lorsque l'on ajuste la taille de la toile
         this.topLeft = new JRadioButton();
         this.topLeft.addActionListener(this);
         this.top = new JRadioButton();
@@ -140,22 +141,31 @@ public class ResizeDialog extends JDialog implements ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
+        // Confirmer le redimensionnement/ajustement
         if (e.getSource() == this.confirmButton) {
             try {
                 int width = Integer.parseInt(this.widthInput.getText());
                 int height = Integer.parseInt(this.heightInput.getText());
-                if (this.isCropping) {
-                    this.canvaController.cropCanva(width, height, this.horizontalAlign, this.verticalAlign);
+                // Afficher une erreur lorsque la(les) valeur(s) rentrées ne sont pas valides
+                if (width > 5000 || height > 5000 || width < 16 || height < 16) {
+                    JOptionPane.showMessageDialog(null,
+                            "Please enter number bigger than 16 and smaller than 5000", "Image size",
+                            JOptionPane.WARNING_MESSAGE);
                 } else {
-                    this.canvaController.resizeCanva(width, height);
+                    if (this.isCropping) {
+                        this.canvaController.cropCanva(width, height, this.horizontalAlign, this.verticalAlign);
+                    } else {
+                        this.canvaController.resizeCanva(width, height);
+                    }
+                    this.errorMessage.setVisible(false);
+                    this.setVisible(false);
                 }
-                this.errorMessage.setVisible(false);
-                this.setVisible(false);
             } catch (Exception exception) {
                 this.errorMessage.setVisible(true);
                 this.validate();
                 this.repaint();
             }
+        // Définition de la zone à ajuster
         } else if (e.getSource() == this.topLeft) {
             this.horizontalAlign = CropTypes.LEFT;
             this.verticalAlign = CropTypes.TOP;

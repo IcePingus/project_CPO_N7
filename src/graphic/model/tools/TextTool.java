@@ -1,5 +1,6 @@
 package graphic.model.tools;
 
+import graphic.model.ToolContext;
 import graphic.model.color.ColorModel;
 
 import javax.swing.*;
@@ -36,6 +37,7 @@ public class TextTool implements ToolCommand, FocusListener, KeyListener {
     public TextTool() {
         this.name = "Text";
         this.image = new ImageIcon(getClass().getResource("/assets/images/text.png"));
+        // Options par défaut
         this.isResizable = true;
         this.isSquareRoundShape = false;
         this.hasShapeSelection = false;
@@ -71,24 +73,27 @@ public class TextTool implements ToolCommand, FocusListener, KeyListener {
     }
 
     @Override
-    public void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click, int size, boolean square, boolean isFirstClick, JComponent canva) {
-        this.jComponent = canva;
-        this.graphics2D = graphics2D;
+    public void execute(ToolContext context) {
+        this.jComponent = context.getCanva();
+        this.graphics2D = context.getCanva().getG2();
+        // Récupérer la couleur en fonction du type de clic
         Color color = null;
-        if (click == InputEvent.BUTTON1_DOWN_MASK) {
+        if (context.getClick() == InputEvent.BUTTON1_DOWN_MASK) {
             this.isPrimaryColor = true;
             color = primaryColor;
-        } else if (click == InputEvent.BUTTON3_DOWN_MASK) {
+        } else if (context.getClick() == InputEvent.BUTTON3_DOWN_MASK) {
             this.isPrimaryColor = false;
             color = secondaryColor;
         }
         if (color != null) {
-            this.currentX = currentX;
-            this.currentY = currentY;
-            this.size = size;
+            this.currentX = context.getCurrentX();
+            this.currentY = context.getCurrentY();
+            this.size = context.getSize();
+            // Déclencher l'évènement focusLost si la JTextField n'est pas null
             if (this.jtextField != null) {
                 focusLost(new FocusEvent(this.jComponent, 0));
             } else {
+                // Créer une JTextField et la placer sur le canva à l'endroit souhaité
                 this.jtextField = new JTextField();
                 this.jtextField.setVisible(true);
                 jComponent.setLayout(new FlowLayout());
@@ -106,8 +111,10 @@ public class TextTool implements ToolCommand, FocusListener, KeyListener {
     @Override
     public void update(Observable o, Object arg) {
         if (o instanceof ColorModel) {
+            // Changer la couleur
             this.primaryColor = ((ColorModel) o).getPrimaryColor();
             this.secondaryColor = ((ColorModel) o).getSecondaryColor();
+            // CHanger la taille du text
         } else if (o instanceof Toolbox) {
             this.size = ((Toolbox) o).getToolSize();
             if (this.jtextField != null && this.jComponent != null) {
@@ -124,13 +131,17 @@ public class TextTool implements ToolCommand, FocusListener, KeyListener {
 
     @Override
     public void focusLost(FocusEvent e) {
+        // Vérifier que le JTextField ne soit pa snull
         if (this.jtextField != null) {
+            // Replacer la JTextField
             this.jtextField.setBounds(currentX, currentY, size * 7, size);
+            // Mettre à jour la couleur de la JTextField
             if (this.isPrimaryColor) {
                 this.jtextField.setForeground(this.primaryColor);
             } else {
                 this.jtextField.setForeground(this.secondaryColor);
             }
+            // Mettre sur le focus sur la JTextField
             this.jtextField.requestFocus();
         }
     }
@@ -139,9 +150,11 @@ public class TextTool implements ToolCommand, FocusListener, KeyListener {
      * Places the text on the canvas at the current text field position.
      */
     public void placeText() {
+        // Placer le text de la JTextField sur le canva
         this.graphics2D.setFont(this.jtextField.getFont());
         this.graphics2D.setPaint(this.jtextField.getForeground());
         this.graphics2D.drawString(this.text, this.jtextField.getX(), this.jtextField.getY() + this.size);
+        // Supprimer la JTextField et mettre à jour l'attribut à null pour pouvoir en placer des nouvelles
         this.jComponent.remove(this.jtextField);
         this.jComponent.repaint();
         this.jtextField = null;
@@ -150,18 +163,23 @@ public class TextTool implements ToolCommand, FocusListener, KeyListener {
 
     @Override
     public void keyTyped(KeyEvent e) {
+        // Vérifier que la JTextField est focus
         if (this.jtextField.isFocusable()) {
+            // Ajoute un espace
             if (e.getKeyChar() == KeyEvent.VK_ESCAPE) {
                 this.text = "";
                 this.jComponent.remove(this.jtextField);
                 this.jtextField = null;
                 this.jComponent.repaint();
+            // Supprime un caractère
             } else if (e.getKeyChar() == '\u0008' || e.getKeyChar() == '\u007F') {
                 if (this.text.length() != 0) {
                     this.text = this.text.substring(0, this.text.length() - 1);
                 }
+             // Si appui sur entrée : placer le texte
             } else if (e.getKeyChar() == KeyEvent.VK_ENTER) {
                 placeText();
+            // Mettre à jour le texte
             } else if (Character.isLetter(e.getKeyChar()) || Character.isSpaceChar(e.getKeyChar())) {
                 this.text += e.getKeyChar();
             }

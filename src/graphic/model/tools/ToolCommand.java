@@ -1,5 +1,7 @@
 package graphic.model.tools;
 
+import graphic.model.ToolContext;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -51,17 +53,7 @@ public interface ToolCommand extends Observer {
     /**
      * Executes the tool command with the specified parameters.
      *
-     * @param oldX          the x-coordinate of the previous position
-     * @param oldY          the y-coordinate of the previous position
-     * @param currentX      the current x-coordinate
-     * @param currentY      the current y-coordinate
-     * @param bufferedImage the buffered image to draw on
-     * @param graphics2D    the graphics context for drawing
-     * @param click         the mouse click event modifiers
-     * @param size          the size of the tool
-     * @param square        a flag indicating whether the shape should be square
-     * @param isFirstPoint  a flag indicating whether it is the first point of the shape
-     * @param canva         the JComponent representing the canvas
+     * @param context          the application context
      */
-    void execute(int oldX, int oldY, int currentX, int currentY, BufferedImage bufferedImage, Graphics2D graphics2D, int click, int size, boolean square, boolean isFirstPoint, JComponent canva);
+    void execute(ToolContext context);
 }

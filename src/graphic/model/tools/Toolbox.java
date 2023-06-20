@@ -30,8 +30,10 @@ public class Toolbox extends Observable {
     public Toolbox() {
         this.toolsButtons = new ArrayList<>();
         this.toolCommands = new ArrayList<>();
+        // Ajouter l'outil crayon et le définir comme actif
         this.addTool(new PencilTool());
         this.activeTool = this.getTool(0);
+        // Options par défaut
         this.toolSize = 5;
         this.isSquareShape = true;
         this.shapeType = ShapeTypes.RECTANGLE;
