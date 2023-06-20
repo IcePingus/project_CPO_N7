@@ -14,8 +14,8 @@ import java.util.Observable;
  * @author Team 3
  */
 public class Toolbox extends Observable {
-    private List<JButton> toolsButtons;
-    private List<ToolCommand> toolCommands;
+    private final List<JButton> toolsButtons;
+    private final List<ToolCommand> toolCommands;
     private ToolCommand activeTool;
     private int toolSize;
     private boolean isSquareShape;
@@ -154,6 +154,8 @@ public class Toolbox extends Observable {
      */
     public void setIsSquareShape(boolean isSquareShape) {
         this.isSquareShape = isSquareShape;
+        this.setChanged();
+        this.notifyObservers();
     }
 
     /**

@@ -5,14 +5,14 @@ package graphic.exception;
  *
  * @author Team 3
  */
-public class nullImageException extends RuntimeException {
+public class NullImageException extends RuntimeException {
 
     /**
      * Constructs a new nullImageException with the specified detail message.
      *
      * @param message the detail message
      */
-    public nullImageException(String message) {
+    public NullImageException(String message) {
         super(message);
     }
 
@@ -21,7 +21,7 @@ public class nullImageException extends RuntimeException {
      *
      * @param e the cause
      */
-    public nullImageException(Exception e) {
+    public NullImageException(Exception e) {
         super(e);
     }
 }

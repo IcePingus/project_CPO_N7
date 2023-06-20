@@ -3,8 +3,6 @@ package graphic.model.tools;
 import graphic.model.ToolContext;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.Observer;
 
 /**

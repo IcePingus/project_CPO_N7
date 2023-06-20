@@ -2,13 +2,11 @@ package graphic.model.tools;
 
 import graphic.model.ShapeTypes;
 import graphic.model.ToolContext;
-import graphic.model.canva.Canva;
 import graphic.model.color.ColorModel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.InputEvent;
-import java.awt.image.BufferedImage;
 import java.util.Observable;
 
 /**

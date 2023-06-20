@@ -1,6 +1,6 @@
 package test.graphic;
 
-import graphic.exception.nullImageException;
+import graphic.exception.NullImageException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -46,7 +46,7 @@ public class TestImageComparator {
         assertEquals(false, ImageComparator.areImagesSimilar(this.image1, this.image3));
     }
 
-    @Test(expected = nullImageException.class)
+    @Test(expected = NullImageException.class)
     public void testNullImageException() {
         ImageComparator.areImagesSimilar(this.image4, this.image3);
         ImageComparator.areImagesSimilar(this.image3, this.image4);

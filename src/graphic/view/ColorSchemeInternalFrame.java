@@ -24,14 +24,12 @@ import java.util.Observer;
  */
 public class ColorSchemeInternalFrame extends JInternalFrame implements ChangeListener, ActionListener, DocumentListener, Observer {
 
-    private JButton primaryButton;
-    private JButton secondaryButton;
-    private JLabel lLabel;
-    private JLabel rLabel;
-    private JColorChooser colorChooser;
-    private ColorController colorController;
+    private final JButton primaryButton;
+    private final JButton secondaryButton;
+    private final JColorChooser colorChooser;
+    private final ColorController colorController;
     private Runnable runnableInsert;
-    private JTextField hexColor;
+    private final JTextField hexColor;
 
     /**
      * Constructs a new ColorSchemeInternalFrame object with the specified ColorController.
@@ -59,12 +57,12 @@ public class ColorSchemeInternalFrame extends JInternalFrame implements ChangeLi
         this.secondaryButton.setBackground(Color.WHITE);
 
         // Création des labels précisant le clic associé à la couleur
-        this.lLabel = new JLabel(" L ");
-        this.lLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        this.lLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 24));
-        this.rLabel = new JLabel(" R ");
-        this.rLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        this.rLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 24));
+        JLabel lLabel = new JLabel(" L ");
+        lLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        lLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 24));
+        JLabel rLabel = new JLabel(" R ");
+        rLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        rLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 24));
 
         JPanel lrChoice = new JPanel();
         GridLayout gl = new GridLayout(2, 2);
@@ -72,8 +70,8 @@ public class ColorSchemeInternalFrame extends JInternalFrame implements ChangeLi
         lrChoice.setLayout(gl);
         lrChoice.add(this.primaryButton);
         lrChoice.add(this.secondaryButton);
-        lrChoice.add(this.lLabel);
-        lrChoice.add(this.rLabel);
+        lrChoice.add(lLabel);
+        lrChoice.add(rLabel);
 
         // Champ de saisie pour avoir le code hexadécimal d'une couleur ou modifier celui-ci
         this.hexColor = new JTextField(6);
@@ -100,10 +98,10 @@ public class ColorSchemeInternalFrame extends JInternalFrame implements ChangeLi
 
         // Suppression des différents panels de couleurs et garder uniquement le panel par défaut
         AbstractColorChooserPanel[] oldPanels = this.colorChooser.getChooserPanels();
-        for (int i = 0; i < oldPanels.length; i++) {
-            String clsName = oldPanels[i].getClass().getName();
+        for (AbstractColorChooserPanel oldPanel : oldPanels) {
+            String clsName = oldPanel.getClass().getName();
             if (clsName.equals("javax.swing.colorchooser.ColorChooserPanel")) {
-                this.colorChooser.removeChooserPanel(oldPanels[i]);
+                this.colorChooser.removeChooserPanel(oldPanel);
             }
         }
         this.colorChooser.setPreviewPanel(new JPanel());
@@ -126,7 +124,7 @@ public class ColorSchemeInternalFrame extends JInternalFrame implements ChangeLi
     @Override
     public void actionPerformed(ActionEvent e) {
         // Update le code hexadécimal en fonction du bouton de couleur choisi
-        String hexColorString = null;
+        String hexColorString;
         if (e.getSource() == this.primaryButton) {
             hexColorString = "" + Integer.toHexString(this.colorController.getPrimaryColor().getRGB()).substring(2);
             this.colorController.setIsPrimaryColor(true);
@@ -147,7 +145,7 @@ public class ColorSchemeInternalFrame extends JInternalFrame implements ChangeLi
     public void update(Observable o, Object arg) {
         if (o instanceof ColorModel) {
             // Mettre à jour le code hexadécimal
-            String hexColorString = null;
+            String hexColorString;
             if (this.colorController.getIsPrimaryColor()) {
                 this.primaryButton.setBackground(this.colorController.getPrimaryColor());
                 hexColorString = "" + Integer.toHexString(this.colorController.getPrimaryColor().getRGB()).substring(2);
@@ -166,25 +164,22 @@ public class ColorSchemeInternalFrame extends JInternalFrame implements ChangeLi
         if (runnableInsert == null) {
             // Utilisation d'un runnable car on ne peut pas modifier un JTextField au même moment où on écrit dedans,
             // on doit donc retarder un peu la modification
-            runnableInsert = new Runnable() {
-                @Override
-                public void run() {
-                    // Vérification du caractère tapé par l'utilisateur
-                    if (!hexColor.getText().matches("^[0-9a-fA-F]+$") || hexColor.getText().length() > 6) {
-                        hexColor.setText(hexColor.getText().substring(0, hexColor.getText().length() - 1));
-                    }
+            runnableInsert = () -> {
+                // Vérification du caractère tapé par l'utilisateur
+                if (!hexColor.getText().matches("^[0-9a-fA-F]+$") || hexColor.getText().length() > 6) {
+                    hexColor.setText(hexColor.getText().substring(0, hexColor.getText().length() - 1));
+                }
 
-                    // Créer la couleur en fonction du code hexadécimal
-                    if (hexColor.getText().length() == 6) {
-                        Color color = new Color(
-                                Integer.valueOf(hexColor.getText().substring(0, 2), 16),
-                                Integer.valueOf(hexColor.getText().substring(2, 4), 16),
-                                Integer.valueOf(hexColor.getText().substring(4, 6), 16));
-                        if (colorController.getIsPrimaryColor()) {
-                            colorController.setPrimaryColor(color);
-                        } else {
-                            colorController.setSecondaryColor(color);
-                        }
+                // Créer la couleur en fonction du code hexadécimal
+                if (hexColor.getText().length() == 6) {
+                    Color color = new Color(
+                            Integer.valueOf(hexColor.getText().substring(0, 2), 16),
+                            Integer.valueOf(hexColor.getText().substring(2, 4), 16),
+                            Integer.valueOf(hexColor.getText().substring(4, 6), 16));
+                    if (colorController.getIsPrimaryColor()) {
+                        colorController.setPrimaryColor(color);
+                    } else {
+                        colorController.setSecondaryColor(color);
                     }
                 }
             };

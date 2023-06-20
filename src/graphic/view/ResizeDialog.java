@@ -15,13 +15,10 @@ import java.awt.event.ActionListener;
  */
 public class ResizeDialog extends JDialog implements ActionListener {
 
-    private JPanel contentPane;
     private final JPanel inputsPanel;
     private final JPanel buttonsPanel;
     private final JPanel placementPanel;
 
-    private final JLabel widthLabel;
-    private final JLabel heightLabel;
     private final JLabel errorMessage;
 
     private final JTextField widthInput;
@@ -36,8 +33,6 @@ public class ResizeDialog extends JDialog implements ActionListener {
     private final JRadioButton bottomLeft;
     private final JRadioButton bottom;
     private final JRadioButton bottomRight;
-
-    private final ButtonGroup placementButtons;
 
     private final JButton confirmButton;
 
@@ -67,8 +62,8 @@ public class ResizeDialog extends JDialog implements ActionListener {
         this.placementPanel = new JPanel(new GridLayout(3, 3));
         this.buttonsPanel = new JPanel(new FlowLayout());
 
-        this.widthLabel = new JLabel("Width : ");
-        this.heightLabel = new JLabel("Height : ");
+        JLabel widthLabel = new JLabel("Width : ");
+        JLabel heightLabel = new JLabel("Height : ");
         this.errorMessage = new JLabel("Invalid width or height !");
 
         this.errorMessage.setForeground(Color.RED);
@@ -95,17 +90,17 @@ public class ResizeDialog extends JDialog implements ActionListener {
         this.bottomRight = new JRadioButton();
         this.bottomRight.addActionListener(this);
 
-        this.placementButtons = new ButtonGroup();
+        ButtonGroup placementButtons = new ButtonGroup();
 
-        this.placementButtons.add(this.topLeft);
-        this.placementButtons.add(this.top);
-        this.placementButtons.add(this.topRight);
-        this.placementButtons.add(this.middleLeft);
-        this.placementButtons.add(this.middle);
-        this.placementButtons.add(this.middleRight);
-        this.placementButtons.add(this.bottomLeft);
-        this.placementButtons.add(this.bottom);
-        this.placementButtons.add(this.bottomRight);
+        placementButtons.add(this.topLeft);
+        placementButtons.add(this.top);
+        placementButtons.add(this.topRight);
+        placementButtons.add(this.middleLeft);
+        placementButtons.add(this.middle);
+        placementButtons.add(this.middleRight);
+        placementButtons.add(this.bottomLeft);
+        placementButtons.add(this.bottom);
+        placementButtons.add(this.bottomRight);
 
         this.confirmButton = new JButton("Confirm");
         this.confirmButton.addActionListener(this);
@@ -113,10 +108,10 @@ public class ResizeDialog extends JDialog implements ActionListener {
         this.widthInput = new JTextField();
         this.heightInput = new JTextField();
 
-        this.inputsPanel.add(this.widthLabel);
+        this.inputsPanel.add(widthLabel);
         this.inputsPanel.add(this.widthInput);
 
-        this.inputsPanel.add(this.heightLabel);
+        this.inputsPanel.add(heightLabel);
         this.inputsPanel.add(this.heightInput);
 
         this.placementPanel.add(this.topLeft);
@@ -201,14 +196,14 @@ public class ResizeDialog extends JDialog implements ActionListener {
      */
     public void setInputs(boolean isCropping) {
         this.isCropping = isCropping;
-        this.contentPane = new JPanel(new GridLayout(isCropping ? 4 : 3, 1));
-        this.contentPane.add(this.inputsPanel);
-        this.contentPane.add(this.errorMessage);
+        JPanel contentPane = new JPanel(new GridLayout(isCropping ? 4 : 3, 1));
+        contentPane.add(this.inputsPanel);
+        contentPane.add(this.errorMessage);
         if (isCropping) {
-            this.contentPane.add(this.placementPanel);
+            contentPane.add(this.placementPanel);
         }
-        this.contentPane.add(this.buttonsPanel);
-        this.setContentPane(this.contentPane);
+        contentPane.add(this.buttonsPanel);
+        this.setContentPane(contentPane);
         this.widthInput.setText(String.valueOf(canvaController.getCanvaWidth()));
         this.heightInput.setText(String.valueOf(canvaController.getCanvaHeight()));
     }

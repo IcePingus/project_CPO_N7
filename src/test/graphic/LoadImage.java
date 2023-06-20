@@ -1,6 +1,6 @@
 package test.graphic;
 
-import graphic.exception.nullImageException;
+import graphic.exception.NullImageException;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -12,7 +12,7 @@ public class LoadImage {
         try {
             return ImageIO.read(new File(path));
         } catch (IOException e) {
-            throw new nullImageException(e);
+            throw new NullImageException(e);
         }
     }
 }
