@@ -108,27 +108,28 @@ public class CanvaComponent extends JComponent implements Observer {
                 }
                 // Si une forme est dessinée, la construire sur la buffered image (voir paintComponent(Graphics g) pour plus de détails).
                 if (shapeType != null) {
-                    g2.setColor(color);
+                    canvaController.getCanva().getGraphics2D().setPaint(color);
                     switch (shapeType) {
                         case RECTANGLE -> {
                             if (isShapeFilled) {
-                                g2.fillRect(startX, startY, endX, endY);
+                                canvaController.getCanva().getGraphics2D().fillRect(startX, startY, endX, endY);
+                                repaint();
                             } else {
                                 if (toolController.getToolSize() > endX || toolController.getToolSize() > endY) {
-                                    g2.fillRect(startX, startY, endX, endY);
+                                    canvaController.getCanva().getGraphics2D().fillRect(startX, startY, endX, endY);
                                 } else {
-                                    g2.fillRect(startX, startY, toolController.getToolSize(), endY);
-                                    g2.fillRect(startX, startY, endX, toolController.getToolSize());
-                                    g2.fillRect(startX + endX - toolController.getToolSize(), startY, toolController.getToolSize(), endY);
-                                    g2.fillRect(startX, startY + endY - toolController.getToolSize(), endX, toolController.getToolSize());
+                                    canvaController.getCanva().getGraphics2D().fillRect(startX, startY, toolController.getToolSize(), endY);
+                                    canvaController.getCanva().getGraphics2D().fillRect(startX, startY, endX, toolController.getToolSize());
+                                    canvaController.getCanva().getGraphics2D().fillRect(startX + endX - toolController.getToolSize(), startY, toolController.getToolSize(), endY);
+                                    canvaController.getCanva().getGraphics2D().fillRect(startX, startY + endY - toolController.getToolSize(), endX, toolController.getToolSize());
                                 }
                             }
                         }
                         case OVAL -> {
                             if (isShapeFilled) {
-                                g2.fillOval(startX, startY, endX, endY);
+                                canvaController.getCanva().getGraphics2D().fillOval(startX, startY, endX, endY);
                             } else {
-                                g2.drawOval(startX, startY, endX, endY);
+                                canvaController.getCanva().getGraphics2D().drawOval(startX, startY, endX, endY);
                             }
                         }
                         case LINE -> {
@@ -140,7 +141,7 @@ public class CanvaComponent extends JComponent implements Observer {
                             int erreur2;
 
                             while (startX != endX || startY != endY) {
-                                g2.fillOval(startX - toolController.getToolSize() / 2, startY - toolController.getToolSize() / 2, toolController.getToolSize(), toolController.getToolSize());
+                                canvaController.getCanva().getGraphics2D().fillOval(startX - toolController.getToolSize() / 2, startY - toolController.getToolSize() / 2, toolController.getToolSize(), toolController.getToolSize());
 
                                 erreur2 = 2 * erreur;
                                 if (erreur2 > -distanceY) {
