@@ -106,12 +106,12 @@ public class HighlighterTool implements ToolCommand {
             color = new Color(secondaryColor.getRed(), secondaryColor.getGreen(), secondaryColor.getBlue(), 17);
         }
         if (color != null) {
-            context.getCanva().getG2().setPaint(color);
-            context.getCanva().getG2().drawLine(context.getOldX(), context.getOldY(), context.getCurrentX(), context.getCurrentY());
+            context.getCanva().getGraphics2D().setPaint(color);
+            context.getCanva().getGraphics2D().drawLine(context.getOldX(), context.getOldY(), context.getCurrentX(), context.getCurrentY());
             // Dessine des lignes sur la toile en fonction de la taille de l'outil
             for (int i = 1; i < context.getSize(); i++) {
-                context.getCanva().getG2().drawLine(context.getOldX() + i, context.getOldY() + i, context.getCurrentX() + i, context.getCurrentY() + i);
-                context.getCanva().getG2().drawLine(context.getOldX() - i, context.getOldY() - i, context.getCurrentX() - i, context.getCurrentY() - i);
+                context.getCanva().getGraphics2D().drawLine(context.getOldX() + i, context.getOldY() + i, context.getCurrentX() + i, context.getCurrentY() + i);
+                context.getCanva().getGraphics2D().drawLine(context.getOldX() - i, context.getOldY() - i, context.getCurrentX() - i, context.getCurrentY() - i);
             }
         }
     }

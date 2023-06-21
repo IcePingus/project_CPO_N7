@@ -1,6 +1,7 @@
 package graphic.model;
 
 import graphic.model.canva.Canva;
+import graphic.view.CanvaComponent;
 
 public class ToolContext {
 
@@ -13,6 +14,7 @@ public class ToolContext {
     private boolean isSquare;
     private boolean isFirstPoint;
     private Canva canva;
+    private CanvaComponent canvaComponent;
 
     public int getOldX() {
         return this.oldX;
@@ -50,6 +52,10 @@ public class ToolContext {
         return this.canva;
     }
 
+    public CanvaComponent getCanvaComponent() {
+        return canvaComponent;
+    }
+
     public void setOldX(int oldX) {
         this.oldX = oldX;
     }
@@ -84,5 +90,9 @@ public class ToolContext {
 
     public void setCanva(Canva canva) {
         this.canva = canva;
+    }
+
+    public void setCanvaComponent(CanvaComponent canvaComponent) {
+        this.canvaComponent = canvaComponent;
     }
 }

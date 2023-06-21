@@ -94,11 +94,11 @@ public class MoveTool implements ToolCommand {
         double deltaY = (double) mouseDeltaY / sensitivity;
 
         // Modifier des positions du composant
-        int newX = context.getCanva().getLocation().x + (int) deltaX;
-        int newY = context.getCanva().getLocation().y + (int) deltaY;
+        int newX = context.getCanvaComponent().getLocation().x + (int) deltaX;
+        int newY = context.getCanvaComponent().getLocation().y + (int) deltaY;
 
-        context.getCanva().setLocation(newX, newY);
-        context.getCanva().repaint();
+        context.getCanvaComponent().setLocation(newX, newY);
+        context.getCanvaComponent().repaint();
     }
 
     @Override

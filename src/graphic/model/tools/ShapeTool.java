@@ -132,9 +132,9 @@ public class ShapeTool implements ToolCommand {
             if (this.shapeType == ShapeTypes.LINE) {
                 // Ligne ne fonctionne pas avec point de début et largeur et hauteur, donc on passe le point de début et
                 // le point de fin en paramètres
-                context.getCanva().repaintComponent(this.shapeType, this.oldX, this.oldY, context.getCurrentX(), context.getCurrentY(), color, this.isFilledShape);
+                context.getCanvaComponent().repaintComponent(this.shapeType, this.oldX, this.oldY, context.getCurrentX(), context.getCurrentY(), color, this.isFilledShape);
             } else {
-                context.getCanva().repaintComponent(this.shapeType, startX, startY, width, height, color, this.isFilledShape);
+                context.getCanvaComponent().repaintComponent(this.shapeType, startX, startY, width, height, color, this.isFilledShape);
             }
         }
     }
