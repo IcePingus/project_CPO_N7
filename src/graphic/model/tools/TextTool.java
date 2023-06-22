@@ -2,6 +2,7 @@ package graphic.model.tools;
 
 import graphic.model.ToolContext;
 import graphic.model.color.ColorModel;
+import graphic.view.CanvaComponent;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,7 +23,7 @@ public class TextTool implements ToolCommand, FocusListener, KeyListener {
     private final boolean hasShapeSelection;
     private int size;
     private Graphics2D graphics2D;
-    private JComponent jComponent;
+    private CanvaComponent canvaComponent;
     private Color primaryColor;
     private Color secondaryColor;
     private boolean isPrimaryColor;
@@ -73,8 +74,8 @@ public class TextTool implements ToolCommand, FocusListener, KeyListener {
 
     @Override
     public void execute(ToolContext context) {
-        this.jComponent = context.getCanva();
-        this.graphics2D = context.getCanva().getG2();
+        this.canvaComponent = context.getCanvaComponent();
+        this.graphics2D = context.getCanva().getGraphics2D();
         // Récupérer la couleur en fonction du type de clic
         Color color = null;
         if (context.getClick() == InputEvent.BUTTON1_DOWN_MASK) {
@@ -90,13 +91,13 @@ public class TextTool implements ToolCommand, FocusListener, KeyListener {
             this.size = context.getSize();
             // Déclencher l'évènement focusLost si la JTextField n'est pas null
             if (this.jtextField != null) {
-                focusLost(new FocusEvent(this.jComponent, 0));
+                focusLost(new FocusEvent(this.canvaComponent, 0));
             } else {
                 // Créer une JTextField et la placer sur le canva à l'endroit souhaité
                 this.jtextField = new JTextField();
                 this.jtextField.setVisible(true);
-                jComponent.setLayout(new FlowLayout());
-                jComponent.add(this.jtextField);
+                this.canvaComponent.setLayout(new FlowLayout());
+                this.canvaComponent.add(this.jtextField);
                 this.jtextField.addFocusListener(this);
                 this.jtextField.addKeyListener(this);
                 this.jtextField.requestFocus();
@@ -116,7 +117,7 @@ public class TextTool implements ToolCommand, FocusListener, KeyListener {
             // CHanger la taille du text
         } else if (o instanceof Toolbox) {
             this.size = ((Toolbox) o).getToolSize();
-            if (this.jtextField != null && this.jComponent != null) {
+            if (this.jtextField != null && this.canvaComponent != null) {
                 this.jtextField.setFont(new Font(Font.SANS_SERIF, Font.BOLD, this.size));
                 this.jtextField.setBounds(this.currentX, this.currentY, this.size * 7, this.size);
                 this.jtextField.requestFocus();
@@ -154,8 +155,8 @@ public class TextTool implements ToolCommand, FocusListener, KeyListener {
         this.graphics2D.setPaint(this.jtextField.getForeground());
         this.graphics2D.drawString(this.text, this.jtextField.getX(), this.jtextField.getY() + this.size);
         // Supprimer la JTextField et mettre à jour l'attribut à null pour pouvoir en placer des nouvelles
-        this.jComponent.remove(this.jtextField);
-        this.jComponent.repaint();
+        this.canvaComponent.remove(this.jtextField);
+        this.canvaComponent.repaint();
         this.jtextField = null;
         this.text = "";
     }
@@ -167,9 +168,9 @@ public class TextTool implements ToolCommand, FocusListener, KeyListener {
             // Ajoute un espace
             if (e.getKeyChar() == KeyEvent.VK_ESCAPE) {
                 this.text = "";
-                this.jComponent.remove(this.jtextField);
+                this.canvaComponent.remove(this.jtextField);
                 this.jtextField = null;
-                this.jComponent.repaint();
+                this.canvaComponent.repaint();
             // Supprime un caractère
             } else if (e.getKeyChar() == '\u0008' || e.getKeyChar() == '\u007F') {
                 if (this.text.length() != 0) {

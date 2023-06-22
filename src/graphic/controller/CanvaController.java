@@ -164,8 +164,7 @@ public class CanvaController {
         if (this.canva.getImageStates().size() > 1 && this.canva.getCurrentIndex() > 0) {
             // Affiche la bufferedImage à l'index précédent
             this.canva.setCurrentIndex(this.canva.getCurrentIndex() - 1);
-            this.canva.setG2((Graphics2D) this.canva.getImageStates().get(this.canva.getCurrentIndex()).getGraphics());
-            this.canva.repaint();
+            this.canva.setGraphics2D((Graphics2D) this.canva.getImageStates().get(this.canva.getCurrentIndex()).getGraphics());
         }
     }
 
@@ -177,8 +176,7 @@ public class CanvaController {
         if (this.canva.getCurrentIndex() < this.canva.getImageStates().size() - 1) {
             // Affiche la bufferedImage à l'index suivant
             this.canva.setCurrentIndex(this.canva.getCurrentIndex() + 1);
-            this.canva.setG2((Graphics2D) this.canva.getImageStates().get(this.canva.getCurrentIndex()).getGraphics());
-            this.canva.repaint();
+            this.canva.setGraphics2D((Graphics2D) this.canva.getImageStates().get(this.canva.getCurrentIndex()).getGraphics());
         }
     }
 
@@ -191,7 +189,6 @@ public class CanvaController {
         // Modifie la bufferedImage avec uniquement des niveaux de gris
         ColorConvertOp op = new ColorConvertOp(ColorSpace.getInstance(ColorSpace.CS_GRAY), null);
         op.filter(newImage, newImage);
-        this.canva.repaint();
     }
 
     /**
@@ -203,8 +200,8 @@ public class CanvaController {
     public void resizeCanva(int width, int height) {
         // Instancie une bufferedImage avec les nouvelles dimensions
         BufferedImage resizedImage = new BufferedImage(width, height, this.canva.getBufferedImage().getType());
-        this.canva.setG2(resizedImage.createGraphics());
-        this.canva.getG2().drawImage(this.canva.getBufferedImage(), 0, 0, width, height, null);
+        this.canva.setGraphics2D(resizedImage.createGraphics());
+        this.canva.getGraphics2D().drawImage(this.canva.getBufferedImage(), 0, 0, width, height, null);
         this.canva.setBufferedImage(resizedImage);
     }
 
@@ -220,9 +217,9 @@ public class CanvaController {
         // Initialiser une nouvelle image de la taille souhaitée
         BufferedImage resizedImage = new BufferedImage(width, height, this.canva.getBufferedImage().getType());
         // Remplir le fond de la nouvelle image
-        this.canva.setG2(resizedImage.createGraphics());
-        this.canva.getG2().setColor(Color.WHITE);
-        this.canva.getG2().fillRect(0, 0, width, height);
+        this.canva.setGraphics2D(resizedImage.createGraphics());
+        this.canva.getGraphics2D().setColor(Color.WHITE);
+        this.canva.getGraphics2D().fillRect(0, 0, width, height);
         // Définir les coordonnées où dessiner l'ancienne image
         int x = 0;
         int y = 0;
@@ -235,7 +232,7 @@ public class CanvaController {
             case BOTTOM -> y = height - this.canva.getBufferedImage().getHeight();
         }
         // Dessiner l'ancienne image
-        this.canva.getG2().drawImage(this.canva.getBufferedImage(), x, y, this.canva.getBufferedImage().getWidth(), this.canva.getBufferedImage().getHeight(), null);
+        this.canva.getGraphics2D().drawImage(this.canva.getBufferedImage(), x, y, this.canva.getBufferedImage().getWidth(), this.canva.getBufferedImage().getHeight(), null);
         this.canva.setBufferedImage(resizedImage);
     }
 
@@ -289,9 +286,8 @@ public class CanvaController {
         // Passer à la bufferedImage suivante
         this.canva.nextBufferedImage();
         // Remplir la toile en blanc
-        this.canva.getG2().setPaint(Color.WHITE);
-        this.canva.getG2().fillRect(0, 0, this.canva.getWidth(), this.canva.getHeight());
-        this.canva.repaint();
+        this.canva.getGraphics2D().setPaint(Color.WHITE);
+        //this.canva.getG2().fillRect(0, 0, this.canva.getWidth(), this.canva.getHeight());
     }
 
     /**
@@ -301,7 +297,7 @@ public class CanvaController {
      */
     public void pasteImage(BufferedImage clipboardImage) {
         // Dessiner l'image copiée sur le canva
-        this.canva.getG2().drawImage(clipboardImage, 0, 0, null);
+        this.canva.getGraphics2D().drawImage(clipboardImage, 0, 0, null);
     }
 
     /**
@@ -328,7 +324,7 @@ public class CanvaController {
                     // Coller l'image copiée
                     pasteImage(clipboardImage);
                 }
-                this.canva.repaint();
+                //this.canva.repaint();
             } else {
                 // Presse-papiers vide, initialiser et afficher une notification d'erreur et lever une exception
                 Toaster toasterManager = new Toaster();
@@ -339,4 +335,10 @@ public class CanvaController {
             e.printStackTrace();
         }
     }
+
+    public Canva getCanva() {
+        return this.canva;
+    }
+
+
 }

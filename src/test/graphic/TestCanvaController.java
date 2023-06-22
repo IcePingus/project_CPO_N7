@@ -2,6 +2,7 @@ package test.graphic;
 
 import graphic.controller.CanvaController;
 import graphic.model.canva.Canva;
+import graphic.view.CanvaComponent;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,16 +23,18 @@ public class TestCanvaController {
 
     @Before
     public void setup() {
-        this.canva = new Canva(null, new JLabel(), new JLabel());
-        this.canva.setBufferedImage(new BufferedImage(64, 64, BufferedImage.TYPE_INT_ARGB));
-        this.canva.setG2((Graphics2D) this.canva.getBufferedImage().getGraphics());
-        this.canva.getG2().setPaint(Color.BLACK);
-        this.canva.getG2().fillRect(0, 0, 64, 64);
-        this.canva.getG2().setPaint(Color.WHITE);
-        this.canva.getG2().drawLine(10, 10, 20, 20);
-        this.canva.getG2().setPaint(Color.BLUE);
-        this.canva.getG2().drawLine(20, 20, 40, 20);
+        this.canva = new Canva();
         this.canvaController = new CanvaController(this.canva);
+        CanvaComponent canvaComponent = new CanvaComponent(null, this.canvaController, new JLabel(), new JLabel());
+        this.canva.setBufferedImage(new BufferedImage(64, 64, BufferedImage.TYPE_INT_ARGB));
+        this.canva.setGraphics2D((Graphics2D) this.canva.getBufferedImage().getGraphics());
+        this.canva.getGraphics2D().setPaint(Color.BLACK);
+        this.canva.getGraphics2D().fillRect(0, 0, 64, 64);
+        this.canva.getGraphics2D().setPaint(Color.WHITE);
+        this.canva.getGraphics2D().drawLine(10, 10, 20, 20);
+        this.canva.getGraphics2D().setPaint(Color.BLUE);
+        this.canva.getGraphics2D().drawLine(20, 20, 40, 20);
+        canvaComponent.repaint();
     }
 
     @Test

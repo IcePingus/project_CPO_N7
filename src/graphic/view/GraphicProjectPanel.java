@@ -56,16 +56,18 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
 
         add(toolbar, BorderLayout.SOUTH);
 
-        // Instanciation des models
+        // Instanciation des modèles
         Toolbox toolbox = new Toolbox();
         ColorModel colorModel = new ColorModel();
-        Canva canva = new Canva(toolbox, canvaSizeLabel, zoomLabel);
+        Canva canva = new Canva();
 
-        // Instanciation des controllers
+        // Instanciation des controlleurs
         ColorController colorController = new ColorController(colorModel);
         this.canvaController = new CanvaController(canva);
 
-        // Initialisation des fenêtres internes et ajout au panel
+        // Initialisation des vues et ajout au panel
+        CanvaComponent canvaComponent = new CanvaComponent(toolbox, canvaController, canvaSizeLabel, zoomLabel);
+        canva.addObserver(canvaComponent);
         ToolInternalFrame toolInternalFrame = new ToolInternalFrame(toolbox, colorController, colorModel);
         toolInternalFrame.setVisible(true);
         this.add(toolInternalFrame);
@@ -78,7 +80,7 @@ public class GraphicProjectPanel extends JDesktopPane implements ActionListener 
 
         this.resizeDialog = new ResizeDialog(this.canvaController);
 
-        this.add(canva, BorderLayout.CENTER);
+        this.add(canvaComponent, BorderLayout.CENTER);
 
         // Ajout des menus et options de menu
         JMenuBar mb = new JMenuBar();

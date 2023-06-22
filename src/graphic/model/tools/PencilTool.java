@@ -107,13 +107,13 @@ public class PencilTool implements ToolCommand {
         }
         if (color != null) {
             // Définir la couleur avec laquelle dessiner
-            context.getCanva().getG2().setPaint(color);
+            context.getCanva().getGraphics2D().setPaint(color);
 
             // Dessiner le point actuel en fonction de la taille
             if (context.isSquare()) {
-                context.getCanva().getG2().fillRect(context.getOldX() - context.getSize() / 2, context.getOldY() - context.getSize() / 2, context.getSize(), context.getSize());
+                context.getCanva().getGraphics2D().fillRect(context.getOldX() - context.getSize() / 2, context.getOldY() - context.getSize() / 2, context.getSize(), context.getSize());
             } else {
-                context.getCanva().getG2().fillOval(context.getOldX() - context.getSize() / 2, context.getOldY() - context.getSize() / 2, context.getSize(), context.getSize());
+                context.getCanva().getGraphics2D().fillOval(context.getOldX() - context.getSize() / 2, context.getOldY() - context.getSize() / 2, context.getSize(), context.getSize());
             }
 
             // Définir la distance à parcourir pour chaque dimension, la direction et l'erreur (algorithme de Bresenham)
@@ -128,9 +128,9 @@ public class PencilTool implements ToolCommand {
             while (context.getOldX() != context.getCurrentX() || context.getOldY() != context.getCurrentY()) {
 
                 if (context.isSquare()) {
-                    context.getCanva().getG2().fillRect(context.getOldX() - context.getSize() / 2, context.getOldY() - context.getSize() / 2, context.getSize(), context.getSize());
+                    context.getCanva().getGraphics2D().fillRect(context.getOldX() - context.getSize() / 2, context.getOldY() - context.getSize() / 2, context.getSize(), context.getSize());
                 } else {
-                    context.getCanva().getG2().fillOval(context.getOldX() - context.getSize() / 2, context.getOldY() - context.getSize() / 2, context.getSize(), context.getSize());
+                    context.getCanva().getGraphics2D().fillOval(context.getOldX() - context.getSize() / 2, context.getOldY() - context.getSize() / 2, context.getSize(), context.getSize());
                 }
 
                 // Calculer l'erreur lors du parcours des points pour bien suivre le chemin
