@@ -1,6 +1,6 @@
 package terminalSVG.view;
 
-import graphic.view.SelectionPanel;
+import core.SelectionPanel;
 import terminalSVG.controller.ControllerTerminalPanel;
 import terminalSVG.model.History;
 import terminalSVG.model.SVGPreview;
@@ -12,9 +12,21 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
+/**
+ * The panel that represents the Terminal project.
+ * It contains various sub-panels and manages their interactions and layout.
+ *
+ * @author Team 3
+ */
 public class TerminalProjectPanel extends JPanel implements ActionListener {
     private JFrame frame;
     private JMenuItem quit;
+
+    /**
+     * Creates a new instance of the TerminalProjectPanel.
+     *
+     * @param frame The main JFrame of the application.
+     */
     public TerminalProjectPanel(JFrame frame) {
 
         this.frame = frame;
@@ -34,9 +46,7 @@ public class TerminalProjectPanel extends JPanel implements ActionListener {
         // A. Instance Panels Historique & PreviewCodeSVG (preview)
         // -> Remplacer ici par le panel du module conçu pour le previewCodeSVG
         ViewHistoryPanel vhPanel = new ViewHistoryPanel();
-        JPanel vSVGCodePreviewPanel = new JPanel();
-        JLabel previewSVGCodeLabel = new JLabel("Terminal - Preview Code SVG");
-        vSVGCodePreviewPanel.add(previewSVGCodeLabel);
+        ViewSVGCodePreviewPanel vSVGCodePreviewPanel = new ViewSVGCodePreviewPanel();
 
         // B. Instance modèle Historique & Ajout observer
         History h = new History(null);
@@ -50,6 +60,7 @@ public class TerminalProjectPanel extends JPanel implements ActionListener {
         SVGPreview svgp = new SVGPreview();
 
         svgp.addObserver(vSVGCanvaPreviewPanel); //Observer SVGCanvaPreview -> SVGPreview
+        svgp.addObserver(vSVGCodePreviewPanel);
 
         // ----------- III. Partie Controller -----------
         // A. Instance Panels Controller -> Historique & SVGPreview
@@ -119,8 +130,13 @@ public class TerminalProjectPanel extends JPanel implements ActionListener {
         this.add(pinteCLIMainPanel, BorderLayout.CENTER);
     }
 
+    /**
+     * Exits the application.
+     *
+     * @param frame The main JFrame of the application.
+     */
     public void exit(JFrame frame) {
-        String[] options = new String[] {"Yes", "No"};
+        String[] options = new String[]{"Yes", "No"};
         int resultOptionPane = JOptionPane.showOptionDialog(null, "Do you really want to quit?", "Exit",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
                 null, options, options[0]);
