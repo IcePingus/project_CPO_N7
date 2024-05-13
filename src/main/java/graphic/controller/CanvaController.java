@@ -90,6 +90,7 @@ public class CanvaController {
         Toaster toasterManager = new Toaster();
         // Instancier un explorateur de fichier et vérifier si l'utilisateur crée un fichier avec une extension png ou jpg
         JFileChooser jfc = new JFileChooser();
+        jfc.setFileHidingEnabled(false);
         int retVal = jfc.showSaveDialog(null);
         if (retVal == JFileChooser.APPROVE_OPTION) {
             File f = jfc.getSelectedFile();
@@ -246,6 +247,7 @@ public class CanvaController {
         // Afficher l'explorateur de fichier
         JFileChooser fileChooser = new JFileChooser(new File(filename));
 
+        fileChooser.setFileHidingEnabled(false);
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         fileChooser.setDialogTitle("Image");
         // Accepter uniquement les fichiers d'extension png
